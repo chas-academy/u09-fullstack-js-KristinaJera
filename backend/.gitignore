@@ -1,0 +1,11 @@
+# Node modules (already covered by parent .gitignore)
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+*.log
+
+# Build output
+build/
