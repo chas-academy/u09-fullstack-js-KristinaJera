@@ -29,7 +29,7 @@ const jobSchema = new mongoose.Schema({
         desc: {type: String}, 
         requirements: {type: String}
     }],
-    application: [{type: Schema.Types.ObjectId, ref: "Users"}],
+    applications: [{type: Schema.Types.ObjectId, ref:  "Applications"}],
 },
 {timestamps: true}
 );

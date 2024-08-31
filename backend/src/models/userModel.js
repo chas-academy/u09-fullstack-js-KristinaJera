@@ -22,7 +22,7 @@ password:  {
     type: String,
     required: [true, "Password is required"],
     minlength: [8, "Password must be at least"],
-    select: true,
+    select: false,
 },
 
 accountType: {type: String, default: "seeker"},
@@ -39,7 +39,7 @@ about: { type: String},
 userSchema.pre("save", async function() {
     if (!this.isModified) return;
 
-    const salt = await bcrypt.getSalt(10)
+    const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt);
     
 });
@@ -52,7 +52,7 @@ return isMatch;
 }; 
 
 //JWT token
-userSchema.methods.createToken = async function (){
+userSchema.methods.createJWT = async function (){
     return JWT.sign(
         { userId: this._id}, process.env.JWT_SECRET_KEY,{
             expiresIn: "1d",
