@@ -72,7 +72,9 @@ try{
         return;
     }
     user.password = undefined;
+
     const token = user.createJWT();
+    
     res.status(201).json({
         success: true,
         message: "Login successfully",

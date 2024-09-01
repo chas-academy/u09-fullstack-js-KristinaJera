@@ -36,6 +36,8 @@ about: { type: String},
 {timestamps: true}
 );
 
+// middleware
+
 userSchema.pre("save", async function() {
     if (!this.isModified) return;
 
