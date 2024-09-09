@@ -1,7 +1,7 @@
 import exppres from "express";
 import {rateLimit} from "express-rate-limit";
 import { getCompanies, getCompanyById, getCompanyJobListing, getCompanyProfile, register, signIn } from "../controllers/companiesController.js";
-import userAuth from "../middlewares/authMiddleware.js";
+import{userAuth} from "../middlewares/authMiddleware.js";
 
 const router = exppres.Router();
 

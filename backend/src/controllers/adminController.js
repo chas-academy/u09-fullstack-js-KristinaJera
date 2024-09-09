@@ -1,6 +1,6 @@
 import Admin from '../models/adminModel.js';
 import Users from '../models/userModel.js';
-import Companies from '../models/companyModel.js';
+import Companies from '../models/companiesModel.js';
 
 // Create an admin
 export const createAdmin = async (req, res) => {
@@ -21,6 +21,67 @@ export const createAdmin = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+// Create a new user by admin
+export const createUser = async (req, res) => {
+    const { firstName, lastName, email, password, contact, location, jobTitle, about } = req.body;
+
+    try {
+        const userExists = await Users.findOne({ email });
+        if (userExists) return res.status(400).json({ message: 'User already exists' });
+
+        const user = await Users.create({ 
+            firstName,
+            lastName,
+            email,
+            password, // Consider hashing the password before saving
+            contact,
+            location,
+            jobTitle,
+            about,
+             accountType: accountType || 'seeker'
+        });
+
+        const token = await user.createJWT();
+        res.status(201).json({
+            success: true,
+            message: 'User created successfully',
+            token
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Create a new company by admin
+export const createCompany = async (req, res) => {
+    const { name, address, industry, email, contact, website } = req.body;
+
+    try {
+        const companyExists = await Companies.findOne({ email });
+        if (companyExists) return res.status(400).json({ message: 'Company already exists' });
+
+        const company = await Companies.create({ 
+            name,
+            address,
+            industry,
+            email,
+            contact,
+            website
+        });
+
+        const token = await company.createJWT();
+        res.status(201).json({
+            success: true,
+            message: 'Company created successfully',
+            token
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 // Admin login
 export const adminLogin = async (req, res) => {
@@ -148,5 +209,7 @@ export default {
     getAllCompanies,
     getCompanyById,
     updateCompany,
-    deleteCompany
+    deleteCompany,
+    createUser,   
+    createCompany
 };
