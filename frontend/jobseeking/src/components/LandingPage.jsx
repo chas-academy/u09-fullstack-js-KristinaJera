@@ -64,15 +64,25 @@
 // };
 
 // export default LandingPage;
+
+
 import { useState } from 'react';
 import { LoginPage } from './LoginPage';
 import { RegisterPage } from './RegisterPage';
 
 const LandingPage = () => {
   const [activeForm, setActiveForm] = useState(null);
+  const [loginType, setLoginType] = useState(null); // Added to differentiate between company and seeker login
 
-  const showForm = (formType) => setActiveForm(formType);
-  const closeForms = () => setActiveForm(null);
+  const showForm = (formType, loginType = null) => {
+    setActiveForm(formType);
+    setLoginType(loginType); // Set the login type when a form is shown
+  };
+  
+  const closeForms = () => {
+    setActiveForm(null);
+    setLoginType(null); // Reset the login type
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -89,11 +99,21 @@ const LandingPage = () => {
             <p className="text-gray-600 mb-6">
               Discover your next career opportunity with our app. Whether you are just starting or looking to make a change, we have got the tools to help you succeed.
             </p>
+            {/* Added two buttons for Company and Job Seeker login */}
+            <button
+              onClick={() => showForm('login', 'company')}
+              className="bg-blue-600 text-white py-2 px-4 rounded mb-4 mx-1 hover:bg-blue-700 transition"
+            >
+              Hire Talent
+            </button>
+            <button
+              onClick={() => showForm('login', 'seeker')}
+              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+            >
+              Find a Job
+            </button>
             <button onClick={() => showForm('register')} className="text-blue-600 hover:underline mb-4">
               Not registered? Click here to register
-            </button>
-            <button onClick={() => showForm('login')} className="text-blue-600 hover:underline">
-              Already have an account? Login here
             </button>
           </section>
         </div>
@@ -104,7 +124,7 @@ const LandingPage = () => {
             activeForm ? 'w-1/2 translate-x-0' : 'translate-x-full w-0'
           }`}
         >
-          {activeForm === 'login' && <LoginPage onClose={closeForms} />}
+          {activeForm === 'login' && <LoginPage onClose={closeForms} type={loginType} />}
           {activeForm === 'register' && <RegisterPage onClose={closeForms} />}
         </div>
       </div>
