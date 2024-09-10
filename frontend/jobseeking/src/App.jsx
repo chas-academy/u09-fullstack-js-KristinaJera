@@ -2,7 +2,8 @@
 
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 // function LandingPage(){
 //   const user = true;
 //   const location = useLocation()
@@ -18,7 +19,7 @@ import LandingPage from "./components/LandingPage";
 const App = () => {
   return (
     <>
-    {/* <Navbar/> */}
+    <Navbar/>
     <Routes>
     <Route element={<LandingPage/>}>
     <Route path="/" element={ <Navigate to="/find-jobs" replace={true}/>}/>
@@ -33,7 +34,7 @@ const App = () => {
     */}
     </Route>
     </Routes>
-    {/* <Footer/> */}
+    <Footer/>
     </>
   )
 }
