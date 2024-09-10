@@ -45,7 +45,7 @@ const LandingPage = () => {
               Find a Job
             </button>
             <button onClick={() => showForm('register')} className="text-blue-600 hover:underline mb-4">
-              Not registered? Click here to register
+              Not registered? Click here to register.
             </button>
           </section>
         </div>

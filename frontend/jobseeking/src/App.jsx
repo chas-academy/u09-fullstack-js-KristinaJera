@@ -17,6 +17,8 @@ import Footer from "./components/Footer";
 // }
 
 const App = () => {
+
+  const user = false;
   return (
     <>
     <Navbar/>
@@ -33,8 +35,9 @@ const App = () => {
      <Route path={"/job-detail/:id"} element={<JobDetail/>}/>
     */}
     </Route>
+    
     </Routes>
-    <Footer/>
+    {user && <Footer/>}
     </>
   )
 }
