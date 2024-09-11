@@ -1,6 +1,6 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
-import {signIn, register} from "../controllers/authController.js";
+import {signIn, register, registerCompany, companySignIn} from "../controllers/authController.js";
 
 //IP rate limit
 const limiter = rateLimit({
@@ -14,6 +14,15 @@ const router = express.Router();
 
 // Register routes
 router.post("/register", limiter, register);
-router.post("/login", signIn);
-
+router.post("/login", limiter, signIn);
+// router.post('/companies/login', limiter, companySignIn);  // Add this route for company login
+router.post('/companies/login', (req, res, next) => {
+    console.log('Company login route hit');  // Log this message to check
+    companySignIn(req, res, next);  // Call the actual login handler
+});
+// router.post('/register-company', limiter, registerCompany);
+router.post('/register-company', (req, res, next) => {
+    console.log('Register Company route hit');
+    registerCompany(req, res, next);
+});
 export default router;
