@@ -137,7 +137,8 @@ const App = () => {
         path="/user-homepage"
         element={
           <ProtectedRoute user={user} accountType="seeker">
-            <UserHomePage />
+           <UserHomePage jobTypes={['Full-Time', 'Part-Time', 'Contract']} experience={[{ value: 'entry', title: 'Entry-Level' }, { value: 'mid', title: 'Mid-Level' }, { value: 'senior', title: 'Senior-Level' }]} />
+
           </ProtectedRoute>
         }
       />
