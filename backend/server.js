@@ -5,6 +5,7 @@ import connectDB from './src/config/db.js';
 import router from "./src/routes/index.js";
 import errorMiddleware from './src/middlewares/errorMiddleware.js';
 import authRoutes from './src/routes/authRoutes.js';
+// import adminRoutes from './src/routes/adminRoutes.js';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api-v1/auth', authRoutes);
 //   next();
 // });
 
+// app.use('/api-v1/admin', adminRoutes); // Ensure this matches your route setup
 
 // Use error handling middleware
 app.use(errorMiddleware);

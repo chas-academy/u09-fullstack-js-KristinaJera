@@ -22,6 +22,28 @@ export const createAdmin = async (req, res) => {
     }
 };
 
+// // Admin login
+// export const adminLogin = async (req, res) => {
+//     const { email, password } = req.body;
+
+//     try {
+//         const admin = await Admin.findOne({ email }).select('+password');
+//         if (!admin) return res.status(400).json({ message: 'Invalid email or password' });
+
+//         const isMatch = await admin.comparePassword(password);
+//         if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
+
+//         const token = admin.createJWT();
+//         res.status(200).json({
+//             success: true,
+//             token
+//         });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+
 
 // Create a new user by admin
 export const createUser = async (req, res) => {
@@ -75,28 +97,6 @@ export const createCompany = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Company created successfully',
-            token
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-
-// Admin login
-export const adminLogin = async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const admin = await Admin.findOne({ email }).select('+password');
-        if (!admin) return res.status(400).json({ message: 'Invalid email or password' });
-
-        const isMatch = await admin.comparePassword(password);
-        if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
-
-        const token = admin.createJWT();
-        res.status(200).json({
-            success: true,
             token
         });
     } catch (error) {
@@ -201,7 +201,7 @@ export const deleteCompany = async (req, res) => {
 // Export functions
 export default {
     createAdmin,
-    adminLogin,
+    // adminLogin,
     getAllUsers,
     getUserById,
     updateUser,

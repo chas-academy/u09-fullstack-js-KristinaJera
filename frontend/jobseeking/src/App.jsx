@@ -1,133 +1,155 @@
-// import React from 'react';
 import { useState, useEffect } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 import LandingPage from "./components/pages/LandingPage";
 import Navbar from "./components/pages/Navbar";
 import Footer from "./components/pages/Footer";
 import LoginPage from './components/pages/LoginPage';
+import { RegisterPage } from './components/pages/RegisterPage';
 import UserHomePage from './components/pages/UserHomePage';
 import CompanyHomePage from './components/pages/CompanyHomePage';
 import AdminDash from './components/pages/AdminDash';
-// function LandingPage(){
-//   const user = true;
-//   const location = useLocation()
 
-//   return user ? ( 
-//   <Outlet/>
-//    ) :( 
-//    <Navigate to='user-auth' state={{ from: location}} replace/>
-//   );
-  
-// }
+const ProtectedRoute = ({ user, accountType, children }) => {
+  if (!user || user.accountType !== accountType) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+// Define PropTypes for ProtectedRoute
+ProtectedRoute.propTypes = {
+  user: PropTypes.shape({
+    accountType: PropTypes.string.isRequired,  // user should have an accountType that is a string
+  }),
+  accountType: PropTypes.string.isRequired,    // accountType should be a string
+  children: PropTypes.node.isRequired,         // children should be valid React elements (JSX)
+};
 
 const App = () => {
 
-  const [loginType, setLoginType] = useState(null);
+  // const [loginType, setLoginType] = useState(null);
   const [user, setUser] = useState(null); // State to manage the authenticated user
   // const location = useLocation();
   const navigate = useNavigate();
 
-  const openLogin = (type) => {
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
-    console.log(`Opening login with type: ${type}`);
-    setLoginType(type);
-  };
-
-  const closeLogin = () => {
-
-    console.log('Closing login modal');
-    setLoginType(null);
-  };
 
   const handleLoginSuccess = (userData) => {
     console.log('Handling login success with user data:', userData);
+    setUser(userData);  // Store user data after successful login
 
-    setUser(userData);
-    setLoginType(null);
-
-    if (!userData.accountType) {
-      console.log('Unknown account type or missing accountType field.');
-      return;
-    }
+      // Save user data in localStorage
+  localStorage.setItem('user', JSON.stringify(userData));
 
     // Navigate based on user type
     if (userData.accountType === 'company') {
       console.log('Navigating to /company-homepage');
-      navigate('/company-homepage');
-    } else if (userData.accountType === 'seeker') {
+      navigate('/company-homepage');  // Redirect company users to /company-homepage
+    } else if (userData.accountType === 'user') {
       console.log('Navigating to /user-homepage');
-      navigate('/user-homepage');
+      navigate('/user-homepage');  // Redirect user to /user-homepage
     } else if (userData.accountType === 'admin') {
       console.log('Navigating to /admin-dashboard');
-      navigate('/admin-dashboard');
+      navigate('/admin-dashboard');  // Redirect admin users to /admin-dashboard
     } else {
       console.log('Unknown account type or missing accountType field.');
     }
   };
-  
-  
 
-  // useEffect(() => {
-  //   if (user) {
-  //     switch (user.accountType) {
-  //       case 'company':
-  //         window.location.href = '/company-homepage';
-  //         break;
-  //       case 'seeker':
-  //         window.location.href = '/user-homepage';
-  //         break;
-  //       case 'admin':
-  //         window.location.href = '/admin-dashboard';
-  //         break;
-  //       default:
-  //         console.log("Unknown account type or missing accountType field.");
-  //     }
-  //   }
-  // }, [user]);
-  // const user = {
-  //   firstName: "John",
-  //   profileUrl: "path/to/profile.jpg",
-  //   accountType: "seeker", // or "company"
-  // };
+  const handleLogout = () => {
+    // Clear user session in local storage
+    localStorage.removeItem('user');
+    setUser(null);
+    
+    // Navigate to the landing page
+    navigate('/');
+  };
 
-  // const user = false;
   return (
     <>
-      <Navbar openLogin={openLogin} /> {/* Pass openLogin to Navbar if needed */}
+      <Navbar user={user} onLogout={handleLogout} /> {/* Pass openLogin to Navbar if needed */}
      
     <Routes>
     <Route path="/" element={<LandingPage/>}/>
-    <Route
-          path="/login"
+     {/* Company login route */}
+     <Route
+          path="/login-company"
           element={
-            loginType ? (
-              <LoginPage
-                onClose={closeLogin}
-                type={loginType}
-                onLoginSuccess={handleLoginSuccess}
-              />
-            ) : (
-              <Navigate to="/" replace />
-            )
+            <LoginPage
+              type="company"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate('/')} // Close form and navigate to landing page
+            />
           }
         />
+
+        {/* User login route */}
+        <Route
+          path="/login"
+          element={
+            <LoginPage
+              type="user"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate('/')} // Close form and navigate to landing page
+            />
+          }
+        />
+         {/* Admin login route */}
+        <Route
+          path="/login-admin"
+          element={
+            <LoginPage
+              type="admin"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate('/')} // Close form and navigate to landing page
+            />
+          }
+        />
+
+          {/* Add company register route */}
+          {/* <Route
+          path="/register-company"
+          element={<div>Company Register Page (implement this)</div>}
+        /> */}
+
+        {/* Add user register route */}
+        <Route path="/register" element={<RegisterPage onClose={() => navigate('/')} />} />
+
         
         {/* Route for admin */}
         <Route
           path="/admin-dashboard"
-          element={user?.accountType === "admin" ? <AdminDash/> : <Navigate to="/login" replace />}
+          element={
+            <ProtectedRoute user={user} accountType="admin">
+              <AdminDash />
+            </ProtectedRoute>
+          }
         />
-        
         {/* Route for job seekers */}
-        <Route
-          path="/user-homepage"
-          element={user?.accountType === "seeker" ? <UserHomePage /> : <Navigate to="/login" replace />}
-        />
+      <Route
+        path="/user-homepage"
+        element={
+          <ProtectedRoute user={user} accountType="seeker">
+            <UserHomePage />
+          </ProtectedRoute>
+        }
+      />
         
         {/* Route for companies */}
         <Route
           path="/company-homepage"
-          element={user?.accountType === "company" ? <CompanyHomePage /> : <Navigate to="/login" replace />}
+          element={
+            <ProtectedRoute user={user} accountType="company">
+              <CompanyHomePage />
+            </ProtectedRoute>
+          }
         />
     
     {/* <Route path="/" element={ <Navigate to="/find-jobs" replace={true}/>}/> */}
@@ -147,9 +169,17 @@ const App = () => {
     </> */}
 
 {user && <Footer />}
-{loginType && !user && <LoginPage onClose={closeLogin} type={loginType} onLoginSuccess={handleLoginSuccess} />}
-    </>
+  </>
   )
 }
+
+
+App.propTypes = {
+  loginType: PropTypes.string,
+  user: PropTypes.shape({
+    accountType: PropTypes.string,
+  }),
+  handleLoginSuccess: PropTypes.func,
+};
 
 export default App

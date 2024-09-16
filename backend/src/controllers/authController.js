@@ -1,22 +1,22 @@
 import Users from "../models/userModel.js";
 import Companies from "../models/companiesModel.js";
-// User Registration
+import Admin from "../models/adminModel.js";
+
 export const register = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
 
     // Validate fields
-    if (!firstName) return next("First Name is required");
-    if (!lastName) return next("Last Name is required");
-    if (!email) return next("Email is required");
-    if (!password) return next("Password is required");
+    if (!firstName) return res.status(400).json({ message: "First Name is required" });
+    if (!lastName) return res.status(400).json({ message: "Last Name is required" });
+    if (!email) return res.status(400).json({ message: "Email is required" });
+    if (!password) return res.status(400).json({ message: "Password is required" });
 
     try {
         const userExist = await Users.findOne({ email });
-        if (userExist) return next("Email Address already exists");
+        if (userExist) return res.status(400).json({ message: "Email Address already exists" });
 
         const user = await Users.create({ firstName, lastName, email, password });
 
-        // User token
         const token = user.createJWT();
         res.status(201).json({
             success: true,
@@ -31,10 +31,11 @@ export const register = async (req, res, next) => {
             token,
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
+        console.error('Registration Error:', error);
+        res.status(500).json({ message: 'An error occurred during registration' });
     }
 };
+
 
 // Company Registration
 export const registerCompany = async (req, res, next) => {
@@ -114,35 +115,6 @@ export const companySignIn = async (req, res, next) => {
 
 
 
-// Sign In
-// export const signIn = async (req, res, next) => {
-//     const { email, password } = req.body;
-
-//     try {
-//         if (!email || !password) return next("Please Provide User Credentials");
-
-//         const user = await Users.findOne({ email }).select("+password");
-//         if (!user) return next("Invalid email or password");
-
-//         const isMatch = await user.comparePassword(password);
-//         if (!isMatch) return next("Invalid email or password");
-
-//         user.password = undefined;
-
-//         const token = user.createJWT();
-
-//         res.status(200).json({
-//             success: true,
-//             message: "Login successful",
-//             user,
-//             token,
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
 export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -172,9 +144,54 @@ export const signIn = async (req, res, next) => {
             token,
         });
         
+    }  catch (error) {
+        console.error('User login error:', error);
+        res.status(500).json({ message: 'An error occurred during user login' });
+    }
+};
+
+
+// Admin Sign-In
+export const signInAdmin = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Validate input
+        if (!email || !password) {
+            return res.status(400).json({ message: "Please provide email and password" });
+        }
+
+        // Find admin by email
+        const user = await Admin.findOne({ email }).select("+password");
+        if (!user) {
+            return res.status(401).json({ message: "Invalid admin email or password" });
+        }
+
+        // Check password match
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid admin email or password" });
+        }
+
+        // Create JWT
+        user.password = undefined; // Remove password from response
+        const token = user.createJWT();
+
+        // Send response
+        res.status(200).json({
+            success: true,
+            message: "Admin login successful",
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                accountType: 'admin'
+            },
+            token,
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
+        console.error('Admin Login Error:', error);
+        res.status(500).json({ message: 'An error occurred during admin login', error: error.message });
     }
 };
 
@@ -183,4 +200,5 @@ export default {
     register,
     registerCompany,
     signIn,
+    signInAdmin
 };

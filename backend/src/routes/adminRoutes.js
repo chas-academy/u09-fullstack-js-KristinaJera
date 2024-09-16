@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     createAdmin,
-    adminLogin,
+    // adminLogin,
     getAllUsers,
     getUserById,
     updateUser,
@@ -19,7 +19,7 @@ const router = express.Router();
 
 // Admin-related routes
 router.post('/create', createAdmin); // Route to create a new admin
-router.post('/login', adminLogin); // Route for admin login
+// router.post('/login', adminLogin); // Route for admin login
 
 // User management routes
 router.get('/users', adminAuth, getAllUsers); // Get all users

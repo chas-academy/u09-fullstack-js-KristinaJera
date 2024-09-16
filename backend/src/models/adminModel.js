@@ -39,7 +39,7 @@ adminSchema.methods.comparePassword = async function(candidatePassword) {
 
 // Generate JWT token
 adminSchema.methods.createJWT = function() {
-    return JWT.sign({ userId: this._id, role: 'admin' }, process.env.JWT_SECRET_KEY, {
+    return JWT.sign({ userId: this._id, type: 'admin' }, process.env.JWT_SECRET_KEY, {
         expiresIn: '1d',
     });
 };
