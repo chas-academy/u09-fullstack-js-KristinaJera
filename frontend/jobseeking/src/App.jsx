@@ -9,6 +9,7 @@ import { RegisterPage } from './components/pages/RegisterPage';
 import UserHomePage from './components/pages/UserHomePage';
 import CompanyHomePage from './components/pages/CompanyHomePage';
 import AdminDash from './components/pages/AdminDash';
+import UserAllJobs from './components/pages/UserAllJobs';
 
 const ProtectedRoute = ({ user, accountType, children }) => {
   if (!user || user.accountType !== accountType) {
@@ -152,6 +153,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+         <Route path="/all-jobs" element={<UserAllJobs />} />
     
     {/* <Route path="/" element={ <Navigate to="/find-jobs" replace={true}/>}/> */}
     {/* <Route path="/find-jobs" element={<FindJobs/>}/>

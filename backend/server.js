@@ -6,7 +6,7 @@ import router from "./src/routes/index.js";
 import errorMiddleware from './src/middlewares/errorMiddleware.js';
 import authRoutes from './src/routes/authRoutes.js';
 // import adminRoutes from './src/routes/adminRoutes.js';
-
+import jobRoutes from './src/routes/jobsRoutes.js'
 dotenv.config();
 
 
@@ -23,6 +23,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 app.use(express.json());
+// Use the job routes
+app.use('/api', jobRoutes);
 
 app.use('/api-v1/auth', authRoutes);
 // app.use((req, res, next) => {
