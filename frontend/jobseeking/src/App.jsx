@@ -10,6 +10,7 @@ import UserHomePage from './components/pages/UserHomePage';
 import CompanyHomePage from './components/pages/CompanyHomePage';
 import AdminDash from './components/pages/AdminDash';
 import UserAllJobs from './components/pages/UserAllJobs';
+import SingleJob from './components/pages/SingleJob';
 
 const ProtectedRoute = ({ user, accountType, children }) => {
   if (!user || user.accountType !== accountType) {
@@ -154,7 +155,7 @@ const App = () => {
           }
         />
          <Route path="/all-jobs" element={<UserAllJobs />} />
-    
+         <Route path="/job/:id" element={<SingleJob />} />
     {/* <Route path="/" element={ <Navigate to="/find-jobs" replace={true}/>}/> */}
     {/* <Route path="/find-jobs" element={<FindJobs/>}/>
     <Route path="/companies" element={<Companies/>}/> 
