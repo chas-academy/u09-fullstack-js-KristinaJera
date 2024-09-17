@@ -43,6 +43,7 @@ const Navbar = ({ user, onClick, onLogout }) => {
     }
     return (
       <>
+        <Link to="/user-homepage" className="text-gray-700 hover:text-blue-500">Home</Link>
         <Link to="/applied-jobs" className="text-gray-700 hover:text-blue-500">Applied Jobs</Link>
         <Link to="/all-jobs" className="text-gray-700 hover:text-blue-500">All Jobs</Link>
       </>
@@ -90,7 +91,7 @@ const Navbar = ({ user, onClick, onLogout }) => {
   };
 
   return (
-    <header className="sticky top-0 left-0 w-full bg-white shadow-md">
+    <header className="sticky top-0 left-0 w-full bg-white shadow-md z-50">
       <nav className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-blue-600">Jobseeking App</Link>
 
