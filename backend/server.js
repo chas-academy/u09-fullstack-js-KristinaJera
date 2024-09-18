@@ -9,6 +9,9 @@ import authRoutes from './src/routes/authRoutes.js';
 import jobRoutes from './src/routes/jobsRoutes.js'; 
 import applicationRoutes from './src/routes/applicationRoutes.js';
 import Applications from './src/models/applicationsModel.js';
+import userRoutes from './src/routes/userRoutes.js';
+// import jobRoutes from './src/routes/jobsRoutes.js';
+import companyRoutes from './src/routes/companiesRoutes.js';
 
 dotenv.config();
 
@@ -31,6 +34,9 @@ app.use('/api', jobRoutes);
 app.use('/api', applicationRoutes); // This will now include the has-applied endpoint
 
 app.use('/api-v1/auth', authRoutes);
+
+app.use('/api', userRoutes);
+app.use('/api', companyRoutes);
 
 app.use((req, res, next) => {
   console.log(`[server]: ${req.method} ${req.url} hit`);

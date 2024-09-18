@@ -1,6 +1,7 @@
 import Admin from '../models/adminModel.js';
 import Users from '../models/userModel.js';
 import Companies from '../models/companiesModel.js';
+import Jobs from '../models/jobsModel.js';
 
 // Create an admin
 export const createAdmin = async (req, res) => {
@@ -87,6 +88,7 @@ export const getAllUsers = async (req, res) => {
         const users = await Users.find();
         res.status(200).json(users);
     } catch (error) {
+        console.error('Error fetching jobs:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -134,6 +136,7 @@ export const getAllCompanies = async (req, res) => {
         const companies = await Companies.find();
         res.status(200).json(companies);
     } catch (error) {
+        console.error('Error fetching jobs:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -175,6 +178,18 @@ export const deleteCompany = async (req, res) => {
     }
 };
 
+// CRUD operations for jobs
+export const getAllJobs = async (req, res) => {
+    try {
+        const jobs = await Jobs.find();
+        res.status(200).json(jobs);
+    } catch (error) {
+        console.error('Error fetching jobs:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 // Export functions
 export default {
     createAdmin,
@@ -188,5 +203,6 @@ export default {
     updateCompany,
     deleteCompany,
     createUser,   
-    createCompany
+    createCompany,
+    getAllJobs
 };
