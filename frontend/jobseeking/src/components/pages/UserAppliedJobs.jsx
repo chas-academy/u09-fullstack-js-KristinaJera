@@ -30,6 +30,20 @@ const UserAppliedJobs = () => {
     fetchUserApplications();
   }, [fetchUserApplications]);
 
+  const removeApplication = async (applicationId) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/api/delete-application/${applicationId}`);
+      if (response.data.success) {
+        setApplications(applications.filter(app => app._id !== applicationId)); // Remove the deleted application from the state
+      } else {
+        setError('Failed to remove application');
+      }
+    } catch (error) {
+      console.error('Error removing application:', error.response?.data?.message || error.message);
+      setError('An error occurred while removing the application');
+    }
+  };
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
@@ -53,11 +67,16 @@ const UserAppliedJobs = () => {
                     <p className="leading-relaxed mb-1">Resume: <a href={app.resume} target="_blank" rel="noopener noreferrer" className="text-indigo-500">View Resume</a></p>
                     <p className="leading-relaxed mb-1">Cover Letter: {app.coverLetter}</p>
                     <p className="leading-relaxed mb-1">Applied On: {new Date(app.dateApplied).toLocaleDateString()}</p>
-                    {/* Link to job details if needed */}
                     <Link to={`/job/${app.job?._id}`} className="text-indigo-500 inline-flex items-center mt-3">
                       View Job
                       <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 ml-2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7l7 7-7 7"></path></svg>
                     </Link>
+                    {/* Remove Application Button */}
+                    <button 
+                      onClick={() => removeApplication(app._id)} 
+                      className="text-red-500 inline-flex items-center mt-3 ml-4">
+                      Remove Application
+                    </button>
                   </div>
                 </div>
               </div>
@@ -70,3 +89,4 @@ const UserAppliedJobs = () => {
 };
 
 export default UserAppliedJobs;
+
