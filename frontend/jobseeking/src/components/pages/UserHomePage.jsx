@@ -4,6 +4,7 @@ import JobFilters from './JobFilters';
 import { useNavigate } from 'react-router-dom';
 import StatisticsSection from './StatisticsSection';
 import AboutUs from './AboutUs';
+import ContactUs from './ContactUs';
 const UserHomepage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedJobType, setSelectedJobType] = useState('');
@@ -75,6 +76,7 @@ const UserHomepage = () => {
       </div>
       <StatisticsSection/>
       <AboutUs/>
+      <ContactUs/>
     </section>
   );
 };

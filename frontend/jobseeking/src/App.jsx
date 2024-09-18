@@ -12,6 +12,8 @@ import AdminDash from './components/pages/AdminDash';
 import UserAllJobs from './components/pages/UserAllJobs';
 import SingleJob from './components/pages/SingleJob';
 import UserAppliedJobs from './components/pages/UserAppliedJobs';
+import ContactUs from './components/pages/ContactUs';
+import AboutUs from './components/pages/AboutUs';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -125,8 +127,8 @@ const App = () => {
             <CompanyHomePage />
           </ProtectedRoute>
         } />
-
-        {/* Public routes */}
+         <Route path="/contact-us" element={<ContactUs/>}/>
+         <Route path="/about-us" element={<AboutUs/>}/>
         <Route path="/all-jobs" element={<UserAllJobs />} />
         <Route path="/job/:id" element={<SingleJob />} />
         <Route path="/applied-jobs" element={<UserAppliedJobs />} />

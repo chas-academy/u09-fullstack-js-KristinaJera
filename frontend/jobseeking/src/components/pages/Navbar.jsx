@@ -92,7 +92,7 @@ const Navbar = ({ user, onClick, onLogout }) => {
 
   return (
     <header className="sticky top-0 left-0 w-full bg-white shadow-md z-50">
-      <nav className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <nav className="max-w-7xl mx-auto px-4 py-4 flex justify-around items-center">
         <Link to="/" className="text-2xl font-bold text-blue-600">Jobseeking App</Link>
 
         {/* Navbar Links - Large Screens */}
@@ -100,15 +100,15 @@ const Navbar = ({ user, onClick, onLogout }) => {
           {renderLinks()}
           {isAuthenticated && user && (
             <div className="flex items-center space-x-4">
-              <p className="hidden lg:flex items-center space-x-2 text-gray-700">
-                <img
+              <p className="hidden lg:flex items-center space-x-2 text-gray-700 pl-8">
+                Hello { user.companyName || user.firstName}
+              </p>
+              <img
                   src={user.profileUrl}
                   alt="User profile"
                   className="w-10 h-10 rounded-full object-cover"
                   onClick={onClick}
                 />
-                <span>{user.companyName || user.firstName}</span>
-              </p>
               <button
                 onClick={handleLogOut}
                 className="text-gray-700 hover:text-blue-500"
