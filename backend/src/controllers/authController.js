@@ -15,7 +15,13 @@ export const register = async (req, res, next) => {
         const userExist = await Users.findOne({ email });
         if (userExist) return res.status(400).json({ message: "Email Address already exists" });
 
-        const user = await Users.create({ firstName, lastName, email, password });
+        const user = await Users.create({
+            firstName,
+            lastName,
+            email,
+            password,
+            role: 'user' // Set default role to 'user'
+        });
 
         const token = user.createJWT();
         res.status(201).json({
@@ -26,7 +32,7 @@ export const register = async (req, res, next) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                accountType: user.accountType,
+                role: user.role, // Use 'role' instead of 'accountType'
             },
             token,
         });
@@ -35,9 +41,6 @@ export const register = async (req, res, next) => {
         res.status(500).json({ message: 'An error occurred during registration' });
     }
 };
-
-
-// Company Registration
 export const registerCompany = async (req, res, next) => {
     console.log('Register Company function executed');
     const { name, email, password, companyName, companyCode } = req.body;
@@ -69,6 +72,7 @@ export const registerCompany = async (req, res, next) => {
                 email: company.email,
                 companyName: company.companyName,
                 companyCode: company.companyCode,
+                role: 'company' // Optionally include role if needed
             },
             token,
         });
@@ -77,7 +81,6 @@ export const registerCompany = async (req, res, next) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 export const companySignIn = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -103,7 +106,7 @@ export const companySignIn = async (req, res, next) => {
                 email: company.email,
                 companyName: company.companyName,
                 companyCode: company.companyCode,
-                accountType: 'company' // Ensure this field is included
+                role: 'company' // Ensure this field is included
             },
             token,
         });
@@ -139,19 +142,16 @@ export const signIn = async (req, res, next) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                accountType: user.accountType // Ensure this field is included
+                role: user.role // Ensure this field is included
             },
             token,
         });
         
-    }  catch (error) {
+    } catch (error) {
         console.error('User login error:', error);
         res.status(500).json({ message: 'An error occurred during user login' });
     }
 };
-
-
-// Admin Sign-In
 export const signInAdmin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -162,30 +162,30 @@ export const signInAdmin = async (req, res) => {
         }
 
         // Find admin by email
-        const user = await Admin.findOne({ email }).select("+password");
-        if (!user) {
+        const admin = await Admin.findOne({ email }).select("+password");
+        if (!admin) {
             return res.status(401).json({ message: "Invalid admin email or password" });
         }
 
         // Check password match
-        const isMatch = await user.comparePassword(password);
+        const isMatch = await admin.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid admin email or password" });
         }
 
         // Create JWT
-        user.password = undefined; // Remove password from response
-        const token = user.createJWT();
+        admin.password = undefined; // Remove password from response
+        const token = admin.createJWT();
 
         // Send response
         res.status(200).json({
             success: true,
             message: "Admin login successful",
-            user: {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                accountType: 'admin'
+            admin: {
+                _id: admin._id,
+                username: admin.username,
+                email: admin.email,
+                role: 'admin' // Ensure this field is included
             },
             token,
         });

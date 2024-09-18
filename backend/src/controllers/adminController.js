@@ -22,29 +22,6 @@ export const createAdmin = async (req, res) => {
     }
 };
 
-// // Admin login
-// export const adminLogin = async (req, res) => {
-//     const { email, password } = req.body;
-
-//     try {
-//         const admin = await Admin.findOne({ email }).select('+password');
-//         if (!admin) return res.status(400).json({ message: 'Invalid email or password' });
-
-//         const isMatch = await admin.comparePassword(password);
-//         if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
-
-//         const token = admin.createJWT();
-//         res.status(200).json({
-//             success: true,
-//             token
-//         });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-
-
 // Create a new user by admin
 export const createUser = async (req, res) => {
     const { firstName, lastName, email, password, contact, location, jobTitle, about } = req.body;
@@ -53,7 +30,7 @@ export const createUser = async (req, res) => {
         const userExists = await Users.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-        const user = await Users.create({ 
+        const user = await Users.create({
             firstName,
             lastName,
             email,
@@ -62,7 +39,7 @@ export const createUser = async (req, res) => {
             location,
             jobTitle,
             about,
-             accountType: accountType || 'seeker'
+            role: 'user' // Set default role to 'user'
         });
 
         const token = await user.createJWT();

@@ -2,98 +2,96 @@ import mongoose from "mongoose";
 import Companies from "../models/companiesModel.js";
 
 export const register = async (req, res, next) => {
-    const {name, email, password} = req.body;
+    const { name, email, password } = req.body;
 
-    //validate fields
-    if(!name) {
-        next("Company Name is required!");
-        return;
+    // Validate fields
+    if (!name) {
+        return next("Company Name is required!");
     }
 
-    if(!email) {
-        next("Email address is required!");
-        return;
+    if (!email) {
+        return next("Email address is required!");
     }
 
-    if(!password) {
-        next("Password is required and must be greater than 6 characters!");
-        return;
+    if (!password) {
+        return next("Password is required and must be greater than 6 characters!");
     }
 
     try {
-        const accountExist = await Companies.findOne({email});
+        const accountExist = await Companies.findOne({ email });
 
-        if(accountExist) {
-            next("Email Already Registeres, Please Login");
-            return;
+        if (accountExist) {
+            return next("Email Already Registered, Please Login");
         }
-       
-    // create a new account
-     const company = await Companies.create({
-        name, 
-        email,
-        password,
-     });
 
-     //user tooken 
-   const token = company.createJWT();
+        // Create a new account
+        const company = await Companies.create({
+            name,
+            email,
+            password,
+            role: 'company' // Ensure role is set
+        });
 
-   res.status(201).json({
-    success: true,
-    message: "Company Account Created Successfully",
-    user: {
-        _id: company._id,
-        name: company.name,
-        email: company.email,
-    },
-    token,
-   });
+        // Generate JWT token
+        const token = company.createJWT();
+
+        res.status(201).json({
+            success: true,
+            message: "Company Account Created Successfully",
+            user: {
+                _id: company._id,
+                name: company.name,
+                email: company.email,
+                role: company.role // Include role in response
+            },
+            token,
+        });
     } catch (error) {
         console.log(error);
-        res.status(404).json({message: error.message});
-        
+        res.status(404).json({ message: error.message });
     }
 };
 
-
 export const signIn = async (req, res, next) => {
- const {email, password} = req.body;
- 
- try{
- // validation
- if(!email || !password) {
-    next("Please Provide A User Credentials");
-    return;
- }
+    const { email, password } = req.body;
 
- const company = await Companies.findOne({email}).select("+password");
+    try {
+        // Validation
+        if (!email || !password) {
+            return next("Please Provide A User Credentials");
+        }
 
- if(!company) {
-    next("Invalid Email or Password");
-    return;
- }
+        const company = await Companies.findOne({ email }).select("+password");
 
- //compare password
-const isMatch = await company.comparePassword(password);
- if(!isMatch) {
-    next("Invalid Email or Password");
-    return;
- }
+        if (!company) {
+            return next("Invalid Email or Password");
+        }
 
- company.password = undefined;
+        // Compare password
+        const isMatch = await company.comparePassword(password);
+        if (!isMatch) {
+            return next("Invalid Email or Password");
+        }
 
- const token = company.createJWT();
- res.status(200).json({
-    success: true,
-    message: "Login Successfully",
-    user: company,
-    token,
- });
+        company.password = undefined;
 
- } catch (error) {
+        // Generate JWT token
+        const token = company.createJWT();
+
+        res.status(200).json({
+            success: true,
+            message: "Login Successfully",
+            user: {
+                _id: company._id,
+                name: company.name,
+                email: company.email,
+                role: company.role // Include role in response
+            },
+            token,
+        });
+    } catch (error) {
         console.log(error);
-        res.status(404).json({message: error.message});
-        
+        res.status(404).json({ message: error.message });
     }
 };
 
@@ -280,20 +278,18 @@ export const getCompanyJobListing = async (req, res, next) => {
     }
 };
 
-//GET SINGLE COMPANY
 export const getCompanyById = async (req, res, next) => {
-    
     try {
-        const{id} = req.params
+        const { id } = req.params;
 
-        const company = await Companies.findById({_id: id}).populate({
+        const company = await Companies.findById({ _id: id }).populate({
             path: "jobPosts",
             options: {
                 sort: "-_id",
             },
         });
 
-        if(!company) {
+        if (!company) {
             return res.status(200).send({
                 message: "Company Not Found",
                 success: false,
@@ -301,15 +297,15 @@ export const getCompanyById = async (req, res, next) => {
         }
 
         company.password = undefined;
-           res.status(200).json({
+        res.status(200).json({
             success: true,
-            data: company,
-           });
-
+            data: {
+                ...company.toObject(),
+                role: company.role // Include role in response
+            },
+        });
     } catch (error) {
         console.log(error);
-        res.status(404).json({message: error.message});
-        
+        res.status(404).json({ message: error.message });
     }
 };
-

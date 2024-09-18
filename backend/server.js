@@ -6,7 +6,8 @@ import router from "./src/routes/index.js";
 import errorMiddleware from './src/middlewares/errorMiddleware.js';
 import authRoutes from './src/routes/authRoutes.js';
 // import adminRoutes from './src/routes/adminRoutes.js';
-import jobRoutes from './src/routes/jobsRoutes.js'
+import jobRoutes from './src/routes/jobsRoutes.js'; 
+import applicationRoutes from './src/routes/applicationRoutes.js';
 dotenv.config();
 
 
@@ -25,12 +26,13 @@ app.use(cors({
 app.use(express.json());
 // Use the job routes
 app.use('/api', jobRoutes);
+app.use('/api', applicationRoutes);
 
 app.use('/api-v1/auth', authRoutes);
-// app.use((req, res, next) => {
-//   console.log(`[server]: ${req.method} ${req.url} hit`);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log(`[server]: ${req.method} ${req.url} hit`);
+  next();
+});
 
 // app.use('/api-v1/admin', adminRoutes); // Ensure this matches your route setup
 

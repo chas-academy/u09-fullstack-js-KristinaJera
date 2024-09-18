@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -14,10 +13,10 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       let url = '';
-
+  
       // Determine the URL based on the login type
       switch (loginType) {
         case 'admin':
@@ -32,39 +31,65 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
         default:
           throw new Error('Invalid login type');
       }
-
+  
       console.log(`Sending request to ${url} with email ${email}`);
-
+  
       // Make the API request
       const response = await axios.post(url, { email, password });
       const data = response.data;
-
-      console.log("Login successful, user data:", data);
-
+  
+      console.log("Login successful, response data:", data);
+  
       // Handle login success
-      const userData = loginType === 'company' ? data.company : data.user;
-      if (!userData || !userData.accountType) {
-        console.log("Unknown account type or missing accountType field.");
-        return;
+      let userData;
+  
+      switch (loginType) {
+        case 'company':
+          userData = data.company;
+          break;
+        case 'user':
+          userData = data.user;
+          break;
+        case 'admin':
+          userData = data.admin;
+          break;
+        default:
+          throw new Error('Invalid login type');
       }
-
+  
+      if (!userData) {
+        throw new Error("Unknown account type or missing user data.");
+      }
+  
+      // Log user data and role
+      console.log(`Logged in as: ${loginType}`);
+      console.log("User Data:", userData);
+  
+      localStorage.setItem('authToken', data.token); // Store the token
+      localStorage.setItem('userId', userData._id); // Store the user ID
+  
       onLoginSuccess(userData);
-
+  
       // Navigate based on account type
-      if (userData.accountType === 'company') {
-        navigate('/company-homepage');
-      } else if (userData.accountType === 'seeker') {
-        navigate('/user-homepage');
-      } else if (userData.accountType === 'admin') {
-        navigate('/admin-dashboard');
-      } else {
-        console.log("Unknown account type or missing accountType field.");
+      switch (userData.role) {
+        case 'company':
+          navigate('/company-homepage');
+          break;
+        case 'user':
+          navigate('/user-homepage');
+          break;
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        default:
+          console.log("Unknown account type or missing role field.");
       }
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || 'An error occurred');
     }
   };
+  
 
   const toggleLoginType = (type) => setLoginType(type);
 
@@ -74,7 +99,7 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
         &times;
       </button>
       <h2 className="text-2xl font-bold mb-3">
-        {loginType === 'company' ? 'Company Login' : loginType === 'admin' ? 'Admin Login' : 'Job Seeker Login'}
+        {loginType === 'company' ? 'Company Login' : loginType === 'user' ? 'Job Seeker Login' : 'Admin Login'}
       </h2>
 
       {/* Toggle between Job Seeker, Company, and Admin */}
@@ -126,7 +151,7 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded w-full"
         >
-          {loginType === 'company' ? 'Login as Company' : loginType === 'admin' ? 'Login as Admin' : 'Login as Job Seeker'}
+          {loginType === 'company' ? 'Company Login' : loginType === 'user' ? 'Job Seeker Login' : 'Admin Login'}
         </button>
       </form>
     </div>
