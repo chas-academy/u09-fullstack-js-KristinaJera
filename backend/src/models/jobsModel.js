@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const jobSchema = new mongoose.Schema({
-    company: {type: Schema.Types.ObjectId, ref: "Companies"},
+    company: {type: mongoose.Schema.Types.ObjectId, ref: "Companies"},
     jobTitle: {
         type: String, 
         required: [true, "Job Title is required"]
@@ -29,7 +29,7 @@ const jobSchema = new mongoose.Schema({
         desc: {type: String}, 
         requirements: {type: String}
     }],
-    applications: [{type: Schema.Types.ObjectId, ref:  "Applications"}],
+    applications: [{type: mongoose.Schema.Types.ObjectId, ref:  "Applications"}],
 },
 {timestamps: true}
 );

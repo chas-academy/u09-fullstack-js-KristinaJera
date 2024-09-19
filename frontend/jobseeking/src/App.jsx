@@ -15,6 +15,7 @@ import UserAppliedJobs from './components/pages/UserAppliedJobs';
 import ContactUs from './components/pages/ContactUs';
 import AboutUs from './components/pages/AboutUs';
 import CompanyListedJobs from './components/pages/CompanyListedJobs';
+import CompanyUpdateJob from './components/pages/CompanyUpdateJob';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -131,6 +132,7 @@ const App = () => {
             <Navigate to="/" />
           )
         } />
+        <Route path="/update-job" element={<CompanyUpdateJob/>} />
       </Routes>
       {user && <Footer />}
     </>

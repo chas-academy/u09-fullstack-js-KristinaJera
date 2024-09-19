@@ -46,7 +46,6 @@ export const createJob = async (req, res, next) => {
       company.jobPosts.push(job._id);
       await company.save();
     }
-
     res.status(200).json({
       success: true,
       message: "Job Posted Successfully",
@@ -57,7 +56,8 @@ export const createJob = async (req, res, next) => {
     res.status(404).json({ message: error.message });
   }
 };
-export const updateJob = async (req, res, next) => {
+
+export const updateJob = async (req, res) => {
   try {
     const {
       jobTitle,
@@ -65,28 +65,20 @@ export const updateJob = async (req, res, next) => {
       location,
       salary,
       vacancies,
-      experience,
-      desc,
-      requirements,
+      experiences,
+      detail
     } = req.body;
     const { jobId } = req.params;
-    const userId = req.user.userId; // Retrieved from `userAuth` middleware
 
-    if (!jobTitle || !jobType || !location || !salary || !requirements || !desc) {
-      return next("Please Provide All Required Fields");
+    console.log('Job ID:', jobId); // Log the jobId
+
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+      return res.status(400).json({ success: false, message: 'Invalid job ID' });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(userId))
-      return res.status(404).send(`No Company with id: ${userId}`);
-
-    const job = await Jobs.findById(jobId);
-    if (!job) {
-      return res.status(404).json({ success: false, message: 'Job Not Found' });
-    }
-
-    // Ensure the user is authorized to update this job
-    if (job.company.toString() !== userId) {
-      return res.status(403).json({ success: false, message: 'Not Authorized' });
+    // Ensure 'detail' is an array with at least one object containing 'desc' and 'requirements'
+    if (!jobTitle || !jobType || !location || !salary || !vacancies || !experiences || !Array.isArray(detail) || detail.length === 0 || !detail[0]?.desc || !detail[0]?.requirements) {
+      return res.status(400).json({ success: false, message: 'Please provide all required fields' });
     }
 
     const jobPost = {
@@ -95,24 +87,26 @@ export const updateJob = async (req, res, next) => {
       location,
       salary,
       vacancies,
-      experience,
-      detail: { desc, requirements },
+      experiences,
+      detail
     };
 
     const updatedJob = await Jobs.findByIdAndUpdate(jobId, jobPost, { new: true });
 
+    if (!updatedJob) {
+      return res.status(404).json({ success: false, message: 'Job not found' });
+    }
+
     res.status(200).json({
       success: true,
-      message: "Job Post Updated Successfully",
-      job: updatedJob,
+      message: 'Job post updated successfully',
+      job: updatedJob
     });
   } catch (error) {
-    console.log(error);
-    res.status(404).json({ message: error.message });
+    console.error('Error in updateJob:', error); // Detailed error log
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 
 export const getJobPosts = async (req, res, next) => {
     try {

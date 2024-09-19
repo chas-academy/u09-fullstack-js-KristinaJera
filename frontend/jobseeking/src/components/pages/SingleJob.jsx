@@ -141,7 +141,7 @@ const SingleJob = () => {
             <p className="mt-2">Location: {job.location}</p>
             <p>Salary: ${job.salary?.toLocaleString()}</p>
             <p>Vacancies: {job.vacancies}</p>
-            <p>Experience Required: {job.experience} years</p>
+            <p>Experience Required: {job.experience}</p>
             <p>Company: {job.company ? job.company.companyName : 'N/A'}</p>
             <h2 className="text-xl font-bold mt-8">Job Requirements:</h2>
             <ul className="list-disc list-inside">

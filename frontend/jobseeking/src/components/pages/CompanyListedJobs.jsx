@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CompanyListedJobs = ({ companyId }) => {
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Use useNavigate
 
   useEffect(() => {
     if (!companyId) {
@@ -30,10 +32,8 @@ const CompanyListedJobs = ({ companyId }) => {
     fetchJobs();
   }, [companyId]);
 
-  const handleUpdate = (jobId) => {
-    console.log(`Update job with ID: ${jobId}`);
-    // Implement the update functionality here
-    // Redirect to update page or open a modal for updating
+  const handleUpdate = (job) => {
+    navigate('/update-job', { state: { job } }); // Use navigate
   };
 
   const handleDelete = async (jobId) => {
@@ -70,13 +70,14 @@ const CompanyListedJobs = ({ companyId }) => {
                     <p className="leading-relaxed mb-1">Salary: ${job.salary.toLocaleString() || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Vacancies: {job.vacancies || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Experience Required: {job.experience || 'N/A'} years</p>
-                    <p className="leading-relaxed mb-1">Job Description: {job.detail?.desc || 'N/A'}</p>
+                    <p className="leading-relaxed mb-1">Job Requirements: {job.detail?.[0]?.requirements || 'N/A'} years</p>
+                    <p className="leading-relaxed mb-1">Job Description: {job.detail?.[0]?.desc || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Posted Date: {new Date(job.postedDate).toLocaleDateString() || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Application Deadline: {new Date(job.applicationDeadline).toLocaleDateString() || 'N/A'}</p>
                   </div>
                   <div className="flex space-x-4 mt-4">
                     <button
-                      onClick={() => handleUpdate(job._id)}
+                      onClick={() => handleUpdate(job)}
                       className="text-white bg-blue-500 border-0 py-2 px-4 focus:outline-none hover:bg-blue-600 rounded"
                     >
                       Update
