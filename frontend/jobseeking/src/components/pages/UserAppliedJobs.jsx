@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'; // Assuming you're using react-router f
 const UserAppliedJobs = () => {
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState(null);
-
   const fetchUserApplications = useCallback(async () => {
     try {
       const userId = localStorage.getItem('userId');

@@ -69,8 +69,9 @@ const Navbar = ({ user, onClick, onLogout }) => {
     if (!user || user.role !== 'company') return null;
     return (
       <>
-        <Link to="/company-dashboard" className="text-gray-700 hover:text-blue-500">Company Dashboard</Link>
-        <Link to="/company-jobs" className="text-gray-700 hover:text-blue-500">Company Jobs</Link>
+        <Link to="/company-homepage" className="text-gray-700 hover:text-blue-500">Home</Link>
+        <Link to="/company-dashboard" className="text-gray-700 hover:text-blue-500">Dashboard</Link>
+        <Link to="/company-listed-jobs" className="text-gray-700 hover:text-blue-500">Listed Jobs</Link>
         <Link to="/company-settings" className="text-gray-700 hover:text-blue-500">Company Settings</Link>
       </>
     );

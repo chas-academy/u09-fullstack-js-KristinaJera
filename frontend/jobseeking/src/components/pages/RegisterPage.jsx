@@ -249,3 +249,4 @@ RegisterPage.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
+export default RegisterPage;
