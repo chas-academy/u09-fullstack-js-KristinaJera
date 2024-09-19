@@ -57,8 +57,6 @@ export const createJob = async (req, res, next) => {
     res.status(404).json({ message: error.message });
   }
 };
-
-// Update a job
 export const updateJob = async (req, res, next) => {
   try {
     const {
@@ -72,14 +70,24 @@ export const updateJob = async (req, res, next) => {
       requirements,
     } = req.body;
     const { jobId } = req.params;
+    const userId = req.user.userId; // Retrieved from `userAuth` middleware
 
     if (!jobTitle || !jobType || !location || !salary || !requirements || !desc) {
       return next("Please Provide All Required Fields");
     }
 
-    const id = req.body.user.userId;
-    if (!mongoose.Types.ObjectId.isValid(id))
-      return res.status(404).send(`No Company with id: ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(userId))
+      return res.status(404).send(`No Company with id: ${userId}`);
+
+    const job = await Jobs.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job Not Found' });
+    }
+
+    // Ensure the user is authorized to update this job
+    if (job.company.toString() !== userId) {
+      return res.status(403).json({ success: false, message: 'Not Authorized' });
+    }
 
     const jobPost = {
       jobTitle,
@@ -89,15 +97,14 @@ export const updateJob = async (req, res, next) => {
       vacancies,
       experience,
       detail: { desc, requirements },
-      _id: jobId,
     };
 
-    await Jobs.findByIdAndUpdate(jobId, jobPost, { new: true });
+    const updatedJob = await Jobs.findByIdAndUpdate(jobId, jobPost, { new: true });
 
     res.status(200).json({
       success: true,
       message: "Job Post Updated Successfully",
-      job: jobPost,
+      job: updatedJob,
     });
   } catch (error) {
     console.log(error);
@@ -105,14 +112,16 @@ export const updateJob = async (req, res, next) => {
   }
 };
 
+
+
 export const getJobPosts = async (req, res, next) => {
     try {
       const jobs = await Jobs.find({}).populate({
         path: 'company',
-        select: 'companyName' // Add other fields if needed
+        select: 'companyName' 
       });
       
-      console.log('Jobs fetched from backend:', jobs); // Log for debugging
+      console.log('Jobs fetched from backend:', jobs); 
   
       if (jobs.length === 0) {
         return res.status(404).json({
@@ -126,7 +135,7 @@ export const getJobPosts = async (req, res, next) => {
         data: jobs
       });
     } catch (error) {
-      console.error('Error fetching jobs:', error); // Log error
+      console.error('Error fetching jobs:', error); 
       res.status(500).json({
         success: false,
         message: 'Failed to fetch jobs',
@@ -186,13 +195,64 @@ export const getJobById = async (req, res, next) => {
 export const deleteJobPost = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    // Validate job ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid job ID' });
+    }
+
+    // Find and delete the job post
+    const job = await Jobs.findById(id);
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job Post Not Found' });
+    }
     await Jobs.findByIdAndDelete(id);
+
     res.status(200).json({
       success: true,
       message: 'Job Post Deleted Successfully.',
     });
   } catch (error) {
     console.log(error);
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+// Get jobs for a specific company
+export const getCompanyJobs = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(companyId)) {
+      return res.status(400).json({ success: false, message: 'Invalid company ID' });
+    }
+
+    // Pagination parameters
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+
+    const jobs = await Jobs.find({ company: companyId })
+      .populate('company', 'companyName') // Optionally populate company details
+      .skip(skip)
+      .limit(parseInt(limit))
+      .exec();
+
+    const total = await Jobs.countDocuments({ company: companyId });
+
+    res.status(200).json({
+      success: true,
+      data: jobs,
+      pagination: {
+        total,
+        page: parseInt(page),
+        limit: parseInt(limit)
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching company jobs:', error.message);
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+  }
+};
+

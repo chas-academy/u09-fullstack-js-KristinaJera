@@ -61,6 +61,7 @@ export const checkIfUserHasApplied = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
   export const getUserApplications = async (req, res) => {
     try {
       const { userId } = req.params;

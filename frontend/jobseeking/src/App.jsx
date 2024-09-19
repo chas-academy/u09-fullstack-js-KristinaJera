@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import LandingPage from "./components/pages/LandingPage";
-import Navbar from "./components/pages/Navbar";
-import Footer from "./components/pages/Footer";
+import LandingPage from './components/pages/LandingPage';
+import Navbar from './components/pages/Navbar';
+import Footer from './components/pages/Footer';
 import LoginPage from './components/pages/LoginPage';
-import { RegisterPage } from './components/pages/RegisterPage';
+import RegisterPage from './components/pages/RegisterPage'; // Default export assumed
 import UserHomePage from './components/pages/UserHomePage';
 import CompanyHomePage from './components/pages/CompanyHomePage';
 import AdminDash from './components/pages/AdminDash';
@@ -14,6 +14,7 @@ import SingleJob from './components/pages/SingleJob';
 import UserAppliedJobs from './components/pages/UserAppliedJobs';
 import ContactUs from './components/pages/ContactUs';
 import AboutUs from './components/pages/AboutUs';
+import CompanyListedJobs from './components/pages/CompanyListedJobs';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -35,7 +36,7 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
 
 ProtectedRoute.propTypes = {
   children: PropTypes.node.isRequired,
-  requiredRole: PropTypes.string, // Expecting role as a string
+  requiredRole: PropTypes.string,
 };
 
 const App = () => {
@@ -51,12 +52,9 @@ const App = () => {
 
   const handleLoginSuccess = (userData) => {
     console.log('Handling login success with user data:', userData);
-    setUser(userData);  // Store user data after successful login
-
-    // Save user data in localStorage
+    setUser(userData); // Store user data after successful login
     localStorage.setItem('user', JSON.stringify(userData));
 
-    // Navigate based on user type
     switch (userData.role) {
       case 'company':
         console.log('Navigating to /company-homepage');
@@ -89,8 +87,6 @@ const App = () => {
       <Navbar user={user} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-
-        {/* Login routes */}
         <Route path="/login-company" element={
           <LoginPage type="company" onLoginSuccess={handleLoginSuccess} onClose={() => navigate('/')} />
         } />
@@ -100,11 +96,7 @@ const App = () => {
         <Route path="/login-admin" element={
           <LoginPage type="admin" onLoginSuccess={handleLoginSuccess} onClose={() => navigate('/')} />
         } />
-
-        {/* Register routes */}
         <Route path="/register" element={<RegisterPage onClose={() => navigate('/')} />} />
-
-        {/* Protected routes */}
         <Route path="/admin-dashboard" element={
           <ProtectedRoute requiredRole="admin">
             <AdminDash />
@@ -112,8 +104,8 @@ const App = () => {
         } />
         <Route path="/user-homepage" element={
           <ProtectedRoute requiredRole="user">
-            <UserHomePage 
-              jobTypes={['Full-Time', 'Part-Time', 'Contract']} 
+            <UserHomePage
+              jobTypes={['Full-Time', 'Part-Time', 'Contract']}
               experience={[
                 { value: 'entry', title: 'Entry-Level' },
                 { value: 'mid', title: 'Mid-Level' },
@@ -127,13 +119,19 @@ const App = () => {
             <CompanyHomePage />
           </ProtectedRoute>
         } />
-         <Route path="/contact-us" element={<ContactUs/>}/>
-         <Route path="/about-us" element={<AboutUs/>}/>
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-jobs" element={<UserAllJobs />} />
         <Route path="/job/:id" element={<SingleJob />} />
         <Route path="/applied-jobs" element={<UserAppliedJobs />} />
+        <Route path="/company-listed-jobs" element={
+          user?.role === 'company' ? (
+            <CompanyListedJobs companyId={user._id} />
+          ) : (
+            <Navigate to="/" />
+          )
+        } />
       </Routes>
-
       {user && <Footer />}
     </>
   );
@@ -142,8 +140,9 @@ const App = () => {
 App.propTypes = {
   user: PropTypes.shape({
     role: PropTypes.string,
+    _id: PropTypes.string
   }),
-  handleLoginSuccess: PropTypes.func,
+  handleLoginSuccess: PropTypes.func
 };
 
 export default App;
