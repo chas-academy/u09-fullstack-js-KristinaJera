@@ -16,6 +16,7 @@ import ContactUs from './components/pages/ContactUs';
 import AboutUs from './components/pages/AboutUs';
 import CompanyListedJobs from './components/pages/CompanyListedJobs';
 import CompanyUpdateJob from './components/pages/CompanyUpdateJob';
+import CreateJob from './components/pages/CreateJob';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -42,15 +43,21 @@ ProtectedRoute.propTypes = {
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+        setUser(JSON.parse(storedUser));
     }
-  }, []);
+    setLoading(false);
+}, []);
 
+
+if (loading) {
+  return <div>Loading...</div>; // Or a spinner component
+}
   const handleLoginSuccess = (userData) => {
     console.log('Handling login success with user data:', userData);
     setUser(userData); // Store user data after successful login
@@ -126,13 +133,20 @@ const App = () => {
         <Route path="/job/:id" element={<SingleJob />} />
         <Route path="/applied-jobs" element={<UserAppliedJobs />} />
         <Route path="/company-listed-jobs" element={
+                    user && user.role === 'company' && user._id ? (
+                        <CompanyListedJobs companyId={user._id} />
+                    ) : (
+                        <Navigate to="/" />
+                    )
+                } />
+        <Route path="/create-job" element={
           user?.role === 'company' ? (
-            <CompanyListedJobs companyId={user._id} />
+            <CreateJob companyId={user._id} />
           ) : (
             <Navigate to="/" />
           )
-        } />
-        <Route path="/update-job" element={<CompanyUpdateJob/>} />
+        }/>
+       <Route path="/update-job" element={<CompanyUpdateJob/>} />
       </Routes>
       {user && <Footer />}
     </>

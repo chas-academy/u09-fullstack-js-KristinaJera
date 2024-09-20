@@ -5,9 +5,9 @@ import ContactUs from './ContactUs';
 
 const CompanyHomePage = () => {
   return (
-    <div>
+    <div >
       {/* Welcome Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20 px-6">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4">Welcome to the Jobseeking App</h1>
           <p className="text-lg mb-8">
@@ -21,7 +21,7 @@ const CompanyHomePage = () => {
       </section>
 
       {/* Company Benefits Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 px-4">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold text-blue-700 mb-6">Why Companies Trust Us</h2>
           <p className="text-lg text-gray-700 mb-8">
@@ -52,7 +52,7 @@ const CompanyHomePage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="bg-white py-16">
+      <section className="bg-white pt-6 px-4">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold text-blue-700 mb-6">Our Impact</h2>
           <p className="text-lg text-gray-700 mb-8">
@@ -63,16 +63,16 @@ const CompanyHomePage = () => {
       </section>
 
       {/* About Us Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="pt-10 bg-gray-50">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold text-blue-700 mb-6">About Us</h2>
+          <h2 className="text-3xl font-bold text-blue-700">About Us</h2>
           <AboutUs />
         </div>
       </section>
 
       {/* Contact Us Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto text-center">
+      <section className="lg:pt-8 pt-6">
+        <div className="container mx-auto text-center px-2">
           <h2 className="text-4xl font-bold text-blue-700 mb-6">Contact Us</h2>
           <p className="text-lg text-gray-700 mb-8">
             Have questions? We are here to help! Reach out to our support team, and we’ll assist you with anything you need.
