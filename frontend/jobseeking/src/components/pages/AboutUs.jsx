@@ -6,8 +6,8 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="text-center pt-20 bg-gray-50">
-      <div className="container mx-auto px-4  pb-10">
+    <div className="text-center lg:pt-20 pt-4 bg-gray-50">
+      <div className="container mx-auto px-4 pb-4">
         <h1 className="text-5xl font-bold text-blue-700 mb-6">
           Discover Who We Are
         </h1>
@@ -24,7 +24,7 @@ const AboutUs = () => {
         </button>
       </div>
 
-      <div id="about-us" className="py-20 bg-white">
+      <div id="about-us" className="lg:py-14 pt-10 py-4 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-blue-700 mb-6">Our Story</h2>
           <p className="text-lg text-gray-700 mb-8">
@@ -50,7 +50,7 @@ const AboutUs = () => {
                 of technology, and always putting our clients first.
               </p>
             </div>
-            <div className="md:w-1/3 mb-6 md:mb-0">
+            <div className="md:w-1/3 lg:mb-6">
               <h3 className="text-2xl font-semibold text-blue-600 mb-4">Our Team</h3>
               <p className="text-gray-600">
                 Our team is a diverse group of talented professionals who bring their

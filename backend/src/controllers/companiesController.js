@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Companies from "../models/companiesModel.js";
+import Jobs from "../models/jobsModel.js";
 
 export const register = async (req, res, next) => {
     const { name, email, password } = req.body;
@@ -94,6 +95,94 @@ export const signIn = async (req, res, next) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+
+// export const createJob = async (req, res, next) => {
+    
+//     const { jobTitle, jobType, location, salary, vacancies, experiences, detail } = req.body;
+//     const companyId = req.params.companyId; // Get companyId from route parameters
+//     console.log('Incoming request body:', req.body);
+    
+//     try {
+//         if (!jobTitle || !jobType || !location || !salary || !vacancies || !experiences || !Array.isArray(detail) || detail.length === 0 || !detail[0]?.desc || !detail[0]?.requirements) {
+//             return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+//           }
+
+//         // Find the company making the request
+//         const company = await Companies.findById(companyId);
+
+//         if (!company) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "Company not found",
+//             });
+//         }
+
+//         // Create a new job
+//         const newJob = await Jobs.create({
+//             company: companyId,
+//             jobTitle,
+//             jobType,
+//             location,
+//             salary,
+//             vacancies,
+//             experiences,
+//             detail,
+//         });
+
+//         // Save the job and update the company's jobPosts
+//         company.jobPosts.push(newJob._id);
+//         await company.save();
+
+//         res.status(201).json({
+//             success: true,
+//             message: "Job created successfully",
+//             job: newJob,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             success: false,
+//             message: "An error occurred while creating the job",
+//             error: error.message,
+//         });
+//     }
+// };
+export const createJob = async (req, res) => {
+    const { companyId } = req.params; // This should be the company ID from the route
+    const { jobTitle, jobType, location, salary, vacancies, experiences, detail } = req.body;
+
+    try {
+        // Create a new job with the appropriate structure
+        const newJob = new Jobs({
+            jobTitle,
+            jobType,
+            location,
+            salary,
+            vacancies,
+            experiences,
+            detail: {
+                desc: detail[0].desc, // Ensure it's a single object for detail
+                requirements: detail[0].requirements
+            },
+            company: companyId, // Attach the company ID directly at the top level
+            createdBy: req.user.userId // Attach the user ID from the token
+        });
+
+        // Save the job to the database
+        await newJob.save();
+
+        return res.status(201).json({
+            success: true,
+            message: 'Job created successfully',
+            job: newJob,
+        });
+    } catch (error) {
+        console.error('Error creating job:', error);
+        return res.status(500).json({ message: 'An error occurred while creating the job' });
+    }
+};
+
 
 export const updateCompanyProfile = async (req, res, next) => {
   const {name, contact, location, profileUrl, about } = req.body;
