@@ -62,7 +62,7 @@ const UserAllJobs = () => {
         const lowerCaseSelectedJobType = normalize(selectedJobType);
         const matchesJobType = !selectedJobType || lowerCaseJobType === lowerCaseSelectedJobType;
 
-        const lowerCaseExperience = normalize(job.experience.toString());
+        const lowerCaseExperience = normalize((job.experience ?? '').toString());
         const lowerCaseSelectedExperience = normalize(selectedExperience);
         const matchesExperience = !selectedExperience || lowerCaseExperience === lowerCaseSelectedExperience;
 
