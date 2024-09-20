@@ -109,40 +109,66 @@ export const adminAuth = async (req, res, next) => {
     }
 };
 
+// // User/Company authentication middleware
+// export const userAuth = async (req, res, next) => {
+//     const authHeader = req?.headers?.authorization;
+
+//     if (!authHeader || !authHeader?.startsWith("Bearer")) {
+//         return res.status(401).json({ message: 'Authentication failed. Token missing or malformed.' });
+//     }
+
+//     const token = authHeader?.split(" ")[1];
+
+//     try {
+//         const userToken = JWT.verify(token, process.env.JWT_SECRET_KEY);
+        
+//         // Optionally log the user ID for debugging
+//         console.log(`User authenticated: ${userToken.userId}`);
+
+//         // Attach user info to request body
+//         req.user = {
+//             userId: userToken.userId,
+//             role: userToken.role // Attach role from token
+//         };
+
+//         // Check if user has the right role to create jobs
+//         if (userToken.role !== 'company') { // Adjust as necessary
+//             return res.status(403).json({ message: 'Forbidden: You do not have permission to create jobs.' });
+//         }
+
+//         next();
+//     } catch (error) {
+//         if (error.name === 'TokenExpiredError') {
+//             return res.status(401).json({ message: 'Token expired. Please log in again.' });
+//         }
+//         console.error(error); // Log error for debugging
+//         next("Authentication failed: Invalid token.");
+//     }
+// };
+
+
 // User/Company authentication middleware
 export const userAuth = async (req, res, next) => {
-    const authHeader = req?.headers?.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader?.startsWith("Bearer")) {
-        return res.status(401).json({ message: 'Authentication failed. Token missing or malformed.' });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: 'Token missing or malformed.' });
     }
 
-    const token = authHeader?.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
     try {
         const userToken = JWT.verify(token, process.env.JWT_SECRET_KEY);
-        
-        // Optionally log the user ID for debugging
-        console.log(`User authenticated: ${userToken.userId}`);
-
-        // Attach user info to request body
         req.user = {
             userId: userToken.userId,
-            role: userToken.role // Attach role from token
+            role: userToken.role,
         };
 
-        // Check if user has the right role to create jobs
-        if (userToken.role !== 'company') { // Adjust as necessary
-            return res.status(403).json({ message: 'Forbidden: You do not have permission to create jobs.' });
-        }
-
+        // Proceed without checking role if not needed
         next();
     } catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ message: 'Token expired. Please log in again.' });
-        }
-        console.error(error); // Log error for debugging
-        next("Authentication failed: Invalid token.");
+        console.error('Authentication error:', error);
+        res.status(403).json({ message: 'Invalid token or access denied.' });
     }
 };
 

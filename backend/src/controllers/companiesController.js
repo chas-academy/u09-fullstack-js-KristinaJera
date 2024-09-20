@@ -96,58 +96,6 @@ export const signIn = async (req, res, next) => {
     }
 };
 
-
-// export const createJob = async (req, res, next) => {
-    
-//     const { jobTitle, jobType, location, salary, vacancies, experiences, detail } = req.body;
-//     const companyId = req.params.companyId; // Get companyId from route parameters
-//     console.log('Incoming request body:', req.body);
-    
-//     try {
-//         if (!jobTitle || !jobType || !location || !salary || !vacancies || !experiences || !Array.isArray(detail) || detail.length === 0 || !detail[0]?.desc || !detail[0]?.requirements) {
-//             return res.status(400).json({ success: false, message: 'Please provide all required fields' });
-//           }
-
-//         // Find the company making the request
-//         const company = await Companies.findById(companyId);
-
-//         if (!company) {
-//             return res.status(404).json({
-//                 success: false,
-//                 message: "Company not found",
-//             });
-//         }
-
-//         // Create a new job
-//         const newJob = await Jobs.create({
-//             company: companyId,
-//             jobTitle,
-//             jobType,
-//             location,
-//             salary,
-//             vacancies,
-//             experiences,
-//             detail,
-//         });
-
-//         // Save the job and update the company's jobPosts
-//         company.jobPosts.push(newJob._id);
-//         await company.save();
-
-//         res.status(201).json({
-//             success: true,
-//             message: "Job created successfully",
-//             job: newJob,
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({
-//             success: false,
-//             message: "An error occurred while creating the job",
-//             error: error.message,
-//         });
-//     }
-// };
 export const createJob = async (req, res) => {
     const { companyId } = req.params; // This should be the company ID from the route
     const { jobTitle, jobType, location, salary, vacancies, experiences, detail } = req.body;
@@ -182,78 +130,92 @@ export const createJob = async (req, res) => {
         return res.status(500).json({ message: 'An error occurred while creating the job' });
     }
 };
-
-
 export const updateCompanyProfile = async (req, res, next) => {
-  const {name, contact, location, profileUrl, about } = req.body;
+    try {
+        const userId = req.body.userId; // Adjust this if needed
 
-  try {
-    // validation 
-    if(!name || !location || !about || !contact || !profileUrl ){
-        next("Please Provide All Required Fields");
-        return;
+        const { companyName, email, contact, location, profileUrl, about } = req.body;
+
+        const updatedCompany = await Companies.findByIdAndUpdate(
+            userId,
+            { companyName, email, contact, location, profileUrl, about },
+            { new: true, runValidators: true }
+        ).select("-password");
+
+        if (!updatedCompany) {
+            return res.status(404).json({
+                success: false,
+                message: "Company Not Found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: updatedCompany,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+        });
     }
-    const id = req.body.user.userId;
-    if(!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send(`No Company with id: ${id}`);
-
-    const updateCompany = {
-        name, 
-        contact,
-        location,
-        profileUrl,
-        about,
-        _id: id,
-    };
-
-    const company = await Companies.findByIdAndUpdate(id, updateCompany,{
-        new: true,
-    });
-
-     const token = company.createJWT();
-
-     company.password = undefined;
-
-     res.status(200).json({
-        success: true,
-        message: "Company Profile Update Successfully",
-        company, 
-        token,
-     });
-
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({message: error.message});
-    
-  }
-
-
 };
 
-export const getCompanyProfile = async (req, res, next) => {
-    
+export const uploadCompanyProfileImage = async (req, res) => {
     try {
-        const id = req.body.user.userId;
+        // Check if file was uploaded
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No file uploaded",
+            });
+        }
 
-        const company = await Companies.findById({_id: id});
+        // Construct the URL or path to the uploaded file
+        const imageUrl = `/uploads/${req.file.filename}`; // The file will be accessible at this path
 
-        if(!company){
-            return res.status(200).send({
+        // Send the image URL back to the client
+        res.status(200).json({
+            success: true,
+            url: imageUrl, // This is the URL to the uploaded image
+            message: "Image uploaded successfully",
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+        });
+    }
+};
+
+
+export const getCompanyProfile = async (req, res, next) => {
+    try {
+        const id = req.user.userId; // Access userId from req.user
+
+        console.log('Fetching profile for user ID:', id); // Debug log
+
+        const company = await Companies.findById(id); // Use id directly
+
+        if (!company) {
+            return res.status(404).json({
                 message: "Company Not Found",
                 success: false,
             });
         }
 
-        company.password = undefined;
-           res.status(200).json({
+        company.password = undefined; // Hide password
+        res.status(200).json({
             success: true,
             data: company,
-           });
+        });
 
     } catch (error) {
-        console.log(error);
-        res.status(404).json({message: error.message});
-        
+        console.error('Error in getCompanyProfile:', error); // Log the error
+        res.status(500).json({ message: 'Server Error: ' + error.message }); // Return a more descriptive error
     }
 };
 

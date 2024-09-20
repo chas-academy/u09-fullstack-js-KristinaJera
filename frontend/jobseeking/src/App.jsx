@@ -17,6 +17,8 @@ import AboutUs from './components/pages/AboutUs';
 import CompanyListedJobs from './components/pages/CompanyListedJobs';
 import CompanyUpdateJob from './components/pages/CompanyUpdateJob';
 import CreateJob from './components/pages/CreateJob';
+import CompanyDashboard from './components/pages/CommpanyDashboard';
+import CompanyProfile from './components/pages/CompanyProfile';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -127,6 +129,18 @@ if (loading) {
             <CompanyHomePage />
           </ProtectedRoute>
         } />
+        <Route path="/company-dashboard" element={
+          <ProtectedRoute requiredRole="company">
+            <CompanyDashboard/>
+          </ProtectedRoute>
+        } />
+        <Route path="/company-profile" element={
+          <ProtectedRoute requiredRole="company">
+            <CompanyProfile/>
+          </ProtectedRoute>
+        } />
+        
+
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-jobs" element={<UserAllJobs />} />

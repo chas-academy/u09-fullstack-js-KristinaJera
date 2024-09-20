@@ -37,6 +37,7 @@ app.use('/api-v1/auth', authRoutes);
 
 app.use('/api', userRoutes);
 app.use('/api', companyRoutes);
+app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
   console.log(`[server]: ${req.method} ${req.url} hit`);
