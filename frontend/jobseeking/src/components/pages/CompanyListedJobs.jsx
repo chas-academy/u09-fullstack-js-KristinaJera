@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from '../ConfirmationModal';
 
 const CompanyListedJobs = ({ companyId }) => {
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Use useNavigate
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!companyId) {
@@ -33,27 +36,68 @@ const CompanyListedJobs = ({ companyId }) => {
   }, [companyId]);
 
   const handleUpdate = (job) => {
-    navigate('/update-job', { state: { job } }); // Use navigate
+    navigate('/update-job', { state: { job } });
   };
 
-  const handleDelete = async (jobId) => {
+  const handleOpenModal = (job) => {
+    setSelectedJob(job);
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+    setSelectedJob(null);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedJob) return;
+
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      console.error("Token is missing");
+      setError('Unauthorized: Token missing or malformed.');
+      return;
+    }
+
     try {
-      const response = await axios.delete(`http://localhost:3000/api/company-jobs/${jobId}`);
+      const response = await axios.delete(`http://localhost:3000/api/company-jobs/${selectedJob._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
       if (response.data.success) {
-        setJobs(jobs.filter(job => job._id !== jobId));
-        console.log(`Deleted job with ID: ${jobId}`);
+        setJobs(jobs.filter(j => j._id !== selectedJob._id));
+        alert(`Successfully deleted the job: "${selectedJob.jobTitle}"`);
       } else {
         setError('Failed to delete job');
       }
     } catch (error) {
       console.error('Error deleting job:', error.response?.data?.message || error.message);
       setError('An error occurred while deleting the job');
+    } finally {
+      handleCloseModal();
     }
+  };
+
+  const handleCreateJob = () => {
+    navigate('/create-job');
   };
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto">
+      <div className="container px-5 my-6 py-6 mx-auto">
+        <h1 className="text-3xl font-bold text-indigo-600 text-center lg:mb-4 mb-6">Manage Your Job Listings</h1>
+        <div className="flex lg:justify-end mb-10">
+          <button
+            onClick={handleCreateJob}
+            className="text-white bg-green-500 border-0 py-2 px-4 focus:outline-none hover:bg-green-600 rounded"
+          >
+            Create New Job Listing
+          </button>
+        </div>
+
         {error && <div className="text-center py-4 text-red-500">{error}</div>}
         {jobs.length === 0 ? (
           <p className="text-center py-4">No jobs listed.</p>
@@ -70,7 +114,7 @@ const CompanyListedJobs = ({ companyId }) => {
                     <p className="leading-relaxed mb-1">Salary: ${job.salary.toLocaleString() || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Vacancies: {job.vacancies || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Experience Required: {job.experience || 'N/A'} years</p>
-                    <p className="leading-relaxed mb-1">Job Requirements: {job.detail?.[0]?.requirements || 'N/A'} years</p>
+                    <p className="leading-relaxed mb-1">Job Requirements: {job.detail?.[0]?.requirements || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Job Description: {job.detail?.[0]?.desc || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Posted Date: {new Date(job.postedDate).toLocaleDateString() || 'N/A'}</p>
                     <p className="leading-relaxed mb-1">Application Deadline: {new Date(job.applicationDeadline).toLocaleDateString() || 'N/A'}</p>
@@ -83,7 +127,7 @@ const CompanyListedJobs = ({ companyId }) => {
                       Update
                     </button>
                     <button
-                      onClick={() => handleDelete(job._id)}
+                      onClick={() => handleOpenModal(job)}
                       className="text-white bg-red-500 border-0 py-2 px-4 focus:outline-none hover:bg-red-600 rounded"
                     >
                       Delete
@@ -94,13 +138,21 @@ const CompanyListedJobs = ({ companyId }) => {
             ))}
           </div>
         )}
+  
+        <ConfirmationModal 
+          isOpen={modalIsOpen}
+          onRequestClose={handleCloseModal}
+          jobTitle={selectedJob ? selectedJob.jobTitle : ''}
+          onConfirm={confirmDelete}
+          actionType="delete" // You can modify this as needed
+        />
       </div>
     </section>
   );
 };
-
+  
 CompanyListedJobs.propTypes = {
-  companyId: PropTypes.string.isRequired
+  companyId: PropTypes.string.isRequired,
 };
-
+  
 export default CompanyListedJobs;

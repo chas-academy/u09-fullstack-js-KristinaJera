@@ -1,35 +1,36 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ConfirmationModal from '../ConfirmationModal';
 
 const CompanyUpdateJob = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [job, setJob] = useState(location.state?.job || { detail: [{}] }); // Initialize with empty detail array
+  const [job, setJob] = useState(location.state?.job || { detail: [{}] });
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
 
   useEffect(() => {
     if (!location.state?.job) {
       console.error('No job data provided');
-      navigate('/company-jobs'); // Redirect if no job data is provided
+      navigate('/company-jobs');
     }
   }, [location.state, navigate]);
 
   const handleUpdate = async (jobId, updatedJob) => {
     try {
-      console.log('Job ID:', jobId); // Log the jobId
-  
       const token = localStorage.getItem('authToken');
       if (!token) {
         throw new Error('No authentication token found');
       }
-  
+
       const response = await axios.put(
         `http://localhost:3000/api/update-job/${jobId}`,
         updatedJob,
-        { headers: { Authorization: `Bearer ${token}` } } // Include the token in headers
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       if (response.data.success) {
         navigate('/company-listed-jobs');
       } else {
@@ -40,10 +41,8 @@ const CompanyUpdateJob = () => {
       setError('An error occurred while updating the job');
     }
   };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
+  const confirmUpdate = () => {
     handleUpdate(job._id, {
       jobTitle: job.jobTitle,
       jobType: job.jobType,
@@ -52,11 +51,19 @@ const CompanyUpdateJob = () => {
       vacancies: job.vacancies,
       experiences: job.experience,
       detail: [{
-        desc: job.detail[0]?.desc || '', // Ensure this is correctly set
-        requirements: job.detail[0]?.requirements || '' // Ensure this is correctly set
+        desc: job.detail[0]?.desc || '',
+        requirements: job.detail[0]?.requirements || ''
       }]
     });
+    setIsModalOpen(false);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setModalAction('update');
+    setIsModalOpen(true);
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -179,6 +186,13 @@ const CompanyUpdateJob = () => {
             Update Job
           </button>
         </form>
+        <ConfirmationModal 
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          jobTitle={job.jobTitle}
+          onConfirm={confirmUpdate}
+          actionType={modalAction}
+        />
       </div>
     </section>
   );
