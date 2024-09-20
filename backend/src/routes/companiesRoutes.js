@@ -1,5 +1,5 @@
 import express from 'express';
-import { getCompanies, getCompanyById, getCompanyJobListing, getCompanyProfile, register, signIn, createJob, updateCompanyProfile, uploadCompanyProfileImage } from "../controllers/companiesController.js";
+import { getCompanies, getCompanyById, getCompanyJobListing, getCompanyProfile, register, signIn, createJob, updateCompanyProfile, uploadCompanyProfileImage, getCompanyApplications, uploadResume} from "../controllers/companiesController.js";
 import{userAuth} from "../middlewares/authMiddleware.js";
 import { getAllCompanies } from "../controllers/adminController.js";
 import multer from 'multer';
@@ -14,7 +14,7 @@ router.put('/update-company-profile', userAuth, updateCompanyProfile);
 router.get('/companies', getAllCompanies);
 // Job creation route (authenticated companies only)
 router.post('/company-create-job/:companyId', userAuth, createJob);
-
+router.get('/company/:companyId/applications', userAuth, getCompanyApplications);
 
 
 // Set up Multer for file uploads
@@ -31,6 +31,8 @@ const storage = multer.diskStorage({
 // Image upload route (Authenticated)
 router.post('/upload-profile-image', userAuth, upload.single('profileImage'), uploadCompanyProfileImage);
 
+// Route to upload resume
+router.post('/upload-resume', upload.single('resume'), uploadResume);
 
 
 export default router;

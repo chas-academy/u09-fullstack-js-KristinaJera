@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Companies from "../models/companiesModel.js";
 import Jobs from "../models/jobsModel.js";
+import Applications from "../models/applicationsModel.js";
 
 export const register = async (req, res, next) => {
     const { name, email, password } = req.body;
@@ -191,6 +192,25 @@ export const uploadCompanyProfileImage = async (req, res) => {
     }
 };
 
+export const uploadResume = async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+  
+    const filename = req.file.filename;
+    
+    // Assuming you want to update an existing application with the uploaded resume
+    try {
+      await Applications.findByIdAndUpdate(req.body.applicationId, { resume: filename });
+      return res.status(200).json({
+        success: true,
+        message: 'File uploaded successfully',
+        filename,
+      });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: 'Failed to save resume' });
+    }
+  };
 
 export const getCompanyProfile = async (req, res, next) => {
     try {
@@ -360,3 +380,29 @@ export const getCompanyById = async (req, res, next) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+
+export const getCompanyApplications = async (req, res) => {
+    const { companyId } = req.params;
+  
+    try {
+      // Validate companyId
+      if (!companyId || !mongoose.Types.ObjectId.isValid(companyId)) {
+        return res.status(400).json({ success: false, message: 'Invalid company ID' });
+      }
+  
+      const jobs = await Jobs.find({ company: companyId });
+  
+      if (!jobs.length) {
+        return res.status(404).json({ success: false, message: 'No jobs found for this company' });
+      }
+  
+      const jobIds = jobs.map(job => job._id);
+      const applications = await Applications.find({ job: { $in: jobIds } }).populate('user');
+  
+      res.status(200).json({ success: true, data: applications });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server error' });
+    }
+  };

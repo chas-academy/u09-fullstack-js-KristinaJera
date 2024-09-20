@@ -19,6 +19,7 @@ import CompanyUpdateJob from './components/pages/CompanyUpdateJob';
 import CreateJob from './components/pages/CreateJob';
 import CompanyDashboard from './components/pages/CommpanyDashboard';
 import CompanyProfile from './components/pages/CompanyProfile';
+import CompanyJobApplications from './components/pages/CompanyJobApplications';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -139,8 +140,7 @@ if (loading) {
             <CompanyProfile/>
           </ProtectedRoute>
         } />
-        
-
+           <Route path="/company/:companyId/applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-jobs" element={<UserAllJobs />} />
