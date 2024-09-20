@@ -140,7 +140,7 @@ if (loading) {
             <CompanyProfile/>
           </ProtectedRoute>
         } />
-           <Route path="/company/:companyId/applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
+           <Route path="/company-applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-jobs" element={<UserAllJobs />} />

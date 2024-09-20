@@ -5,13 +5,46 @@ import mongoose from "mongoose";
 
 
 
+// export const applyForJob = async (req, res) => {
+//   try {
+//     const { jobId } = req.params;
+//     const { userId } = req.body;
+
+//     // Check if the user has already applied for this job
+//     const existingApplication = await Applications.findOne({ jobId, userId });
+
+//     if (existingApplication) {
+//       return res.status(400).json({ success: false, message: 'You have already applied for this job.' });
+//     }
+
+//     // Proceed with the application if not already applied
+//     const newApplication = new Applications({
+//       job: jobId,
+//      user: userId,
+//      resume: req.file.path, // Store the file path or URL
+//      name: req.body.name,
+//      email: req.body.email,
+//      phone: req.body.phone,
+//      coverLetter: req.body.coverLetter
+//     });
+
+//     await newApplication.save();
+//     res.status(200).json({ success: true, message: 'Application submitted successfully.' });
+
+//   } catch (error) {
+//     console.error('Error applying for job:', error);
+//     res.status(500).json({ success: false, message: 'Internal Server Error' });
+//   }
+// };
+
+// Apply for a job function
 export const applyForJob = async (req, res) => {
   try {
     const { jobId } = req.params;
-    const { userId } = req.body;
+    const userId = req.body.userId; // Assuming userId is sent in the body
 
     // Check if the user has already applied for this job
-    const existingApplication = await Applications.findOne({ jobId, userId });
+    const existingApplication = await Applications.findOne({ job: jobId, user: userId });
 
     if (existingApplication) {
       return res.status(400).json({ success: false, message: 'You have already applied for this job.' });
@@ -20,12 +53,12 @@ export const applyForJob = async (req, res) => {
     // Proceed with the application if not already applied
     const newApplication = new Applications({
       job: jobId,
-     user: userId,
-     resume: req.file.path, // Store the file path or URL
-     name: req.body.name,
-     email: req.body.email,
-     phone: req.body.phone,
-     coverLetter: req.body.coverLetter
+      user: userId,
+      resume: req.file.path, // Store the file path of the uploaded resume
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      coverLetter: req.body.coverLetter
     });
 
     await newApplication.save();

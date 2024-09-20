@@ -18,7 +18,7 @@ const CompanyDashboard = () => {
                 Post a Job
               </button>
             </Link>
-            <Link to="/company-listed-jobs">
+            <Link to="/company-applications">
               <button className="bg-white text-teal-600 px-6 py-3 rounded-lg font-semibold hover:bg-teal-100 transition duration-300">
                 View Applications
               </button>
@@ -61,7 +61,7 @@ const CompanyDashboard = () => {
             <div className="absolute inset-x-0 top-0 h-1 bg-teal-500"></div>
             <h3 className="text-2xl font-bold mb-4">View Applications</h3>
             <p className="text-gray-600 mb-6">See who’s applied to your open positions and review their profiles.</p>
-            <Link to="/company-listed-jobs">
+            <Link to="/company-applications">
               <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition duration-300">
                 View Applications
               </button>
