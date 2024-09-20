@@ -72,7 +72,8 @@ const Navbar = ({ user, onClick, onLogout }) => {
         <Link to="/company-homepage" className="text-gray-700 hover:text-blue-500">Home</Link>
         <Link to="/company-dashboard" className="text-gray-700 hover:text-blue-500">Dashboard</Link>
         <Link to="/company-listed-jobs" className="text-gray-700 hover:text-blue-500">Listed Jobs</Link>
-        <Link to="/company-settings" className="text-gray-700 hover:text-blue-500">Company Settings</Link>
+        <Link to="/applications" className="text-gray-700 hover:text-blue-500">Applications</Link>
+        <Link to="/company-profile" className="text-gray-700 hover:text-blue-500">Profile</Link>
       </>
     );
   };

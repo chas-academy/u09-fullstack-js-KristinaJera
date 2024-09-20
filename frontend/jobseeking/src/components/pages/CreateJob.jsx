@@ -92,10 +92,11 @@ const CreateJob = ({ companyId }) => {
   };
 
   return (
-    <section className="text-gray-600 body-font h-screen flex items-center justify-center">
-      <div className="container lg:w-2/3 px-10">
+    <section className="text-gray-600 body-font h-screen flex flex-col items-center justify-center">
+       <h1 className="text-3xl font-bold text-indigo-600 text-center mb-6">Post your jobs! And attract talents!</h1>
+     <div className="container lg:w-2/3 px-10">
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {/* Form fields... */}
           <div className="">
             <label htmlFor="jobTitle" className="block text-gray-700">Job Title</label>
@@ -105,7 +106,7 @@ const CreateJob = ({ companyId }) => {
               name="jobTitle"
               value={formData.jobTitle}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300" 
               required
             />
           </div>
@@ -117,8 +118,8 @@ const CreateJob = ({ companyId }) => {
               name="jobType"
               value={formData.jobType}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
-              required
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
+             required
             />
           </div>
           <div className="">
@@ -129,7 +130,7 @@ const CreateJob = ({ companyId }) => {
               name="location"
               value={formData.location}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
@@ -141,7 +142,7 @@ const CreateJob = ({ companyId }) => {
               name="salary"
               value={formData.salary}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
@@ -153,7 +154,7 @@ const CreateJob = ({ companyId }) => {
               name="vacancies"
               value={formData.vacancies}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
@@ -165,7 +166,7 @@ const CreateJob = ({ companyId }) => {
               name="experiences"
               value={formData.experiences}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
             />
           </div>
           <div className="md:col-span-2">
@@ -175,7 +176,7 @@ const CreateJob = ({ companyId }) => {
               name="desc"
               value={formData.detail[0].desc}
               onChange={handleDetailChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
@@ -186,14 +187,14 @@ const CreateJob = ({ companyId }) => {
               name="requirements"
               value={formData.detail[0].requirements}
               onChange={handleDetailChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded"
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
           <div className="mb-4 md:col-span-2">
             <button
               type="submit"
-              className="text-white bg-blue-500 border-0 py-2 px-4 focus:outline-none hover:bg-blue-600 rounded"
+              className="text-white bg-indigo-600 border-0 py-2 px-4 focus:outline-none hover:bg-blue-600 rounded"
             >
               Create Job
             </button>
