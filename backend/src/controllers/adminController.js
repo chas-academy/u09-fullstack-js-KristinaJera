@@ -2,7 +2,7 @@ import Admin from '../models/adminModel.js';
 import Users from '../models/userModel.js';
 import Companies from '../models/companiesModel.js';
 import Jobs from '../models/jobsModel.js';
-
+import bcrypt from 'bcrypt';
 // Create an admin
 export const createAdmin = async (req, res) => {
     const { username, email, password } = req.body;
@@ -28,14 +28,30 @@ export const createUser = async (req, res) => {
     const { firstName, lastName, email, password, contact, location, jobTitle, about } = req.body;
 
     try {
-        const userExists = await Users.findOne({ email });
-        if (userExists) return res.status(400).json({ message: 'User already exists' });
+        // Log the incoming request body
+        console.log("Request body:", req.body);
 
+        // Check if the user already exists
+        console.log("Checking if user exists with email:", email);
+        const userExists = await Users.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        // Check if password is provided
+        if (!password) {
+            return res.status(400).json({ message: 'Password is required' });
+        }
+
+        // Hash the password before saving
+        const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+
+        // Create a new user
         const user = await Users.create({
             firstName,
             lastName,
             email,
-            password, // Consider hashing the password before saving
+            password: hashedPassword, // Use the hashed password
             contact,
             location,
             jobTitle,
@@ -50,9 +66,46 @@ export const createUser = async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: error.message, stack: error.stack });
     }
 };
+// export const createUser = async (req, res) => {
+//     const { firstName, lastName, email, password, contact, location, jobTitle, about } = req.body;
+
+//     try {
+//         const userExists = await Users.findOne({ email });
+//         if (userExists) return res.status(400).json({ message: 'User already exists' });
+
+//         // Check if password is provided
+//         if (!password) return res.status(400).json({ message: 'Password is required' });
+
+//         // Hash the password before saving
+//         const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+
+//         const user = await Users.create({
+//             firstName,
+//             lastName,
+//             email,
+//             password: hashedPassword, // Use the hashed password
+//             contact,
+//             location,
+//             jobTitle,
+//             about,
+//             role: 'user' // Set default role to 'user'
+//         });
+
+//         const token = await user.createJWT();
+//         res.status(201).json({
+//             success: true,
+//             message: 'User created successfully',
+//             token
+//         });
+//     } catch (error) {
+//         console.error('Error creating user:', error); // Log error to console
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 
 // Create a new company by admin
 export const createCompany = async (req, res) => {
