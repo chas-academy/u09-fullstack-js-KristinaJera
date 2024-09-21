@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ConfirmationModal from "../ConfirmationModal";
-import Modal from "react-modal"; 
+import Modal from "react-modal";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -20,7 +20,7 @@ const UsersPage = () => {
     role: "",
   });
   const [isCreateConfirmationModalOpen, setIsCreateConfirmationModalOpen] =
-    useState(false); 
+    useState(false);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
 
@@ -61,17 +61,17 @@ const UsersPage = () => {
       contact: "",
       location: "",
       role: "",
-    }); 
+    });
   };
 
   const handleOpenDeleteModal = (user) => {
     setSelectedUser(user);
-    setIsDeleteConfirmationModalOpen(true); 
+    setIsDeleteConfirmationModalOpen(true);
   };
   const handleDeleteUser = async () => {
     if (!selectedUser) {
       console.error("No user selected for deletion");
-      return; 
+      return;
     }
 
     const token = localStorage.getItem("authToken");
@@ -125,7 +125,7 @@ const UsersPage = () => {
       contact: "",
       location: "",
       role: "",
-    }); 
+    });
     setIsCreateModalOpen(true);
   };
   // Function to close the create user modal
@@ -140,7 +140,7 @@ const UsersPage = () => {
 
   const handleSubmitCreate = async () => {
     const token = localStorage.getItem("authToken");
-    console.log("Submitting data:", formData); 
+    console.log("Submitting data:", formData);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/admin/create-user",
@@ -313,11 +313,11 @@ const UsersPage = () => {
           isOpen={isModalOpen}
           onRequestClose={handleCloseModal}
           contentLabel="Update User"
-          className="flex items-center justify-center fixed inset-0 z-50 outline-none"
+          className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full m-auto transform transition-all duration-300">
-            <h2 className="text-2xl font-semibold text-center mb-4 text-indigo-600">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-600">
               Update User
             </h2>
             <form
@@ -326,96 +326,111 @@ const UsersPage = () => {
                 handleUpdateUser();
               }}
             >
-              <div className="mb-4">
-                <label>First Name</label>
-                <input
-                  type="text"
-                  value={formData.firstName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, firstName: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                  required
-                />
-              </div>
-              <div>
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  value={formData.lastName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lastName: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                />
-              </div>
-              <div>
-                <label>Password</label>
-                <input
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                  required
-                />
+              {/* Responsive Grid Form Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700">First Name</label>
+                  <input
+                    type="text"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Last Name</label>
+                  <input
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Password</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Contact</label>
+                  <input
+                    type="text"
+                    value={formData.contact}
+                    onChange={(e) =>
+                      setFormData({ ...formData, contact: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={formData.location}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div className="lg:col-span-2">
+                  <label className="block text-gray-700">Role</label>
+                  <select
+                    value={formData.role}
+                    onChange={(e) =>
+                      setFormData({ ...formData, role: e.target.value })
+                    }
+                    className="mt-1 w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+                    required
+                  >
+                    <option value="" disabled>
+                      Select a role
+                    </option>
+                    <option value="user">User</option>
+                    {/* Add more options if necessary */}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                />
-              </div>
-              <div>
-                <label>Contact</label>
-                <input
-                  type="text"
-                  value={formData.contact}
-                  onChange={(e) =>
-                    setFormData({ ...formData, contact: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                />
-              </div>
-              <div>
-                <label>Location</label>
-                <input
-                  type="text"
-                  value={formData.location}
-                  onChange={(e) =>
-                    setFormData({ ...formData, location: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                />
-              </div>
-              <div>
-                <label>Role</label>
-                <select
-                  value={formData.role}
-                  onChange={(e) =>
-                    setFormData({ ...formData, role: e.target.value })
-                  }
-                  className="mt-1 w-full p-3 border border-gray-300 rounded focus:ring focus:ring-indigo-300"
-                  required
-                >
-                  <option value="" disabled>
-                    Select a role
-                  </option>
-                  <option value="user">User</option>
-                </select>
-              </div>
-              <div className="flex justify-end mt-5">
+              {/* Buttons */}
+              <div className="flex justify-end mt-5 lg:col-span-2">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="mr-2 text-indigo-500 bg-gray-300 border-0 py-2 px-4                                 rounded"
+                  className="mr-2 text-indigo-500 bg-gray-300 border-0 py-2 px-4 rounded"
                 >
                   Cancel
                 </button>
@@ -429,6 +444,7 @@ const UsersPage = () => {
             </form>
           </div>
         </Modal>
+
         {/* Update Confirmation Modal */}
         <ConfirmationModal
           isOpen={isUpdateConfirmationModalOpen}
@@ -443,11 +459,11 @@ const UsersPage = () => {
           isOpen={isCreateModalOpen}
           onRequestClose={handleCloseCreateModal}
           contentLabel="Create User"
-          className="flex items-center justify-center fixed inset-0 z-50 outline-none"
+          className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full m-auto transform transition-all duration-300">
-            <h2 className="text-2xl font-semibold text-center mb-4 text-indigo-700">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-700">
               Create User
             </h2>
             <form
@@ -456,97 +472,106 @@ const UsersPage = () => {
                 handleOpenCreateConfirmationModal();
               }}
             >
-              <div>
-                <label>First Name</label>
-                <input
-                  type="text"
-                  value={formData.firstName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, firstName: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                                 "
-                />
-              </div>
-              <div>
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  value={formData.lastName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lastName: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                                 "
-                />
-              </div>
-              <div>
-                <label>Password</label>
-                <input
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-         "
-                  required
-                />
+              {/* Form fields */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700">First Name</label>
+                  <input
+                    type="text"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Last Name</label>
+                  <input
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Password</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Contact</label>
+                  <input
+                    type="text"
+                    value={formData.contact}
+                    onChange={(e) =>
+                      setFormData({ ...formData, contact: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={formData.location}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  />
+                </div>
+
+                <div className="lg:col-span-2">
+                  <label className="block text-gray-700">Role</label>
+                  <select
+                    value={formData.role}
+                    onChange={(e) =>
+                      setFormData({ ...formData, role: e.target.value })
+                    }
+                    className="mt-1 w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+                    required
+                  >
+                    <option value="" disabled>
+                      Select a role
+                    </option>
+                    <option value="user">User</option>
+                    {/* Add more options if necessary */}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                                 "
-                />
-              </div>
-              <div>
-                <label>Contact</label>
-                <input
-                  type="text"
-                  value={formData.contact}
-                  onChange={(e) =>
-                    setFormData({ ...formData, contact: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                                 "
-                />
-              </div>
-              <div>
-                <label>Location</label>
-                <input
-                  type="text"
-                  value={formData.location}
-                  onChange={(e) =>
-                    setFormData({ ...formData, location: e.target.value })
-                  }
-                  className="mt-1 w-full p-2 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                                 "
-                />
-              </div>
-              <div>
-                <label>Role</label>
-                <select
-                  value={formData.role}
-                  onChange={(e) =>
-                    setFormData({ ...formData, role: e.target.value })
-                  }
-                  className="mt-1 w-full p-3 border border-gray-300 rounded focus:ring focus-ring-indigo-700
-                 "
-                  required
-                >
-                  <option value="" disabled>
-                    Select a role
-                  </option>
-                  <option value="user">User</option>
-                </select>
-              </div>
+              {/* Buttons */}
               <div className="flex justify-end mt-5">
                 <button
                   type="button"
@@ -565,6 +590,7 @@ const UsersPage = () => {
             </form>
           </div>
         </Modal>
+
         {/* Create Confirmation Modal */}
         <ConfirmationModal
           isOpen={isCreateConfirmationModalOpen}
