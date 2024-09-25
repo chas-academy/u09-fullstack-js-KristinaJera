@@ -8,8 +8,7 @@ const UsersPage = () => {
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUpdateConfirmationModalOpen, setIsUpdateConfirmationModalOpen] =
-    useState(false);
+  const [isUpdateConfirmationModalOpen, setIsUpdateConfirmationModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",

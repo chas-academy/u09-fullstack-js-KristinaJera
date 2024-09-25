@@ -70,65 +70,31 @@ export const createUser = async (req, res) => {
         res.status(500).json({ message: error.message, stack: error.stack });
     }
 };
-// export const createUser = async (req, res) => {
-//     const { firstName, lastName, email, password, contact, location, jobTitle, about } = req.body;
-
-//     try {
-//         const userExists = await Users.findOne({ email });
-//         if (userExists) return res.status(400).json({ message: 'User already exists' });
-
-//         // Check if password is provided
-//         if (!password) return res.status(400).json({ message: 'Password is required' });
-
-//         // Hash the password before saving
-//         const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-
-//         const user = await Users.create({
-//             firstName,
-//             lastName,
-//             email,
-//             password: hashedPassword, // Use the hashed password
-//             contact,
-//             location,
-//             jobTitle,
-//             about,
-//             role: 'user' // Set default role to 'user'
-//         });
-
-//         const token = await user.createJWT();
-//         res.status(201).json({
-//             success: true,
-//             message: 'User created successfully',
-//             token
-//         });
-//     } catch (error) {
-//         console.error('Error creating user:', error); // Log error to console
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 
 // Create a new company by admin
 export const createCompany = async (req, res) => {
-    const { name, address, industry, email, contact, website } = req.body;
+    const { companyName, email, password, contact, location, profileUrl, about } = req.body;
 
     try {
         const companyExists = await Companies.findOne({ email });
         if (companyExists) return res.status(400).json({ message: 'Company already exists' });
 
         const company = await Companies.create({ 
-            name,
-            address,
-            industry,
+            companyName,
             email,
+            password,
             contact,
-            website
+            location,
+            profileUrl,
+            about
         });
 
-        const token = await company.createJWT();
+        const token = company.createJWT(); // Generate token after creation
         res.status(201).json({
             success: true,
             message: 'Company created successfully',
-            token
+            token,
+            company
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -183,22 +149,22 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-// CRUD operations for companies
+// Get all companies
 export const getAllCompanies = async (req, res) => {
     try {
-        const companies = await Companies.find();
+        const companies = await Companies.find().select('-password'); // Exclude password from the response
         res.status(200).json(companies);
     } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error('Error fetching companies:', error);
         res.status(500).json({ message: error.message });
     }
 };
-
+// Get company by ID
 export const getCompanyById = async (req, res) => {
     const { companyId } = req.params;
 
     try {
-        const company = await Companies.findById(companyId);
+        const company = await Companies.findById(companyId).select('-password');
         if (!company) return res.status(404).json({ message: 'Company not found' });
         res.status(200).json(company);
     } catch (error) {
@@ -206,12 +172,13 @@ export const getCompanyById = async (req, res) => {
     }
 };
 
+// Update company
 export const updateCompany = async (req, res) => {
     const { companyId } = req.params;
     const updateData = req.body;
 
     try {
-        const company = await Companies.findByIdAndUpdate(companyId, updateData, { new: true });
+        const company = await Companies.findByIdAndUpdate(companyId, updateData, { new: true, runValidators: true }).select('-password');
         if (!company) return res.status(404).json({ message: 'Company not found' });
         res.status(200).json(company);
     } catch (error) {
@@ -219,6 +186,7 @@ export const updateCompany = async (req, res) => {
     }
 };
 
+// Delete company
 export const deleteCompany = async (req, res) => {
     const { companyId } = req.params;
 
@@ -230,7 +198,6 @@ export const deleteCompany = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 // CRUD operations for jobs
 export const getAllJobs = async (req, res) => {
     try {
