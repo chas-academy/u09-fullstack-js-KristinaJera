@@ -13,17 +13,20 @@ const UsersPage = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    password: "",
+    confirmPassword: '',
     email: "",
     contact: "",
     location: "",
     role: "",
   });
+  const [passwordError, setPasswordError] = useState('');
   const [isCreateConfirmationModalOpen, setIsCreateConfirmationModalOpen] =
     useState(false);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("authToken");
       try {
@@ -35,14 +38,34 @@ const UsersPage = () => {
         );
         setUsers(response.data);
       } catch (err) {
-        setError(
-          err.response ? err.response.data.message : "Something went wrong"
-        );
+        setError(err.response ? err.response.data.message : "Something went wrong");
       }
     };
-
     fetchUsers();
   }, []);
+
+  const handleSubmit = (e, actionType) => {
+    e.preventDefault(); // Prevent the form's default submission behavior
+  
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return; // Stop form submission if passwords don't match
+    }
+  
+    // If passwords match, clear the error
+    setPasswordError('');
+  
+    // Decide between "create" and "update" logic based on the actionType
+    if (actionType === "create") {
+      // Proceed with the logic for creating a new user
+      handleOpenCreateConfirmationModal(); // Open the create confirmation modal
+    } else if (actionType === "update") {
+      // Proceed with the logic for updating an existing user
+      handleUpdateUser(); // Call the function to update the user
+    }
+  };
+  
 
   const handleOpenModal = (user) => {
     setSelectedUser(user);
@@ -60,6 +83,8 @@ const UsersPage = () => {
       contact: "",
       location: "",
       role: "",
+      password: "",
+      confirmPassword: '',
     });
   };
 
@@ -78,6 +103,7 @@ const UsersPage = () => {
       await axios.delete(
         `http://localhost:3000/api/admin/users/${selectedUser._id}`,
         {
+          method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         }
       );
@@ -124,6 +150,8 @@ const UsersPage = () => {
       contact: "",
       location: "",
       role: "",
+      password: "",
+      confirmPassword: '',
     });
     setIsCreateModalOpen(true);
   };
@@ -147,7 +175,7 @@ const UsersPage = () => {
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      );
+      ); 
       setUsers((prevUsers) => [...prevUsers, response.data]);
       handleCloseCreateModal();
     } catch (error) {
@@ -161,7 +189,7 @@ const UsersPage = () => {
           : "Error occurred during user creation"
       );
     }
-  };
+   };
 
   return (
     <section className="text-gray-600 body-font">
@@ -320,13 +348,10 @@ const UsersPage = () => {
               Update User
             </h2>
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdateUser();
-              }}
-            >
+  onSubmit={(e) => handleSubmit(e, "update")} // Pass the actionType "update"
+>
               {/* Responsive Grid Form Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <div>
                   <label className="block text-gray-700">First Name</label>
                   <input
@@ -365,6 +390,23 @@ const UsersPage = () => {
                     required
                   />
                 </div>
+
+                <div>
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            value={formData.confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+          {/* Show password error */}
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
+        </div>
 
                 <div>
                   <label className="block text-gray-700">Email</label>
@@ -465,14 +507,17 @@ const UsersPage = () => {
             <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-700">
               Create User
             </h2>
-            <form
+            {/* <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleOpenCreateConfirmationModal();
               }}
-            >
+            > */}
+            <form
+  onSubmit={(e) => handleSubmit(e, "create")} // Pass the actionType "create"
+>
               {/* Form fields */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <div>
                   <label className="block text-gray-700">First Name</label>
                   <input
@@ -511,6 +556,23 @@ const UsersPage = () => {
                     required
                   />
                 </div>
+
+                <div>
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            value={formData.confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+          {/* Show password error */}
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
+        </div>
 
                 <div>
                   <label className="block text-gray-700">Email</label>
@@ -604,3 +666,5 @@ const UsersPage = () => {
 };
 
 export default UsersPage;
+
+

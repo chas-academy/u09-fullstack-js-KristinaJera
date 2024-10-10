@@ -14,12 +14,14 @@ const CompaniesPage = () => {
     companyName: "",
     email: "",
     password: "",
+    confirmPassword: '',
     contact: "",
     location: "",
     about: "",
     role: "", 
-
   });
+  
+  const [passwordError, setPasswordError] = useState('');
   const [isCreateConfirmationModalOpen, setIsCreateConfirmationModalOpen] = useState(false);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] = useState(false);
 
@@ -39,6 +41,27 @@ const CompaniesPage = () => {
     fetchCompanies();
   }, []);
 
+  const handleSubmit = (e, actionType) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    // Perform any necessary validation, e.g., checking for required fields
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return; // Stop submission if validation fails
+    }
+  
+    // If passwords match, clear the error
+    setPasswordError('');
+
+    // Check if you need to create or update a company
+    if (actionType === "create") {
+      handleOpenCreateConfirmationModal(); // Logic for creating a new company
+    } else if (actionType === "update") {
+      handleUpdateCompany(); // Logic for updating an existing company
+    }
+  };
+  
+
   const handleOpenModal = (company) => {
     setSelectedCompany(company);
     setFormData(company);
@@ -52,6 +75,7 @@ const CompaniesPage = () => {
       companyName: "",
       email: "",
       password: "",
+      confirmPassword: '',
       contact: "",
       location: "",
       about: "",
@@ -115,6 +139,7 @@ const CompaniesPage = () => {
       companyName: "",
       email: "",
       password: "",
+      confirmPassword: '',
       contact: "",
       location: "",
       about: "",
@@ -310,12 +335,9 @@ const CompaniesPage = () => {
             <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-600">
             Update Company
             </h2>
-              <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleUpdateCompany();
-          }}
-        >
+            <form
+  onSubmit={(e) => handleSubmit(e, "update")} // Call handleSubmit with "update"
+>
             {/* Responsive Grid Form Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div>
@@ -327,6 +349,30 @@ const CompaniesPage = () => {
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
               required
             />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <label className="block text-gray-700">Password</label>
+            <input
+              type="password"
+              value={formData.password || ''}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <label className="block text-gray-700">Confirm Password</label>
+            <input
+              type="password"
+              value={formData.confirmPassword || ''}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+              required
+            />
+              {/* Show password error */}
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
             <label className="block text-gray-700">Email</label>
@@ -423,11 +469,8 @@ const CompaniesPage = () => {
               Create Company
             </h2>
             <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleOpenCreateConfirmationModal();
-          }}
-        >
+  onSubmit={(e) => handleSubmit(e, "create")} // Call handleSubmit with "create"
+>
 
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                 <div>
@@ -459,6 +502,20 @@ const CompaniesPage = () => {
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
               required
             />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <label className="block text-gray-700">Confirm Password</label>
+            <input
+              type="password"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+              required
+            />
+              {/* Show password error */}
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
             <label className="block  text-gray-700">Contact</label>
