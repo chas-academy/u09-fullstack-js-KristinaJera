@@ -21,7 +21,7 @@ const AdminDash = () => {
         <p className="text-gray-600 text-center mb-8">
           Take action on users, companies, and reports with the links below.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           <div className="relative bg-white p-6 shadow-md rounded-lg transform hover:scale-105 transition-transform duration-300">
             <h3 className="text-2xl font-bold mb-4">All Users</h3>
@@ -52,17 +52,6 @@ const AdminDash = () => {
               </button>
             </Link>
           </div>
-
-          <div className="relative bg-white p-6 shadow-md rounded-lg transform hover:scale-105 transition-transform duration-300">
-            <h3 className="text-2xl font-bold mb-4">Admin Settings</h3>
-            <p className="text-gray-600 mb-6">Configure admin settings and manage roles.</p>
-            <Link to="/admin-settings">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                Go to Settings
-              </button>
-            </Link>
-          </div>
-
         </div>
       </section>
       

@@ -1,7 +1,11 @@
 import express from 'express';
 import {
     createAdmin,
-    // adminLogin,
+    getAdminById,
+    getAllAdmins,
+    deleteAdmin,
+    updateAdmin,
+    createUser,
     getAllUsers,
     getUserById,
     updateUser,
@@ -9,8 +13,7 @@ import {
     getAllCompanies,
     getCompanyById,
     updateCompany,
-    deleteCompany,
-    createUser, 
+    deleteCompany, 
     createCompany
 } from '../controllers/adminController.js';
 import { adminAuth } from '../middlewares/authMiddleware.js';
@@ -18,8 +21,11 @@ import { adminAuth } from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 // Admin-related routes
-router.post('/create', createAdmin); // Route to create a new admin
-// router.post('/login', adminLogin); // Route for admin login
+router.post('/create-admin', adminAuth, createAdmin); // Route to create a new admin
+router.get('/admins', adminAuth, getAllAdmins);
+router.put('/admins/:adminId', adminAuth, updateAdmin);
+router.delete('/admins/:adminId', adminAuth, deleteAdmin);
+router.get('/admins/:adminId', adminAuth, getAdminById);
 
 // User management routes
 router.get('/users', adminAuth, getAllUsers); // Get all users
@@ -36,5 +42,7 @@ router.put('/companies/:companyId', adminAuth, updateCompany); // Update company
 router.delete('/companies/:companyId', adminAuth, deleteCompany); // Delete company by ID
 // Route to create a new company account
 router.post('/create-company', adminAuth, createCompany);
+
+
 
 export default router;

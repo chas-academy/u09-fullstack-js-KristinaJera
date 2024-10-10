@@ -354,7 +354,7 @@ const CompaniesPage = () => {
             <label className="block text-gray-700">Password</label>
             <input
               type="password"
-              value={formData.password || ''}
+              value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
               required
@@ -364,7 +364,7 @@ const CompaniesPage = () => {
             <label className="block text-gray-700">Confirm Password</label>
             <input
               type="password"
-              value={formData.confirmPassword || ''}
+              value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
               required

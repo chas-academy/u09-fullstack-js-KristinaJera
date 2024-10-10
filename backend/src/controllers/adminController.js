@@ -3,21 +3,86 @@ import Users from '../models/userModel.js';
 import Companies from '../models/companiesModel.js';
 import Jobs from '../models/jobsModel.js';
 import bcrypt from 'bcrypt';
+
+
 // Create an admin
 export const createAdmin = async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
+        // Check if the admin already exists
         const adminExist = await Admin.findOne({ email });
         if (adminExist) return res.status(400).json({ message: 'Admin already exists' });
 
+        // Create the new admin
         const admin = await Admin.create({ username, email, password });
-        const token = admin.createJWT();
+
+        const token = admin.createJWT(); // Assuming createJWT() is a method defined in your Admin model
+
         res.status(201).json({
             success: true,
             message: 'Admin created successfully',
             token
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all admins
+export const getAllAdmins = async (req, res) => {
+    try {
+        const admins = await Admin.find().select('-password'); // Exclude password from the response
+        res.status(200).json(admins);
+    } catch (error) {
+        console.error('Error fetching admins:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get admin by ID
+export const getAdminById = async (req, res) => {
+    const { adminId } = req.params;
+
+    try {
+        const admin = await Admin.findById(adminId).select('-password'); // Exclude password
+        if (!admin) return res.status(404).json({ message: 'Admin not found' });
+        res.status(200).json(admin);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Update an admin
+export const updateAdmin = async (req, res) => {
+    const { adminId } = req.params;
+    const updateData = req.body;
+
+    try {
+        // Optionally hash the password if it's included in the update
+        if (updateData.password) {
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(updateData.password, salt);
+        }
+
+        const admin = await Admin.findByIdAndUpdate(adminId, updateData, { new: true });
+        if (!admin) return res.status(404).json({ message: 'Admin not found' });
+
+        res.status(200).json(admin);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Delete an admin
+export const deleteAdmin = async (req, res) => {
+    const { adminId } = req.params;
+
+    try {
+        const admin = await Admin.findByIdAndDelete(adminId);
+        if (!admin) return res.status(404).json({ message: 'Admin not found' });
+
+        res.status(200).json({ message: 'Admin deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -213,7 +278,10 @@ export const getAllJobs = async (req, res) => {
 // Export functions
 export default {
     createAdmin,
-    // adminLogin,
+    getAdminById,
+    getAllAdmins,
+    deleteAdmin,
+    updateAdmin,
     getAllUsers,
     getUserById,
     updateUser,

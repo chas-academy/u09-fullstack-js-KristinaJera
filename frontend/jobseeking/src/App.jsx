@@ -22,6 +22,8 @@ import CompanyProfile from './components/pages/CompanyProfile';
 import CompanyJobApplications from './components/pages/CompanyJobApplications';
 import UsersPage from './components/pages/UsersPage';
 import CompaniesPage from './components/pages/CompaniesPage';
+import AdminReports from './components/pages/AdminReports';
+import AdminsPage from './components/pages/AdminsPage';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -113,6 +115,16 @@ if (loading) {
         <Route path="/admin-dashboard" element={
           <ProtectedRoute requiredRole="admin">
             <AdminDash />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-reports" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminReports/>
+          </ProtectedRoute>
+        } />
+        <Route path="/admins-page" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminsPage/>
           </ProtectedRoute>
         } />
         <Route path="/user-homepage" element={

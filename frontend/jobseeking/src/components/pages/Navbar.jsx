@@ -265,7 +265,7 @@ useEffect(() => {
         <Link to="/users-page" className="text-gray-700 hover:text-blue-500">All Users</Link>
         <Link to="/companies-page" className="text-gray-700 hover:text-blue-500">All Companies</Link>
         <Link to="/admin-reports" className="text-gray-700 hover:text-blue-500">Admin Reports</Link>
-        <Link to="/admin-settings" className="text-gray-700 hover:text-blue-500">Admin Settings</Link>
+        <Link to="/admins-page" className="text-gray-700 hover:text-blue-500">All Admins</Link>
       </>
     );
   };
