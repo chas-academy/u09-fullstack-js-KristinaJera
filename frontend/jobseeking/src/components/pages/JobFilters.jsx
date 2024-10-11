@@ -54,7 +54,10 @@ const JobFilters = ({
   }, []);
 
   return (
-    <div className="mb-1 flex flex-wrap items-center gap-2 sm:gap-4">
+    <div className="px-2 py-10 bg-gradient-to-r from-blue-300 to-purple-300">
+   <h1 className="text-4xl font-bold text-blue-800 text-center mb-2">Discover Your Dream Job Today!</h1>
+  <p className='text-blue-800 text-center mb-10'>Explore the best opportunities tailored just for you!</p>
+ <div className="flex flex-wrap items-center gap-2 sm:gap-4 container mx-auto mb-8 px-5 lg:px-10 w-full">
       {/* Search input */}
       <div className="relative flex-1 min-w-[200px]" ref={searchRef}>
         <input
@@ -65,7 +68,7 @@ const JobFilters = ({
             setIsJobDropdownOpen(true);
           }}
           placeholder="Search jobs..."
-          className="border p-2 rounded w-full pr-8"
+          className="bg-gradient-to-r from-blue-100 to-purple-100 border p-2 rounded w-full"
         />
         {searchQuery && (
           <button
@@ -105,7 +108,7 @@ const JobFilters = ({
             setIsLocationDropdownOpen(true);
           }}
           placeholder="Location..."
-          className="border p-2 rounded w-full pr-8"
+          className="bg-gradient-to-r from-blue-100 to-purple-100 border p-2 rounded w-full"
         />
         {selectedLocation && (
           <button
@@ -140,7 +143,7 @@ const JobFilters = ({
         <select
           value={selectedExperience}
           onChange={(e) => setSelectedExperience(e.target.value)}
-          className="border p-2 rounded w-full pr-8"
+          className=" bg-gradient-to-r from-blue-100 to-purple-100 border p-2 rounded w-full"
         >
           <option value="">Experience (years)</option>
           {[...Array(31).keys()].map(num => (
@@ -162,7 +165,7 @@ const JobFilters = ({
         <select
           value={selectedJobType}
           onChange={(e) => setSelectedJobType(e.target.value)}
-          className="border p-2 rounded w-full pr-8"
+          className=" bg-gradient-to-r from-blue-100 to-purple-100 border p-2 rounded w-full"
         >
           <option value="">Select Job Type</option>
           <option value="Full-Time">Full-Time</option>
@@ -180,11 +183,11 @@ const JobFilters = ({
       </div>
   
       {/* Sort dropdown */}
-      <div className="relative ">
+      <div className="relative flex-1 min-w-[200px] ">
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="border p-2 rounded w-full pr-8"
+          className="bg-gradient-to-r from-blue-100 to-purple-100 border p-2 rounded w-full"
         >
           <option value="">Sort By</option>
           <option value="az">A-Z</option>
@@ -195,7 +198,7 @@ const JobFilters = ({
         {sortOrder && (
           <button
             onClick={() => setSortOrder('')}
-            className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute top-2 right-6 text-gray-500"
           >
             &#x2715;
           </button>
@@ -203,6 +206,7 @@ const JobFilters = ({
       </div>
   
       {/* Clear All button */}
+      <div className="relative w-full sm:w-auto mt-2 sm:mt-0">
       <button
         onClick={() => {
           setSearchQuery('');
@@ -211,18 +215,20 @@ const JobFilters = ({
           setSelectedLocation('');
           setSortOrder('');
         }}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all flex-none"
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all w-full sm:w-auto"
       >
         Clear All
       </button>
+      </div>
   
       {/* Search button */}
       <button
         onClick={handleSearch}
-        className="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 transition-all flex-none"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all w-full sm:w-auto"
       >
         Search
       </button>
+    </div>
     </div>
   );  
 };

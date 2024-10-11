@@ -132,7 +132,7 @@ const SingleJob = () => {
     <section className="relative text-gray-600 body-font">
       <div className="container px-5 py-20 mx-auto flex flex-col lg:flex-row">
         {/* Job Information */}
-        <div className={`transition-all duration-500 ease-in-out ${showForm ? 'lg:w-1/2' : 'lg:w-2/3'} mx-auto p-8 shadow-lg bg-white rounded-lg`}>
+        <div className={`transition-all duration-500 ease-in-out ${showForm ? 'lg:w-1/2' : 'lg:w-2/3'} mx-auto p-8 shadow-indigo-600 shadow-lg bg-white rounded-lg`}>
           {job && (
             <div className="flex flex-col text-center w-full mb-10">
               <h1 className="text-2xl font-medium text-gray-900">{job.jobTitle}</h1>
@@ -175,7 +175,7 @@ const SingleJob = () => {
 
         {/* Application Form */}
         {showForm && !hasApplied && (
-          <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg bg-white rounded-lg right-0 top-0 h-full ml-5 lg:block hidden">
+          <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg shadow-indigo-600 bg-white rounded-lg right-0 top-0 h-full ml-5 lg:block hidden">
             <h2 className="text-2xl font-bold mb-4">Application Form</h2>
             {successMessage && <div className="mb-4 text-green-500">{successMessage}</div>}
             {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
@@ -314,4 +314,3 @@ const SingleJob = () => {
 }
 
 export default SingleJob;
-
