@@ -189,11 +189,18 @@ export const getUserById = async (req, res) => {
     }
 };
 
+// Update user
 export const updateUser = async (req, res) => {
     const { userId } = req.params;
-    const updateData = req.body;
+    const updateData = { ...req.body }; // Create a copy of req.body
 
     try {
+        // Check if password is provided in the updateData
+        if (updateData.password) {
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(updateData.password, salt);
+        }
+
         const user = await Users.findByIdAndUpdate(userId, updateData, { new: true });
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.status(200).json(user);
@@ -240,9 +247,15 @@ export const getCompanyById = async (req, res) => {
 // Update company
 export const updateCompany = async (req, res) => {
     const { companyId } = req.params;
-    const updateData = req.body;
+    const updateData = { ...req.body }; // Create a copy of req.body
 
     try {
+        // Check if password is provided in the updateData
+        if (updateData.password) {
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(updateData.password, salt);
+        }
+
         const company = await Companies.findByIdAndUpdate(companyId, updateData, { new: true, runValidators: true }).select('-password');
         if (!company) return res.status(404).json({ message: 'Company not found' });
         res.status(200).json(company);

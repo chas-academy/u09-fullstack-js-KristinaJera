@@ -24,6 +24,7 @@ import UsersPage from './components/pages/UsersPage';
 import CompaniesPage from './components/pages/CompaniesPage';
 import AdminReports from './components/pages/AdminReports';
 import AdminsPage from './components/pages/AdminsPage';
+import UserProfile from './components/pages/UserProfile';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -137,6 +138,11 @@ if (loading) {
                 { value: 'senior', title: 'Senior-Level' }
               ]}
             />
+          </ProtectedRoute>
+        } />
+         <Route path="/user-profile" element={
+          <ProtectedRoute requiredRole="user">
+            <UserProfile/>
           </ProtectedRoute>
         } />
         <Route path="/company-homepage" element={

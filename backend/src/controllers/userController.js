@@ -86,3 +86,53 @@ export const getUser = async (req, res, next) => {
     })
     }
 };
+
+export const getUserProfile = async (req, res) => {
+  try {
+      const userId = req.user.userId; // User ID from the token
+      const user = await Users.findById(userId).select('-password');
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      // Make sure profileUrl is included in the user document
+      res.status(200).json({ message: 'User profile fetched successfully', data: user });
+  } catch (error) {
+      console.error("Error fetching user profile:", error);
+      res.status(500).json({ message: 'Error fetching user profile', error: error.message });
+  }
+};
+
+
+// Update User Profile Controller
+export const updateUserProfile = async (req, res) => {
+  try {
+      const userId = req.user.userId; // Extract user ID from authenticated request
+      const { firstName, lastName, email, contact, location, jobTitle, about, profileUrl } = req.body;
+
+      // Find the user and update their profile
+      const user = await Users.findByIdAndUpdate(
+          userId,
+          {
+              firstName,
+              lastName,
+              email,
+              contact,
+              location,
+              jobTitle,
+              about,
+              profileUrl,
+          },
+          { new: true, runValidators: true } // Return the updated document and run validators
+      );
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Return the updated user data
+      res.status(200).json({ message: 'Profile updated successfully', data: user });
+  } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: 'Error updating profile', error: error.message });
+  }
+};

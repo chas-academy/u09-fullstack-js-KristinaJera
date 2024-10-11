@@ -7,12 +7,12 @@ import multer from 'multer';
 const router = express.Router();
 
 router.post('/get-company-profile', userAuth, getCompanyProfile);
+router.get('/get-company-profile', userAuth, getCompanyProfile);
 router.post('/get-company-joblisting', userAuth, getCompanyJobListing);
-router.get('/', getCompanies);
-router.get('/get-company/:id', getCompanyById);
+router.get('/', userAuth, getCompanies);
+router.get('/get-company/:id', userAuth, getCompanyById);
 router.put('/update-company-profile', userAuth, updateCompanyProfile);
 router.get('/companies', getAllCompanies);
-// Job creation route (authenticated companies only)
 router.post('/company-create-job/:companyId', userAuth, createJob);
 router.get('/company/:companyId/applications', userAuth, getCompanyApplications);
 

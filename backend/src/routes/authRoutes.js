@@ -16,10 +16,6 @@ const router = express.Router();
 router.post("/register", limiter, register);
 router.post("/user/login", limiter, signIn);
 router.post("/admin/login", limiter, signInAdmin);
-
-
-// router.post("/admin/login", limiter, signInAdmin);
-// router.post('/companies/login', limiter, companySignIn);  // Add this route for company login
 router.post('/companies/login', (req, res, next) => {
     console.log('Company login route hit');  // Log this message to check
     companySignIn(req, res, next);  // Call the actual login handler

@@ -125,11 +125,15 @@ export const signIn = async (req, res, next) => {
         if (!email || !password) return next("Please Provide User Credentials");
 
         const user = await Users.findOne({ email }).select("+password");
-        if (!user) return next("Invalid email or password");
-
+        if (!user) {
+            console.log('User not found');
+            return next("Invalid email or password");
+          }
         const isMatch = await user.comparePassword(password);
-        if (!isMatch) return next("Invalid email or password");
-
+        if (!isMatch) {
+            console.log('Password does not match');
+            return next("Invalid email or password");
+          }
         user.password = undefined;
 
         const token = user.createJWT();
