@@ -132,185 +132,187 @@ const SingleJob = () => {
     <section className="relative text-gray-600 body-font">
       <div className="container px-5 py-20 mx-auto flex flex-col lg:flex-row">
         {/* Job Information */}
-        <div className={`transition-all duration-500 ease-in-out ${showForm ? 'lg:w-1/2' : 'lg:w-2/3'} mx-auto p-8 shadow-indigo-600 shadow-lg bg-white rounded-lg`}>
-          {job && (
-            <div className="flex flex-col text-center w-full mb-10">
-              <h1 className="text-2xl font-medium text-gray-900">{job.jobTitle}</h1>
-              <p className="leading-relaxed text-lg mt-4">{job.detail?.[0]?.desc}</p>
-              <p className="mt-2">Location: {job.location}</p>
-              <p>Salary: ${job.salary?.toLocaleString()}</p>
-              <p>Vacancies: {job.vacancies}</p>
-              <p>Experience Required: {job.experience}</p>
-              <p>Company: {job.company ? job.company.companyName : 'N/A'}</p>
-              <h2 className="text-xl font-bold mt-8">Job Requirements:</h2>
-              <ul className="list-disc list-inside">
-                <li>{job.detail?.[0]?.requirements}</li>
-              </ul>
+        <div className={`transition-all duration-500 ease-in-out ${showForm ? 'lg:w-1/2' : 'lg:w-2/3'} mx-auto p-8 shadow-lg bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg`}>
+        {job && (
+          <div className="flex flex-col text-center w-full mb-10">
+            <h1 className="text-3xl font-semibold text-gray-900">{job.jobTitle}</h1>
+            <p className="leading-relaxed text-lg mt-4 text-gray-700">{job.detail?.[0]?.desc}</p>
+            <p className="mt-2 text-gray-800 font-medium">Location: {job.location}</p>
+            <p className="text-gray-800">Salary: ${job.salary?.toLocaleString()}</p>
+            <p className="text-gray-800">Vacancies: {job.vacancies}</p>
+            <p className="text-gray-800">Experience Required: {job.experience}</p>
+            <p className="text-gray-800">Company: {job.company ? job.company.companyName : 'N/A'}</p>
 
-              {/* Apply Button */}
-              {hasApplied ? (
-                <button 
-                  className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
-                  onClick={() => {
-                    setErrorMessage('You have already applied for this job.');
-                    setSuccessMessage(null);
-                  }}  >
-                  Apply Here
-                </button>
-              ) : (
-                <button 
-                  className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
-                  onClick={() => setShowForm(true)} // Show form when button is clicked
-                >
-                  Apply Here
-                </button>
-              )}
+            <h2 className="text-xl font-bold mt-8 text-indigo-600">Job Requirements:</h2>
+            <ul className="list-disc list-inside text-left mt-4 text-gray-700">
+              <li>{job.detail?.[0]?.requirements}</li>
+            </ul>
 
-              {/* Display Messages */}
-              {errorMessage && <div className="mt-6 text-red-500">{errorMessage}</div>}
-              {successMessage && <div className="mt-6 text-green-500">{successMessage}</div>}
+            {/* Apply Button */}
+            {hasApplied ? (
+              <button
+                className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
+                onClick={() => {
+                  setErrorMessage('You have already applied for this job.');
+                  setSuccessMessage(null);
+                }}
+              >
+                Apply Here
+              </button>
+            ) : (
+              <button
+                className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
+                onClick={() => setShowForm(true)}
+              >
+                Apply Here
+              </button>
+            )}
+
+            {/* Display Messages */}
+            {errorMessage && <div className="mt-6 text-red-500">{errorMessage}</div>}
+            {successMessage && <div className="mt-6 text-green-500">{successMessage}</div>}
+          </div>
+        )}
+      </div>
+
+      {/* Application Form */}
+      {showForm && !hasApplied && (
+        <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg right-0 top-0 h-full ml-5 lg:block hidden">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">Application Form</h2>
+          {successMessage && <div className="mb-4 text-green-500">{successMessage}</div>}
+          {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
+          <form className="flex flex-col space-y-4" onSubmit={handleFormSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Your Phone Number"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
+            />
+            <textarea
+              name="coverLetter"
+              placeholder="Why are you a good fit for this role?"
+              value={formData.coverLetter}
+              onChange={handleInputChange}
+              className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
+            />
+            <div className="flex flex-col">
+              <label className="mb-2 font-medium text-gray-700">Upload your CV</label>
+              <input
+                type="file"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+                onChange={handleInputChange}
+                className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
+              />
             </div>
-          )}
-        </div>
 
-        {/* Application Form */}
+            <button
+              type="submit"
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-200"
+            >
+              Submit Application
+            </button>
+
+            <button
+              type="button"
+              className="mt-3 bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Application Form Container (Mobile Screens) */}
+      <div className={`fixed inset-x-0 bottom-0 transition-transform bg-gradient-to-r from-purple-200 to-blue-200 duration-500 ease-in-out ${showForm && !hasApplied ? 'translate-y-0' : 'translate-y-full'} bg-white shadow-lg rounded-lg p-8 z-50 lg:hidden`}>
         {showForm && !hasApplied && (
-          <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg shadow-indigo-600 bg-white rounded-lg right-0 top-0 h-full ml-5 lg:block hidden">
+          <>
             <h2 className="text-2xl font-bold mb-4">Application Form</h2>
             {successMessage && <div className="mb-4 text-green-500">{successMessage}</div>}
             {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
-            <form className="flex flex-col space-y-3" onSubmit={handleFormSubmit}>
-              <input 
-                type="text" 
+            <form className="flex flex-col space-y-4" onSubmit={handleFormSubmit}>
+              <input
+                type="text"
                 name="name"
-                placeholder="Your Name" 
+                placeholder="Your Name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
               />
-              <input 
-                type="email" 
+              <input
+                type="email"
                 name="email"
-                placeholder="Your Email" 
+                placeholder="Your Email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
               />
-              <input 
-                type="tel" 
+              <input
+                type="tel"
                 name="phone"
-                placeholder="Your Phone Number" 
+                placeholder="Your Phone Number"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
               />
-              <textarea 
+              <textarea
                 name="coverLetter"
-                placeholder="Why are you a good fit for this role?" 
+                placeholder="Why are you a good fit for this role?"
                 value={formData.coverLetter}
                 onChange={handleInputChange}
-                className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
               />
               <div className="flex flex-col">
-                <label className="mb-1 font-medium">Upload your CV</label>
-                <input 
-                  type="file" 
+                <label className="mb-2 font-medium text-gray-700">Upload your CV</label>
+                <input
+                  type="file"
                   name="resume"
-                  accept=".pdf,.doc,.docx" 
+                  accept=".pdf,.doc,.docx"
                   onChange={handleInputChange}
-                  className="p-4 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2                   focus:ring-indigo-500"
+                  className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 bg-white shadow-inner"
                 />
               </div>
 
-              <button 
-                type="submit" 
-                className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
+              <button
+                type="submit"
+                className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-200"
               >
                 Submit Application
               </button>
 
-              <button 
-                type="button" 
-                className="mt-3 bg-red-500 text-white px-6 py-2 rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
-                onClick={() => setShowForm(false)} // Hide form on cancel
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* Application Form Container (Mobile Screens) */}
-        <div className={`fixed inset-x-0 bottom-0 transition-transform duration-500 ease-in-out ${showForm && !hasApplied ? 'translate-y-0' : 'translate-y-full'} bg-white shadow-lg rounded-lg p-8 z-50 lg:hidden`}>
-          {showForm && !hasApplied && (
-            <>
-              <h2 className="text-2xl font-bold mb-4">Application Form</h2>
-              {successMessage && <div className="mb-4 text-green-500">{successMessage}</div>}
-              {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
-              <form className="flex flex-col space-y-3" onSubmit={handleFormSubmit}>
-                <input 
-                  type="text" 
-                  name="name"
-                  placeholder="Your Name" 
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <input 
-                  type="email" 
-                  name="email"
-                  placeholder="Your Email" 
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <input 
-                  type="tel" 
-                  name="phone"
-                  placeholder="Your Phone Number" 
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <textarea 
-                  name="coverLetter"
-                  placeholder="Why are you a good fit for this role?" 
-                  value={formData.coverLetter}
-                  onChange={handleInputChange}
-                  className="p-2 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <div className="flex flex-col">
-                  <label className="mb-1 font-medium">Upload your CV</label>
-                  <input 
-                    type="file" 
-                    name="resume"
-                    accept=".pdf,.doc,.docx" 
-                    onChange={handleInputChange}
-                    className="p-4 border text-md border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200"
-                >
-                  Submit Application
-                </button>
-
-                <button 
-                  type="button" 
-                  className="mt-3 bg-red-500 text-white px-6 py-2 rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
-                  onClick={() => setShowForm(false)} // Hide form on cancel
-                >
-                  Cancel
-                </button>
-              </form>
-            </>
-          )}
-        </div>
-      </div>
-    </section>
-  );
+              <button
+                type="button"
+                className="mt-3 bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-400 focus:outline-none               focus:ring-2 focus:ring-red-500 transition duration-200"
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
+          </form>
+        </>
+      )}
+    </div>
+  </div>
+</section>
+);
 }
 
 export default SingleJob;

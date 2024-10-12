@@ -92,7 +92,7 @@ const CompanyListedJobs = ({ companyId }) => {
         <div className="flex lg:justify-end mb-10">
           <button
             onClick={handleCreateJob}
-            className="text-white bg-green-500 border-0 py-2 px-4 focus:outline-none hover:bg-green-600 rounded"
+            className="text-white bg-indigo-500 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded"
           >
             Create New Job Listing
           </button>
@@ -104,10 +104,10 @@ const CompanyListedJobs = ({ companyId }) => {
         ) : (
           <div className="flex flex-wrap -mx-4 -my-8">
             {jobs.map(job => (
-              <div key={job._id} className="py-8 px-4 lg:w-1/3">
-                <div className="h-full flex flex-col items-start bg-white shadow-lg rounded-lg p-6">
+              <div key={job._id} className="py-8 px-4 lg:w-1/3 ">
+                <div className="transition-transform transform hover:scale-105 duration-300 h-full flex flex-col items-start bg-white shadow-lg rounded-lg p-6 bg-gradient-to-r from-indigo-200 to-indigo-400">
                   <div className="flex-grow">
-                    <h2 className="tracking-widest text-xs title-font font-medium text-indigo-500 mb-1">
+                    <h2 className="tracking-widest text-s title-font font-medium text-indigo-700 mb-1">
                       Job: {job.jobTitle || 'Job title not available'}
                     </h2>
                     <p className="leading-relaxed mb-1">Location: {job.location || 'N/A'}</p>
@@ -122,7 +122,7 @@ const CompanyListedJobs = ({ companyId }) => {
                   <div className="flex space-x-4 mt-4">
                     <button
                       onClick={() => handleUpdate(job)}
-                      className="text-white bg-blue-500 border-0 py-2 px-4 focus:outline-none hover:bg-blue-600 rounded"
+                      className="text-white bg-indigo-500 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded"
                     >
                       Update
                     </button>

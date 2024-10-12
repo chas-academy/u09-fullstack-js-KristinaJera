@@ -131,7 +131,7 @@ const UserAllJobs = () => {
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="px-2 pb-5">
+      <div className="pb-5">
         {/* Filter Section */}
         <div className='px-2 py-5 bg-gradient-to-r from-blue-300 to-purple-300 mb-5'>
         <h1  className="text-4xl font-bold text-blue-800 text-center py-10 ">Search For Your Dream Job</h1>

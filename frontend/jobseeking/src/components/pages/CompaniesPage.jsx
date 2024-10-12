@@ -323,130 +323,149 @@ const CompaniesPage = () => {
          actionType="delete"
       />
 
-      {/* Update Company Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleCloseModal}
-        contentLabel="Update Company"
-        className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-     >
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-600">
-            Update Company
-            </h2>
-            <form
-  onSubmit={(e) => handleSubmit(e, "update")} // Call handleSubmit with "update"
+  {/* Update Company Modal */}
+<Modal
+  isOpen={isModalOpen}
+  onRequestClose={handleCloseModal}
+  contentLabel="Update Company"
+  className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
+  overlayClassName="fixed inset-0 bg-black bg-opacity-50"
 >
-            {/* Responsive Grid Form Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div>
-            <label className="block text-gray-700">Company Name</label>
-            <input
-              type="text"
-              value={formData.companyName}
-              onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-              required
-            />
-              {/* Show password error */}
+  <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
+    <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-600">
+      Update Company
+    </h2>
+    <form onSubmit={(e) => handleSubmit(e, "update")}>
+      {/* Responsive Grid Form Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+        <div>
+          <label className="block text-gray-700">Company Name</label>
+          <input
+            type="text"
+            value={formData.companyName}
+            onChange={(e) =>
+              setFormData({ ...formData, companyName: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Password</label>
+          <input
+            type="password"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            value={formData.confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+            required
+          />
+          {/* Show password error */}
           {passwordError && (
             <p className="text-red-500 text-sm mt-1">{passwordError}</p>
           )}
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Email</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Contact</label>
-            <input
-              type="text"
-              value={formData.contact}
-              onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Location</label>
-            <input
-              type="text"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">About</label>
-            <textarea
-              value={formData.about}
-              onChange={(e) => setFormData({ ...formData, about: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-            />
-          </div>
-          <div className="lg:col-span-2">
-                  <label className="block text-gray-700">Role</label>
-                  <select
-                    value={formData.role}
-                    onChange={(e) =>
-                      setFormData({ ...formData, role: e.target.value })
-                    }
-                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-                    required
-                  >
-                    <option value="" disabled>
-                      Select a role
-                    </option>
-                    <option value="company">Company</option>
-                  </select>
-                </div>
-              </div>
-           {/* Buttons */}
-           <div className="flex justify-end mt-5 lg:col-span-2">
-            <button
-              type="button"
-              // onClick={handleCloseModal}
-              onClick={() => setIsModalOpen(false)}
-              className="mr-2 text-indigo-500 bg-gray-300 border-0 py-2 px-4 rounded"
-                  >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="text-white bg-indigo-500 hover:bg-indigo-600 py-2 px-4 rounded"
-              >
-              Update
-            </button>
-          </div>
-        </form>
         </div>
-      </Modal>
+
+        <div>
+          <label className="block text-gray-700">Email</label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Contact</label>
+          <input
+            type="text"
+            value={formData.contact}
+            onChange={(e) =>
+              setFormData({ ...formData, contact: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Location</label>
+          <input
+            type="text"
+            value={formData.location}
+            onChange={(e) =>
+              setFormData({ ...formData, location: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+          />
+        </div>
+
+        <div className="lg:col-span-2">
+          <label className="block text-gray-700">About</label>
+          <textarea
+            value={formData.about}
+            onChange={(e) =>
+              setFormData({ ...formData, about: e.target.value })
+            }
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+          />
+        </div>
+
+        <div className="lg:col-span-2">
+          <label className="block text-gray-700">Role</label>
+          <select
+            value={formData.role}
+            onChange={(e) =>
+              setFormData({ ...formData, role: e.target.value })
+            }
+            className="mt-1 w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
+            required
+          >
+            <option value="" disabled>
+              Select a role
+            </option>
+            <option value="company">Company</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end mt-5 lg:col-span-2">
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(false)}
+          className="mr-2 text-indigo-500 bg-gray-300 border-0 py-2 px-4 rounded"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="text-white bg-indigo-500 hover:bg-indigo-600 py-2 px-4 rounded"
+        >
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</Modal>
 
         {/* Update Confirmation Modal */}
          <ConfirmationModal
@@ -456,130 +475,135 @@ const CompaniesPage = () => {
            jobTitle={formData.name || "Company"}
            actionType="update"
          />
-      {/* Create Company Modal */}
-      <Modal
-        isOpen={isCreateModalOpen}
-        onRequestClose={handleCloseCreateModal}
-        contentLabel="Create Company"
-          className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
-          overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-         >
-       <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
-            <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-700">
-              Create Company
-            </h2>
-            <form
-  onSubmit={(e) => handleSubmit(e, "create")} // Call handleSubmit with "create"
+    {/* Create Company Modal */}
+<Modal
+  isOpen={isCreateModalOpen}
+  onRequestClose={handleCloseCreateModal}
+  contentLabel="Create Company"
+  className="flex items-center justify-center fixed inset-0 z-50 outline-none mt-16"
+  overlayClassName="fixed inset-0 bg-black bg-opacity-50"
 >
+  <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg lg:max-w-2xl w-full transform transition-all duration-300">
+    <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-700">
+      Create Company
+    </h2>
+    <form onSubmit={(e) => handleSubmit(e, "create")}>
+      {/* Form fields */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
+        <div>
+          <label className="block text-gray-700">Company Name</label>
+          <input
+            type="text"
+            value={formData.companyName}
+            onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+        </div>
 
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-gray-700">Company Name</label>
-                   <input
-              type="text"
-              value={formData.companyName}
-              onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-              className=" w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
-            <label className="block  text-gray-700">Email</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
-            <label className="block  text-gray-700">Password</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-              required
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <label className="block text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-300 transition-colors"
-              required
-            />
-              {/* Show password error */}
+        <div>
+          <label className="block text-gray-700">Email</label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Password</label>
+          <input
+            type="password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Confirm Password</label>
+          <input
+            type="password"
+            value={formData.confirmPassword}
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+          {/* Show password error */}
           {passwordError && (
             <p className="text-red-500 text-sm mt-1">{passwordError}</p>
           )}
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
-            <label className="block  text-gray-700">Contact</label>
-            <input
-              type="text"
-              value={formData.contact}
-              onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
-            <label className="block  text-gray-700">Location</label>
-            <input
-              type="text"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-2">
-            <label className="block  text-gray-700">About</label>
-            <textarea
-              value={formData.about}
-              onChange={(e) => setFormData({ ...formData, about: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-            />
-          </div>
-          <div className="lg:col-span-2">
-                  <label className="block text-gray-700">Role</label>
-                  <select
-                    value={formData.role}
-                    onChange={(e) =>
-                      setFormData({ ...formData, role: e.target.value })
-                    }
-                    className="mt-1 w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
-                    required
-                  >
-                    <option value="" disabled>
-                      Select a role
-                    </option>
-                    <option value="company">Company</option>
-                  </select>
-                </div>
-              </div>
-           {/* Buttons */}
-           <div className="flex justify-end mt-5">
-                <button
-                  type="button"
-                  onClick={() => setIsCreateModalOpen(false)}
-                  className="mr-2 text-indigo-700 bg-gray-300 border-0 py-2 px-4 rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="text-white bg-indigo-500 hover:bg-indigo-600 py-2 px-4 rounded"
-                >
-                  Create
-                </button>
-              </div>
-            </form>
-          </div>
-        </Modal>
+        </div>
 
+        <div>
+          <label className="block text-gray-700">Contact</label>
+          <input
+            type="text"
+            value={formData.contact}
+            onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700">Location</label>
+          <input
+            type="text"
+            value={formData.location}
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          />
+        </div>
+
+        <div className="lg:col-span-2">
+          <label className="block text-gray-700">About</label>
+          <textarea
+            value={formData.about}
+            onChange={(e) => setFormData({ ...formData, about: e.target.value })}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+          />
+        </div>
+
+        <div className="lg:col-span-2">
+          <label className="block text-gray-700">Role</label>
+          <select
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            className="mt-1 w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-700 transition-colors"
+            required
+          >
+            <option value="" disabled>
+              Select a role
+            </option>
+            <option value="company">Company</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end mt-5">
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(false)}
+          className="mr-2 text-indigo-700 bg-gray-300 border-0 py-2 px-4 rounded"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="text-white bg-indigo-500 hover:bg-indigo-600 py-2 px-4 rounded"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
+</Modal>
       {/* Create Confirmation Modal */}
       <ConfirmationModal
         isOpen={isCreateConfirmationModalOpen}

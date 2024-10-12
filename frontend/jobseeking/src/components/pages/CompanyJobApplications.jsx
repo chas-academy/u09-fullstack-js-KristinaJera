@@ -54,23 +54,23 @@ const CompanyJobApplications = ({ currentUser }) => {
           <p className="mt-4 text-lg text-indigo-500">Manage your applicants effectively and efficiently!</p>
           <p className="text-md text-indigo-500">Company: {currentUser.companyName}</p>
         </header>
-
+  
         {/* Applications List */}
         <div className="flex flex-wrap -mx-4 -my-8">
           {applications.length > 0 ? (
             applications.map((app) => (
               <div key={app._id} className="py-8 px-4 w-full md:w-1/2 lg:w-1/3">
-                <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
-                  <h3 className="text-lg font-semibold">{app.name}</h3>
+                <div className="transition-transform transform hover:scale-105 duration-300 h-full flex flex-col items-start bg-white shadow-lg rounded-lg p-6 bg-gradient-to-r from-indigo-200 to-indigo-400">
+                  <h3 className="text-lg font-semibold text-indigo-700">{app.name}</h3>
                   <p className="text-gray-700">Email: {app.email}</p>
                   <p className="text-gray-700">Phone: {app.phone}</p>
                   <p className="text-gray-700">Cover Letter: {app.coverLetter}</p>
-                  <p className={`text-gray-700 ${app.status === 'Accepted' ? 'text-green-500' : app.status === 'Rejected' ? 'text-red-500' : 'text-yellow-500'}`}>
+                  <p className={`text-gray-700 ${app.status === 'Accepted' ? 'text-green-700' : app.status === 'Rejected' ? 'text-red-700' : 'text-indigo-700'}`}>
                     Status: {app.status}
                   </p>
-                  <p className="text-gray-500">Date Applied: {new Date(app.dateApplied).toLocaleDateString()}</p>
+                  <p className="text-gray-600">Date Applied: {new Date(app.dateApplied).toLocaleDateString()}</p>
                   {app.resume && (
-                    <button onClick={() => handleResumeClick(app.resume)} className="text-indigo-500 hover:underline">
+                    <button onClick={() => handleResumeClick(app.resume)} className="text-indigo-600 hover:underline mt-2">
                       View Resume
                     </button>
                   )}
@@ -83,7 +83,7 @@ const CompanyJobApplications = ({ currentUser }) => {
         </div>
       </div>
     </section>
-  );
+  );  
 };
 
 // PropTypes validation

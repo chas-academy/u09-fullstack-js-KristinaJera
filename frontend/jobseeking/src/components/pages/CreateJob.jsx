@@ -87,31 +87,36 @@ const CreateJob = ({ companyId }) => {
       console.error('Error:', err);
       setError(err.response?.data?.message || 'An error occurred while creating the job');
     } finally {
-      handleCloseModal(); // Close modal after attempt
+      handleCloseModal(); 
     }
   };
 
+  const handleCancel = () => {
+    navigate('/company-listed-jobs');
+  };
+
   return (
-    <section className="text-gray-600 body-font h-screen flex flex-col items-center justify-center">
-       <h1 className="text-3xl font-bold text-indigo-600 text-center mb-6">Post your jobs! And attract talents!</h1>
-     <div className="container lg:w-2/3 px-10">
+    <section className="text-gray-700 body-font h-screen flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold text-indigo-600 text-center mb-6">Post your jobs! And attract talents!</h1>
+      <div className="container px-5 py-2 mx-auto">
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {/* Form fields... */}
-          <div className="">
-            <label htmlFor="jobTitle" className="block text-gray-700">Job Title</label>
+        <form onSubmit={handleSubmit} className="bg-white p-5 bg-gradient-to-r from-indigo-300 to-indigo-500 shadow-md rounded-lg w-5/6 lg:w-2/3 mx-auto">
+           {/* Responsive Grid Form Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <div>
+            <label htmlFor="jobTitle" className="block text-gray-800">Job Title</label>
             <input
               type="text"
               id="jobTitle"
               name="jobTitle"
               value={formData.jobTitle}
               onChange={handleInputChange}
-              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300" 
+              className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
               required
             />
           </div>
-          <div className="">
-            <label htmlFor="jobType" className="block text-gray-700">Job Type</label>
+          <div>
+            <label htmlFor="jobType" className="block text-gray-800">Job Type</label>
             <input
               type="text"
               id="jobType"
@@ -119,11 +124,11 @@ const CreateJob = ({ companyId }) => {
               value={formData.jobType}
               onChange={handleInputChange}
               className="w-full px-3 py-1 border border-gray-300 rounded focus:outline-none focus:border-indigo-600 transition-colors duration-300"
-             required
+              required
             />
           </div>
-          <div className="">
-            <label htmlFor="location" className="block text-gray-700">Location</label>
+          <div>
+            <label htmlFor="location" className="block text-gray-800">Location</label>
             <input
               type="text"
               id="location"
@@ -134,8 +139,8 @@ const CreateJob = ({ companyId }) => {
               required
             />
           </div>
-          <div className="">
-            <label htmlFor="salary" className="block text-gray-700">Salary</label>
+          <div>
+            <label htmlFor="salary" className="block text-gray-800">Salary</label>
             <input
               type="number"
               id="salary"
@@ -146,8 +151,8 @@ const CreateJob = ({ companyId }) => {
               required
             />
           </div>
-          <div className="">
-            <label htmlFor="vacancies" className="block text-gray-700">Vacancies</label>
+          <div>
+            <label htmlFor="vacancies" className="block text-gray-800">Vacancies</label>
             <input
               type="number"
               id="vacancies"
@@ -158,8 +163,8 @@ const CreateJob = ({ companyId }) => {
               required
             />
           </div>
-          <div className="">
-            <label htmlFor="experiences" className="block text-gray-700">Experience Required (years)</label>
+          <div>
+            <label htmlFor="experiences" className="block text-gray-800">Experience Required (years)</label>
             <input
               type="number"
               id="experiences"
@@ -170,7 +175,7 @@ const CreateJob = ({ companyId }) => {
             />
           </div>
           <div className="md:col-span-2">
-            <label htmlFor="desc" className="block text-gray-700">Job Description</label>
+            <label htmlFor="desc" className="block text-gray-800">Job Description</label>
             <textarea
               id="desc"
               name="desc"
@@ -181,7 +186,7 @@ const CreateJob = ({ companyId }) => {
             />
           </div>
           <div className="md:col-span-2">
-            <label htmlFor="requirements" className="block text-gray-700">Job Requirements</label>
+            <label htmlFor="requirements" className="block text-gray-800">Job Requirements</label>
             <textarea
               id="requirements"
               name="requirements"
@@ -191,17 +196,25 @@ const CreateJob = ({ companyId }) => {
               required
             />
           </div>
-          <div className="mb-4 md:col-span-2">
+          <div className="flex justify-end mt-5 lg:col-span-2">
             <button
               type="submit"
-              className="text-white bg-indigo-600 border-0 py-2 px-4 focus:outline-none hover:bg-blue-600 rounded"
-            >
+              className="text-white bg-indigo-900 hover:text-indigo-900 hover:bg-gray-300 py-2 px-4 rounded mr-2"
+              >
               Create Job
             </button>
+            <button
+              type="button"
+              onClick={handleCancel} // Cancel button functionality
+              className="text-indigo-900 bg-gray-300 border-0 py-2 px-4 rounded "
+          >
+              Cancel
+            </button>
+          </div>
           </div>
         </form>
-
-        <ConfirmationModal 
+  
+        <ConfirmationModal
           isOpen={modalIsOpen}
           onRequestClose={handleCloseModal}
           jobTitle={formData.jobTitle}
@@ -210,7 +223,7 @@ const CreateJob = ({ companyId }) => {
         />
       </div>
     </section>
-  );
+  );  
 };
 
 CreateJob.propTypes = {

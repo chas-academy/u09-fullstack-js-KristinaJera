@@ -507,12 +507,6 @@ const UsersPage = () => {
             <h2 className="text-2xl lg:text-3xl font-semibold text-center mb-4 text-indigo-700">
               Create User
             </h2>
-            {/* <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleOpenCreateConfirmationModal();
-              }}
-            > */}
             <form
   onSubmit={(e) => handleSubmit(e, "create")} // Pass the actionType "create"
 >
@@ -627,7 +621,6 @@ const UsersPage = () => {
                       Select a role
                     </option>
                     <option value="user">User</option>
-                    {/* Add more options if necessary */}
                   </select>
                 </div>
               </div>

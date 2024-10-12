@@ -50,7 +50,7 @@ const UserAppliedJobs = () => {
 
   return (
     <section className="text-gray-800 body-font">
-      <div className="px-5 py-12 mx-auto ">
+      <div className="pb-12 mx-auto ">
         <div className='bg-gradient-to-r from-blue-300 to-purple-300 py-10 mb-8'>
         <h1 className="text-4xl font-bold text-center mb-6">Your Job Applications</h1>
         <p className="text-lg text-center">Here are the jobs you have applied for:</p>
