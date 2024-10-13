@@ -16,7 +16,13 @@ import {
     deleteCompany, 
     createCompany
 } from '../controllers/adminController.js';
-import { adminAuth } from '../middlewares/authMiddleware.js';
+import { adminAuth, authMiddleware } from '../middlewares/authMiddleware.js';
+import {
+    getAllMessages,
+    markAsRead,
+    deleteMessage,
+    markAsUnread
+} from '../controllers/messageController.js';  // Import message controller
 
 const router = express.Router();
 
@@ -43,6 +49,10 @@ router.delete('/companies/:companyId', adminAuth, deleteCompany); // Delete comp
 // Route to create a new company account
 router.post('/create-company', adminAuth, createCompany);
 
-
+// Message management routes
+router.get('/messages', authMiddleware(['admin']), getAllMessages); // Get all messages
+router.put('/messages/:id/read', authMiddleware(['admin']), markAsRead); // Mark message as read
+router.delete('/messages/:id', authMiddleware(['admin']), deleteMessage); // Delete message
+router.put('/messages/:id/unread', authMiddleware(['admin']), markAsUnread); // Mark message as unread
 
 export default router;

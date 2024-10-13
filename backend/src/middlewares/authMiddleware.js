@@ -75,4 +75,32 @@ export const userAuth = async (req, res, next) => {
     res.status(403).json({ message: "Invalid token or access denied." });
   }
 };
-export default { userAuth, adminAuth, authenticateToken };
+
+
+// Role-based authentication middleware
+export const authMiddleware = (roles = []) => {
+  return (req, res, next) => {
+      const token = req.headers['authorization']?.split(' ')[1]; // Extract the token from the Bearer header
+
+      if (!token) {
+          return res.status(401).json({ message: 'No token provided' });
+      }
+
+      JWT.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+          if (err) {
+              return res.status(403).json({ message: 'Invalid token' });
+          }
+
+          req.user = user; // Set the user to the request for later use
+          
+          // Check user role
+          if (roles.length && !roles.includes(req.user.role)) {
+              return res.status(403).json({ message: 'Forbidden: User does not have required role' });
+          }
+
+          next();
+      });
+  };
+};
+
+export default { userAuth, adminAuth, authenticateToken, authMiddleware };
