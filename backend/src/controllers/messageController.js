@@ -59,3 +59,25 @@ export const markAsUnread = async (req, res) => {
         res.status(500).json({ error: 'Failed to update message status' });
     }
 };
+
+//  Function to handle message submission
+export const submitMessage = async (req, res) => {
+    try {
+        const { name, email, message, role} = req.body;
+
+        // Create a new message instance
+        const newMessage = new Messages({
+            name,
+            email,
+            message,
+            role, // Ensure this matches your schema
+        });
+
+        // Save message to the database
+        await newMessage.save();
+        return res.status(201).json({ success: true, message: 'Message saved successfully!' });
+    } catch (error) {
+        console.error('Error saving message:', error); // Log the error for debugging
+        return res.status(500).json({ success: false, message: error.message }); // Return the error message for more detail
+    }
+};

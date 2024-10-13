@@ -11,6 +11,7 @@ import applicationRoutes from "./src/routes/applicationRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import companyRoutes from "./src/routes/companiesRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
+import messageRoutes from "./src/routes/messageRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/api", applicationRoutes);
 app.use("/api-v1/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", companyRoutes);
+app.use("/api", messageRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/admin", adminRoutes);
 // Use error handling middleware

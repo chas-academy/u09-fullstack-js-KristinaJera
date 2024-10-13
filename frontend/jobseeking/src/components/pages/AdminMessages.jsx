@@ -14,15 +14,13 @@ const AdminMessages = () => {
         const token = localStorage.getItem('authToken');
         const response = await axios.get('http://localhost:3000/api/admin/messages', {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            'Authorization': `Bearer ${token}`,
+          },
         });
 
         console.log('Response:', response.data); // Log the response data
-              
         setMessages(response.data.messages || []); // Set messages directly
         setFilteredMessages(response.data.messages || []); // Set filtered messages initially
-      
       } catch (error) {
         console.error('Error fetching messages:', error); // Log error details
         setErrorMessage('Failed to fetch messages.');
@@ -40,7 +38,7 @@ const AdminMessages = () => {
     if (selectedFilter === 'all') {
       setFilteredMessages(messages);
     } else {
-      setFilteredMessages(messages.filter(msg => msg.profileType === selectedFilter));
+      setFilteredMessages(messages.filter(msg => msg.role === selectedFilter));
     }
   };
 
@@ -50,8 +48,8 @@ const AdminMessages = () => {
       const token = localStorage.getItem('authToken');
       await axios.delete(`http://localhost:3000/api/admin/messages/${id}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
       // Update local state after deletion
       setMessages(messages.filter(msg => msg._id !== id));
@@ -68,8 +66,8 @@ const AdminMessages = () => {
       const token = localStorage.getItem('authToken');
       await axios.put(`http://localhost:3000/api/admin/messages/${id}/read`, null, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
       // Update local state after marking as read
       setMessages(messages.map(msg => msg._id === id ? { ...msg, status: 'read' } : msg));
@@ -86,8 +84,8 @@ const AdminMessages = () => {
       const token = localStorage.getItem('authToken');
       await axios.put(`http://localhost:3000/api/admin/messages/${id}/unread`, null, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
       // Update local state after marking as unread
       setMessages(messages.map(msg => msg._id === id ? { ...msg, status: 'unread' } : msg));
@@ -127,7 +125,7 @@ const AdminMessages = () => {
             <tr>
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Message</th>
-              <th className="px-4 py-2">Profile Type</th>
+              <th className="px-4 py-2">Role</th>
               <th className="px-4 py-2">Status</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
@@ -137,7 +135,7 @@ const AdminMessages = () => {
               <tr key={message._id}>
                 <td className="border px-4 py-2">{message.email}</td>
                 <td className="border px-4 py-2">{message.message}</td>
-                <td className="border px-4 py-2">{message.profileType}</td>
+                <td className="border px-4 py-2">{message.role}</td> {/* Displaying the role */}
                 <td className="border px-4 py-2">{message.status}</td>
                 <td className="border px-4 py-2">
                   {/* Delete button */}

@@ -91,6 +91,7 @@ useEffect(() => {
         <Link to="/companies-page" className="text-gray-700 hover:text-blue-500">All Companies</Link>
         <Link to="/admin-reports" className="text-gray-700 hover:text-blue-500">Admin Reports</Link>
         <Link to="/admins-page" className="text-gray-700 hover:text-blue-500">All Admins</Link>
+        <Link to="/admin-messages" className="text-gray-700 hover:text-blue-500">Messages</Link>
       </>
     );
   };
