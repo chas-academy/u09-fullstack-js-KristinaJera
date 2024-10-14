@@ -1,6 +1,6 @@
 import express from "express";
 import {userAuth} from "../middlewares/authMiddleware.js";
-import {getUser, updateUser, getUserProfile, updateUserProfile} from "../controllers/userController.js";
+import {getUser, updateUser, getUserProfile, updateUserProfile, getUserMessages, replyToUserMessage} from "../controllers/userController.js";
 import { getAllUsers } from "../controllers/adminController.js";
 const router = express.Router();
 
@@ -17,7 +17,11 @@ router.post('/get-user-profile', userAuth, getUserProfile); // Ensure this match
 // Update User Profile Route
 router.put('/update-user-profile', userAuth, updateUserProfile);
 
+// Route to get user messages
+router.get('/user/messages', userAuth, getUserMessages);
 
+// Route to reply to a specific message
+router.post('/user/messages/:id/reply', userAuth, replyToUserMessage);
 
 
 export default router;

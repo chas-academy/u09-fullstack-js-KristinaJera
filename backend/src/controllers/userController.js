@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Users from "../models/userModel.js";
+import Messages from "../models/messageModel.js";
+
 
 export const updateUser = async (req, res, next) => {
   const {
@@ -135,4 +137,48 @@ export const updateUserProfile = async (req, res) => {
       console.error("Error updating profile:", error);
       res.status(500).json({ message: 'Error updating profile', error: error.message });
   }
+};
+
+export const getUserMessages = async (req, res) => {
+    try {
+        const userId = req.user.userId; // Extract userId from req.user
+        console.log('Fetching messages for user ID:', userId);
+
+        // Fetch messages where userId matches the authenticated user
+        const messages = await Messages.find({ userId: userId }).populate('conversation.sender');
+        console.log('Fetched messages:', messages);
+
+        res.json({ messages });
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ error: 'Failed to fetch messages.' });
+    }
+};
+
+
+// Reply to a message
+export const replyToUserMessage = async (req, res) => {
+    const { reply, sender } = req.body; // Accept reply and sender type
+    const messageId = req.params.id;
+
+    // Check for required fields
+    if (!reply || !sender) {
+        return res.status(400).json({ error: 'Reply and sender type are required' });
+    }
+
+    try {
+        const message = await Messages.findById(messageId);
+        if (!message) {
+            return res.status(404).json({ error: 'Message not found' });
+        }
+
+        // Append the reply to the conversation array
+        message.conversation.push({ sender, message: reply });
+        await message.save();
+
+        res.json({ message: 'Reply added successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to send reply.' });
+    }
 };

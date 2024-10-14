@@ -26,6 +26,7 @@ import AdminReports from './components/pages/AdminReports';
 import AdminsPage from './components/pages/AdminsPage';
 import UserProfile from './components/pages/UserProfile';
 import AdminMessages from './components/pages/AdminMessages';
+import UserMessages from './components/pages/UserMessages';
 
 export const ProtectedRoute = ({ children, requiredRole }) => {
   const token = Boolean(localStorage.getItem('authToken'));
@@ -151,6 +152,12 @@ if (loading) {
             <UserProfile/>
           </ProtectedRoute>
         } />
+         <Route path="/user-messages" element={
+          <ProtectedRoute requiredRole="user">
+            <UserMessages/>
+          </ProtectedRoute>
+        } />
+
         <Route path="/company-homepage" element={
           <ProtectedRoute requiredRole="company">
             <CompanyHomePage />

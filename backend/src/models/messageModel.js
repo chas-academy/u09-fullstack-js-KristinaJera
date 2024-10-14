@@ -10,6 +10,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+userId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Users', 
+},
   role: {
     type: String,
     enum: ['user', 'company', 'admin'],
@@ -24,8 +28,24 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  conversation: [{
+    sender: {
+      type: String,
+      enum: ['user', 'company', 'admin'], // Define who can send messages
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now, // Timestamp for each message in the conversation
+    },
+  }],
 });
 
+// Create the Messages model
 const Messages = mongoose.model("Messages", messageSchema);
 
 export default Messages;

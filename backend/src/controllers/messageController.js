@@ -60,24 +60,64 @@ export const markAsUnread = async (req, res) => {
     }
 };
 
-//  Function to handle message submission
 export const submitMessage = async (req, res) => {
     try {
-        const { name, email, message, role} = req.body;
+        const { name, email, message } = req.body;
 
-        // Create a new message instance
+        // Extract userId and role from the decoded JWT user
+        const userId = req.user.userId; // Ensure this is correctly set in your userAuth middleware
+        const role = req.user.role;
+
         const newMessage = new Messages({
             name,
             email,
             message,
-            role, // Ensure this matches your schema
+            userId, // Add the userId here
+            role,
         });
 
-        // Save message to the database
         await newMessage.save();
         return res.status(201).json({ success: true, message: 'Message saved successfully!' });
     } catch (error) {
-        console.error('Error saving message:', error); // Log the error for debugging
-        return res.status(500).json({ success: false, message: error.message }); // Return the error message for more detail
+        console.error('Error saving message:', error);
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
+
+export const replyToMessage = async (req, res) => {
+    try {
+        const { reply } = req.body; // Get the reply text from the request body
+        const messageId = req.params.id; // Get the message ID from the request parameters
+
+        // Validate reply text
+        if (!reply) {
+            return res.status(400).json({ error: 'Reply text is required' });
+        }
+
+        // Find the original message by ID
+        const message = await Messages.findById(messageId);
+
+        if (!message) {
+            return res.status(404).json({ error: 'Message not found' });
+        }
+
+        // Create a new reply object
+        const replyObject = {
+            sender: req.user.role, // The sender's role (user, company, admin)
+            message: reply,
+            timestamp: new Date(),
+        };
+
+        // Push the reply to the conversation array
+        message.conversation.push(replyObject);
+
+        // Save the updated message
+        await message.save();
+
+        res.status(200).json({ success: true, message: 'Reply sent successfully.' });
+    } catch (error) {
+        console.error('Error sending reply:', error);
+        res.status(500).json({ error: 'Failed to send reply.' });
+    }
+};
+

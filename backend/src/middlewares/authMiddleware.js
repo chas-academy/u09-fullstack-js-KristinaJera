@@ -87,19 +87,19 @@ export const authMiddleware = (roles = []) => {
       }
 
       JWT.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
-          if (err) {
-              return res.status(403).json({ message: 'Invalid token' });
-          }
-
-          req.user = user; // Set the user to the request for later use
-          
-          // Check user role
-          if (roles.length && !roles.includes(req.user.role)) {
-              return res.status(403).json({ message: 'Forbidden: User does not have required role' });
-          }
-
-          next();
-      });
+        if (err) {
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+    
+        console.log('Decoded User:', user);  // Check the role in the token payload
+        req.user = user;
+        
+        if (roles.length && !roles.includes(req.user.role)) {
+            return res.status(403).json({ message: 'Forbidden: User does not have required role' });
+        }
+    
+        next();
+    });    
   };
 };
 

@@ -21,7 +21,8 @@ import {
     getAllMessages,
     markAsRead,
     deleteMessage,
-    markAsUnread
+    markAsUnread,
+    replyToMessage
 } from '../controllers/messageController.js';  // Import message controller
 
 const router = express.Router();
@@ -54,5 +55,7 @@ router.get('/messages', authMiddleware(['admin']), getAllMessages); // Get all m
 router.put('/messages/:id/read', authMiddleware(['admin']), markAsRead); // Mark message as read
 router.delete('/messages/:id', authMiddleware(['admin']), deleteMessage); // Delete message
 router.put('/messages/:id/unread', authMiddleware(['admin']), markAsUnread); // Mark message as unread
+// Admin replies to a message
+router.post('/messages/:id/reply', authMiddleware(['admin']), replyToMessage);
 
 export default router;
