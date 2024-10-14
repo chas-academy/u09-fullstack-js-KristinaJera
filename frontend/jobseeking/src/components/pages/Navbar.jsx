@@ -107,6 +107,7 @@ useEffect(() => {
         <Link to="/company-listed-jobs" className="text-gray-700 hover:text-blue-500">Listed Jobs</Link>
         <Link to="/company-applications" className="text-gray-700 hover:text-blue-500">Applications</Link>
         <Link to="/company-profile" className="text-gray-700 hover:text-blue-500">Profile</Link>
+        <Link to="/company-messages" className="text-gray-700 hover:text-blue-500">Messages</Link>
       </>
     );
   };

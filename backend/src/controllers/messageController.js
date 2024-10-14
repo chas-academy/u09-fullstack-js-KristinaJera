@@ -121,3 +121,53 @@ export const replyToMessage = async (req, res) => {
     }
 };
 
+// Get company messages
+export const getCompanyMessages = async (req, res) => {
+    try {
+        const companyId = req.user.userId; // Extract company ID from req.user
+        console.log('Fetching messages for company ID:', companyId);
+
+        // Fetch messages where the company ID matches the authenticated user
+        const messages = await Messages.find({ userId: companyId }).populate('conversation.sender');
+        console.log('Fetched messages:', messages);
+
+        res.json({ messages });
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ error: 'Failed to fetch messages.' });
+    }
+};
+
+// Reply to a specific message
+export const replyToCompanyMessage = async (req, res) => {
+    const { reply } = req.body; // Get the reply text from the request body
+    const messageId = req.params.id; // Get the message ID from the request parameters
+
+    // Check for required fields
+    if (!reply) {
+        return res.status(400).json({ error: 'Reply text is required' });
+    }
+
+    try {
+        const message = await Messages.findById(messageId);
+        if (!message) {
+            return res.status(404).json({ error: 'Message not found' });
+        }
+
+        // Create a new reply object
+        const replyObject = {
+            sender: 'company', // The sender is the company
+            message: reply,
+            timestamp: new Date(),
+        };
+
+        // Append the reply to the conversation array
+        message.conversation.push(replyObject);
+        await message.save();
+
+        res.status(200).json({ success: true, message: 'Reply sent successfully.' });
+    } catch (error) {
+        console.error('Error sending reply:', error);
+        res.status(500).json({ error: 'Failed to send reply.' });
+    }
+};
