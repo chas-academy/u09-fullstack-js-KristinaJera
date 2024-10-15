@@ -60,6 +60,7 @@ export const markAsUnread = async (req, res) => {
     }
 };
 
+
 export const submitMessage = async (req, res) => {
     try {
         const { name, email, message } = req.body;

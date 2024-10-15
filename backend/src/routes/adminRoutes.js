@@ -19,10 +19,10 @@ import {
 import { adminAuth, authMiddleware } from '../middlewares/authMiddleware.js';
 import {
     getAllMessages,
+    replyToMessage,
     markAsRead,
     deleteMessage,
-    markAsUnread,
-    replyToMessage
+    markAsUnread
 } from '../controllers/messageController.js';  // Import message controller
 
 const router = express.Router();
