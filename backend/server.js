@@ -30,6 +30,11 @@ app.use(
 );
 
 app.use(express.json());
+
+const whitelist = [
+  "https://jseekingappp.netlify.app/",
+  "http://localhost:5173/"
+]
 // Use the routes
 app.use("/api", jobRoutes);
 app.use("/api", applicationRoutes);
