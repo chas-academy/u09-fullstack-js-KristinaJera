@@ -28,24 +28,26 @@ connectDB();
 //     methods: ["GET", "POST", "PUT", "DELETE"],
 //   })
 // );
-app.use(cors({
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
-
-app.use(express.json());
 
 const whitelist = [
   "https://jseekingappp.netlify.app/",
   "http://localhost:5173/"
 ]
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error("Not allowed by CORS")); // Reject the request
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
+
+app.use(express.json());
 // Use the routes
 app.use("/api", jobRoutes);
 app.use("/api", applicationRoutes);
