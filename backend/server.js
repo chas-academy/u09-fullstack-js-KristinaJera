@@ -1,9 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
 import connectDB from "./src/config/db.js";
-import router from "./src/routes/index.js";
 import errorMiddleware from "./src/middlewares/errorMiddleware.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import jobRoutes from "./src/routes/jobsRoutes.js";
@@ -21,24 +19,15 @@ const port = process.env.PORT || 3000;
 // MongoDB Connection
 connectDB();
 
-// CORS Configuration
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173", // Allow requests from your frontend server
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//   })
-// );
-
 const whitelist = [
   "https://jseekingappp.netlify.app/",
   "http://localhost:5173/"
 ]
 const corsOptions = {
-  origin: "*", // Allow all origins (for testing)
+  origin: "*", 
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true, // If you need to support credentials
+  credentials: true,
 };
-
 
 // Use CORS middleware
 app.use(cors(corsOptions));
