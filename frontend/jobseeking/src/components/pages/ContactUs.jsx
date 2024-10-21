@@ -26,7 +26,7 @@ const ContactUs = () => {
       const token = localStorage.getItem('authToken'); // Assuming you store JWT token in localStorage
 
       // Use formData in the Axios POST request
-      const response = await axios.post('http://localhost:3000/api/contact', {
+      const response = await axios.post('https://u09-fullstack-js-kristinajera.onrender.com/api/contact', {
         name,
         email,
         message,

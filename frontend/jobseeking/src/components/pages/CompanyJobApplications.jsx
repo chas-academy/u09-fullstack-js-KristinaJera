@@ -16,7 +16,7 @@ const CompanyJobApplications = ({ currentUser }) => {
       console.log("Token for update:", token); // Log the token
 
       const response = await axios.put(
-        `http://localhost:3000/api/applications/${applicationId}/status`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/applications/${applicationId}/status`,
         { status: newStatus },
         {
           headers: {
@@ -46,7 +46,7 @@ const CompanyJobApplications = ({ currentUser }) => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.delete(
-          `http://localhost:3000/api/delete-application/${applicationId}`,
+          `https://u09-fullstack-js-kristinajera.onrender.com/api/delete-application/${applicationId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -78,7 +78,7 @@ const CompanyJobApplications = ({ currentUser }) => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://localhost:3000/api/company-applications/${currentUser._id}`,
+          `https://u09-fullstack-js-kristinajera.onrender.com/api/company-applications/${currentUser._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

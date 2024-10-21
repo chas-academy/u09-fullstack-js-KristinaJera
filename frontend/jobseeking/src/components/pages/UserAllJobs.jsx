@@ -26,7 +26,7 @@ const UserAllJobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/find-jobs');
+        const response = await axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/find-jobs');
         if (response.data && response.data.success && Array.isArray(response.data.data)) {
           setJobs(response.data.data);
           // Populate dropdown options

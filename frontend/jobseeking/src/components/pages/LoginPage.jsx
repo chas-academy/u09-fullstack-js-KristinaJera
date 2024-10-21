@@ -20,13 +20,13 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
       // Determine the URL based on the login type
       switch (loginType) {
         case 'admin':
-          url = 'http://localhost:3000/api-v1/auth/admin/login';
+          url = 'https://u09-fullstack-js-kristinajera.onrender.com/api-v1/auth/admin/login';
           break;
         case 'company':
-          url = 'http://localhost:3000/api-v1/auth/companies/login';
+          url = 'https://u09-fullstack-js-kristinajera.onrender.com/api-v1/auth/companies/login';
           break;
         case 'user':
-          url = 'http://localhost:3000/api-v1/auth/user/login';
+          url = 'https://u09-fullstack-js-kristinajera.onrender.com/api-v1/auth/user/login';
           break;
         default:
           throw new Error('Invalid login type');

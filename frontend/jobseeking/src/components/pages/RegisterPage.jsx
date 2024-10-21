@@ -56,7 +56,7 @@ export const RegisterPage = ({ onClose }) => {
       let data = {};
 
       if (registerType === 'user') {
-        endpoint = 'http://localhost:3000/api-v1/auth/register'; // User registration
+        endpoint = 'https://u09-fullstack-js-kristinajera.onrender.com/api-v1/auth/register'; // User registration
         data = {
           firstName,
           lastName,
@@ -69,7 +69,7 @@ export const RegisterPage = ({ onClose }) => {
           about
         };
       } else {
-        endpoint = 'http://localhost:3000/api-v1/auth/register-company'; // Company registration
+        endpoint = 'https://u09-fullstack-js-kristinajera.onrender.com/api-v1/auth/register-company'; // Company registration
         data = {
           name,
           email,

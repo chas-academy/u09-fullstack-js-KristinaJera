@@ -31,7 +31,7 @@ const UsersPage = () => {
       const token = localStorage.getItem("authToken");
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/admin/users",
+          "https://u09-fullstack-js-kristinajera.onrender.com/api/admin/users",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -101,7 +101,7 @@ const UsersPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       await axios.delete(
-        `http://localhost:3000/api/admin/users/${selectedUser._id}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/admin/users/${selectedUser._id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -123,7 +123,7 @@ const UsersPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/admin/users/${selectedUser._id}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/admin/users/${selectedUser._id}`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -170,7 +170,7 @@ const UsersPage = () => {
     console.log("Submitting data:", formData);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/admin/create-user",
+        "https://u09-fullstack-js-kristinajera.onrender.com/api/admin/create-user",
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

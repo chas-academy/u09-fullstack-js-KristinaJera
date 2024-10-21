@@ -172,7 +172,7 @@ const UserMessages = () => {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:3000/api/user/messages', {
+        const response = await axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/user/messages', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -208,7 +208,7 @@ const UserMessages = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/user/messages/${selectedMessage._id}/reply`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/user/messages/${selectedMessage._id}/reply`,
         { reply: replyText, sender: 'user' },
         {
           headers: {
@@ -237,7 +237,7 @@ const UserMessages = () => {
   const deleteMessage = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.delete(`http://localhost:3000/api/user/messages/${id}`, {
+      await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/user/messages/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -266,7 +266,7 @@ const UserMessages = () => {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/user/messages/${id}/read`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/user/messages/${id}/read`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -285,7 +285,7 @@ const UserMessages = () => {
   const markAsUnread = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/user/messages/${id}/unread`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/user/messages/${id}/unread`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

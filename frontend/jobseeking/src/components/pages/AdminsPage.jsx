@@ -26,7 +26,7 @@ const AdminsPage = () => {
     const fetchAdmins = async () => {
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get("http://localhost:3000/api/admin/admins", {
+        const response = await axios.get("https://u09-fullstack-js-kristinajera.onrender.com/api/admin/admins", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAdmins(response.data);
@@ -87,7 +87,7 @@ const AdminsPage = () => {
 
     const token = localStorage.getItem("authToken");
     try {
-      await axios.delete(`http://localhost:3000/api/admin/admins/${selectedAdmin._id}`, {
+      await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/admin/admins/${selectedAdmin._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAdmins(admins.filter((admin) => admin._id !== selectedAdmin._id));
@@ -106,7 +106,7 @@ const AdminsPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/admin/admins/${selectedAdmin._id}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/admin/admins/${selectedAdmin._id}`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -148,7 +148,7 @@ const AdminsPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/admin/create-admin",
+        "https://u09-fullstack-js-kristinajera.onrender.com/api/admin/create-admin",
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

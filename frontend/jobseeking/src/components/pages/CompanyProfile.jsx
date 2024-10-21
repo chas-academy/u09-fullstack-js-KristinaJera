@@ -28,7 +28,7 @@ const CompanyProfile = () => {
 
             try {
                 const response = await axios.post(
-                    'http://localhost:3000/api/get-company-profile',
+                    'https://u09-fullstack-js-kristinajera.onrender.com/api/get-company-profile',
                     {},
                     {
                         headers: {
@@ -94,7 +94,7 @@ const CompanyProfile = () => {
                 const imageFormData = new FormData();
                 imageFormData.append('profileImage', formData.profileUrl);
                 
-                const uploadResponse = await axios.post('http://localhost:3000/api/upload-profile-image', imageFormData, {
+                const uploadResponse = await axios.post('https://u09-fullstack-js-kristinajera.onrender.com/api/upload-profile-image', imageFormData, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
@@ -104,7 +104,7 @@ const CompanyProfile = () => {
                 updatedData.profileUrl = uploadResponse.data.url;
             }
 
-            await axios.put('http://localhost:3000/api/update-company-profile', updatedData, {
+            await axios.put('https://u09-fullstack-js-kristinajera.onrender.com/api/update-company-profile', updatedData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

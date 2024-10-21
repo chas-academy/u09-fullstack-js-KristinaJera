@@ -22,7 +22,7 @@ const SingleJob = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/job/${id}`);
+        const response = await axios.get(`https://u09-fullstack-js-kristinajera.onrender.com/api/job/${id}`);
         if (response.data && response.data.success) {
           setJob(response.data.data);
         } else {
@@ -40,7 +40,7 @@ const SingleJob = () => {
       const userId = localStorage.getItem("userId");
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/has-applied/${id}/${userId}`
+          `https://u09-fullstack-js-kristinajera.onrender.com/api/has-applied/${id}/${userId}`
         );
         if (response.data && response.data.hasApplied) {
           setHasApplied(true);
@@ -91,7 +91,7 @@ const SingleJob = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/apply/${jobId}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/apply/${jobId}`,
         formDataToSend,
         {
           headers: {

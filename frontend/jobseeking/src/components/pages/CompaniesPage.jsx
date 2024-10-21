@@ -29,7 +29,7 @@ const CompaniesPage = () => {
     const fetchCompanies = async () => {
       const token = localStorage.getItem("authToken");
       try {
-        const response = await axios.get("http://localhost:3000/api/admin/companies", {
+        const response = await axios.get("https://u09-fullstack-js-kristinajera.onrender.com/api/admin/companies", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCompanies(response.data);
@@ -96,7 +96,7 @@ const CompaniesPage = () => {
 
     const token = localStorage.getItem("authToken");
     try {
-      await axios.delete(`http://localhost:3000/api/admin/companies/${selectedCompany._id}`, {
+      await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/admin/companies/${selectedCompany._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCompanies(companies.filter((company) => company._id !== selectedCompany._id));
@@ -115,7 +115,7 @@ const CompaniesPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/admin/companies/${selectedCompany._id}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/admin/companies/${selectedCompany._id}`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -162,7 +162,7 @@ const CompaniesPage = () => {
     const token = localStorage.getItem("authToken");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/admin/create-company",
+        "https://u09-fullstack-js-kristinajera.onrender.com/api/admin/create-company",
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

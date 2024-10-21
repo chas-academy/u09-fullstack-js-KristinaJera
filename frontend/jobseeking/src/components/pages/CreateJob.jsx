@@ -73,7 +73,7 @@ const CreateJob = ({ companyId }) => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:3000/api/company-create-job/${companyId}`, formData, {
+      const response = await axios.post(`https://u09-fullstack-js-kristinajera.onrender.com/api/company-create-job/${companyId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

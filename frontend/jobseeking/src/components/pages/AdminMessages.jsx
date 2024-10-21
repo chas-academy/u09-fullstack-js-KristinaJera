@@ -20,7 +20,7 @@ const AdminMessages = () => {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:3000/api/admin/messages', {
+        const response = await axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/admin/messages', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -66,7 +66,7 @@ const AdminMessages = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/admin/messages/${selectedMessage._id}/reply`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/admin/messages/${selectedMessage._id}/reply`,
         { reply: replyText, sender: 'admin' },
         {
           headers: {
@@ -95,7 +95,7 @@ const AdminMessages = () => {
   const deleteMessage = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.delete(`http://localhost:3000/api/admin/messages/${id}`, {
+      await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/admin/messages/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -122,7 +122,7 @@ const AdminMessages = () => {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/admin/messages/${id}/read`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/admin/messages/${id}/read`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -138,7 +138,7 @@ const AdminMessages = () => {
   const markAsUnread = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/admin/messages/${id}/unread`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/admin/messages/${id}/unread`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

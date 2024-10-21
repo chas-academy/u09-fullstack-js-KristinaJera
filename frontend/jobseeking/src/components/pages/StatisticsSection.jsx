@@ -46,9 +46,9 @@ const StatisticsSection = () => {
   const fetchStats = useCallback(async () => {
     try {
       const [usersResponse, companiesResponse, jobsResponse] = await Promise.all([
-        axios.get('http://localhost:3000/api/users'),
-        axios.get('http://localhost:3000/api/companies'),
-        axios.get('http://localhost:3000/api/jobs'),
+        axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/users'),
+        axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/companies'),
+        axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/jobs'),
       ]);
 
       const userCount = usersResponse.data.length;

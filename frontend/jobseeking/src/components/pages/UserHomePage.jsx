@@ -18,7 +18,7 @@ const UserHomepage = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/find-jobs');
+        const response = await axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/find-jobs');
         if (response.data && response.data.success && Array.isArray(response.data.data)) {
           const jobs = response.data.data;
           const jobTitles = Array.from(new Set(jobs.map(job => job.jobTitle)));

@@ -23,8 +23,8 @@ const Navbar = ({ user, onClick, onLogout }) => {
     }
 
     const endpoint = userRole === 'company'
-        ? "http://localhost:3000/api/get-company-profile"
-        : "http://localhost:3000/api/get-user-profile";
+        ? "https://u09-fullstack-js-kristinajera.onrender.com/api/get-company-profile"
+        : "https://u09-fullstack-js-kristinajera.onrender.com/api/get-user-profile";
 
     try {
         const response = await axios.get(endpoint, {
@@ -33,7 +33,7 @@ const Navbar = ({ user, onClick, onLogout }) => {
 
         if (response.data && response.data.data) {
             const data = response.data.data;
-            const profileImageUrl = data.profileUrl ? `http://localhost:3000${data.profileUrl}` : null;
+            const profileImageUrl = data.profileUrl ? `https://u09-fullstack-js-kristinajera.onrender.com${data.profileUrl}` : null;
             setProfileImage(profileImageUrl);
             console.log("Profile image URL:", profileImageUrl); // Add this line for debugging
         } else {

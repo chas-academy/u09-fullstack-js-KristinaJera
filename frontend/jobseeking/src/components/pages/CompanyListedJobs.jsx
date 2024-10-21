@@ -20,7 +20,7 @@ const CompanyListedJobs = ({ companyId }) => {
 
     const fetchJobs = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/company-jobs/${companyId}`);
+        const response = await axios.get(`https://u09-fullstack-js-kristinajera.onrender.com/api/company-jobs/${companyId}`);
         if (response.data.success) {
           setJobs(response.data.data);
         } else {
@@ -61,7 +61,7 @@ const CompanyListedJobs = ({ companyId }) => {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:3000/api/company-jobs/${selectedJob._id}`, {
+      const response = await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/company-jobs/${selectedJob._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -17,7 +17,7 @@ const UserAppliedJobs = () => {
       }
 
       const response = await axios.get(
-        `http://localhost:3000/api/user-applications/${userId}`
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/user-applications/${userId}`
       );
       if (response.data.success) {
         setApplications(response.data.data);
@@ -42,7 +42,7 @@ const UserAppliedJobs = () => {
   const removeApplication = async (applicationId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/delete-application/${applicationId}`
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/delete-application/${applicationId}`
       );
       if (response.data.success) {
         setApplications(

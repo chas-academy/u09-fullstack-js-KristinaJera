@@ -28,7 +28,7 @@ const UserProfile = () => {
 
             try {
                 const response = await axios.post(
-                    'http://localhost:3000/api/get-user-profile',
+                    'https://u09-fullstack-js-kristinajera.onrender.com/api/get-user-profile',
                     {},
                     {
                         headers: {
@@ -38,7 +38,7 @@ const UserProfile = () => {
                 );
 
                 const data = response.data.data;
-                const profileImage = data.profileUrl ? `http://localhost:3000${data.profileUrl}` : null;
+                const profileImage = data.profileUrl ? `https://u09-fullstack-js-kristinajera.onrender.com${data.profileUrl}` : null;
 
                 setFormData({
                     firstName: data.firstName,
@@ -97,7 +97,7 @@ const UserProfile = () => {
                 const imageFormData = new FormData();
                 imageFormData.append('profileImage', formData.profileUrl);
 
-                const uploadResponse = await axios.post('http://localhost:3000/api/upload-profile-image', imageFormData, {
+                const uploadResponse = await axios.post('https://u09-fullstack-js-kristinajera.onrender.com/api/upload-profile-image', imageFormData, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
@@ -108,7 +108,7 @@ const UserProfile = () => {
             }
 
             // Update user profile
-            await axios.put('http://localhost:3000/api/update-user-profile', updatedData, {
+            await axios.put('https://u09-fullstack-js-kristinajera.onrender.com/api/update-user-profile', updatedData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

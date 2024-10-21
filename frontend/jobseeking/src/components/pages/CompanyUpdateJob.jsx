@@ -26,7 +26,7 @@ const CompanyUpdateJob = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:3000/api/update-job/${jobId}`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/update-job/${jobId}`,
         updatedJob,
         { headers: { Authorization: `Bearer ${token}` } }
       );

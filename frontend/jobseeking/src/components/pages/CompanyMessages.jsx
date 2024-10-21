@@ -18,7 +18,7 @@ const CompanyMessages = () => {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:3000/api/company/messages', {
+        const response = await axios.get('https://u09-fullstack-js-kristinajera.onrender.com/api/company/messages', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -53,7 +53,7 @@ const CompanyMessages = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/company/messages/${selectedMessage._id}/reply`,
+        `https://u09-fullstack-js-kristinajera.onrender.com/api/company/messages/${selectedMessage._id}/reply`,
         { reply: replyText, sender: 'company' },
         {
           headers: {
@@ -82,7 +82,7 @@ const CompanyMessages = () => {
   const deleteMessage = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.delete(`http://localhost:3000/api/company/messages/${id}`, {
+      await axios.delete(`https://u09-fullstack-js-kristinajera.onrender.com/api/company/messages/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -110,7 +110,7 @@ const CompanyMessages = () => {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/company/messages/${id}/read`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/company/messages/${id}/read`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -129,7 +129,7 @@ const CompanyMessages = () => {
   const markAsUnread = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`http://localhost:3000/api/company/messages/${id}/unread`, null, {
+      await axios.put(`https://u09-fullstack-js-kristinajera.onrender.com/api/company/messages/${id}/unread`, null, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
