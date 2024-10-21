@@ -34,15 +34,11 @@ const whitelist = [
   "http://localhost:5173/"
 ]
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true); // Allow the request
-    } else {
-      callback(new Error("Not allowed by CORS")); // Reject the request
-    }
-  },
+  origin: "*", // Allow all origins (for testing)
   methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // If you need to support credentials
 };
+
 
 // Use CORS middleware
 app.use(cors(corsOptions));
