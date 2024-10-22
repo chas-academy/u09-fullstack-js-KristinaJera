@@ -106,103 +106,220 @@ if (loading) {
       <Navbar user={user} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login-company" element={
-          <LoginPage type="company" onLoginSuccess={handleLoginSuccess} onClose={() => navigate('/')} />
-        } />
-        <Route path="/login" element={
-          <LoginPage type="user" onLoginSuccess={handleLoginSuccess} onClose={() => navigate('/')} />
-        } />
-        <Route path="/login-admin" element={
-          <LoginPage type="admin" onLoginSuccess={handleLoginSuccess} onClose={() => navigate('/')} />
-        } />
-        <Route path="/register" element={<RegisterPage onClose={() => navigate('/')} />} />
-        <Route path="/admin-dashboard" element={
-          <ProtectedRoute requiredRole="admin">
-            <AdminDash />
-          </ProtectedRoute>
-        } />
-        <Route path="/admin-reports" element={
-          <ProtectedRoute requiredRole="admin">
-            <AdminReports/>
-          </ProtectedRoute>
-        } />
-        <Route path="/admins-page" element={
-          <ProtectedRoute requiredRole="admin">
-            <AdminsPage/>
-          </ProtectedRoute>
-        } />
-        <Route path="/admin-messages" element={
-          <ProtectedRoute requiredRole="admin">
-            <AdminMessages/>
-          </ProtectedRoute>
-        } />
-        <Route path="/user-homepage" element={
-          <ProtectedRoute requiredRole="user">
-            <UserHomePage
-              jobTypes={['Full-Time', 'Part-Time', 'Contract']}
-              experience={[
-                { value: 'entry', title: 'Entry-Level' },
-                { value: 'mid', title: 'Mid-Level' },
-                { value: 'senior', title: 'Senior-Level' }
-              ]}
+        <Route
+          path="/login-company"
+          element={
+            <LoginPage
+              type="company"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate("/")}
             />
-          </ProtectedRoute>
-        } />
-         <Route path="/user-profile" element={
-          <ProtectedRoute requiredRole="user">
-            <UserProfile/>
-          </ProtectedRoute>
-        } />
-         <Route path="/user-messages" element={
-          <ProtectedRoute requiredRole="user">
-            <UserMessages/>
-          </ProtectedRoute>
-        } />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <LoginPage
+              type="user"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate("/")}
+            />
+          }
+        />
+        <Route
+          path="/login-admin"
+          element={
+            <LoginPage
+              type="admin"
+              onLoginSuccess={handleLoginSuccess}
+              onClose={() => navigate("/")}
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage onClose={() => navigate("/")} />}
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDash />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-reports"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminReports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admins-page"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-messages"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminMessages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-homepage"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <UserHomePage
+                jobTypes={["Full-Time", "Part-Time", "Contract"]}
+                experience={[
+                  { value: "entry", title: "Entry-Level" },
+                  { value: "mid", title: "Mid-Level" },
+                  { value: "senior", title: "Senior-Level" },
+                ]}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-profile"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-messages"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <UserMessages />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/company-homepage" element={
-          <ProtectedRoute requiredRole="company">
-            <CompanyHomePage />
-          </ProtectedRoute>
-        } />
-        <Route path="/company-dashboard" element={
-          <ProtectedRoute requiredRole="company">
-            <CompanyDashboard/>
-          </ProtectedRoute>
-        } />
-        <Route path="/company-profile" element={
-          <ProtectedRoute requiredRole="company">
-            <CompanyProfile/>
-          </ProtectedRoute>
-        } />
-        <Route path="/company-messages" element={
-          <ProtectedRoute requiredRole="company">
-          <CompanyMessages/>
-          </ProtectedRoute>
-        } />
-       <Route path="/company-applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
+        <Route
+          path="/company-homepage"
+          element={
+            <ProtectedRoute requiredRole="company">
+              <CompanyHomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/company-dashboard"
+          element={
+            <ProtectedRoute requiredRole="company">
+              <CompanyDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/company-profile"
+          element={
+            <ProtectedRoute requiredRole="company">
+              <CompanyProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/company-messages"
+          element={
+            <ProtectedRoute requiredRole="company">
+              <CompanyMessages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/company-applications"
+          element={
+            <ProtectedRoute requiredRole="company">
+              <CompanyJobApplications currentUser={user} />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/all-jobs" element={ <ProtectedRoute requiredRole="user"> <UserAllJobs /> </ProtectedRoute>} />
-        <Route path="/job/:id" element={<ProtectedRoute requiredRole="user"><SingleJob /> </ProtectedRoute>} />
-        <Route path="/applied-jobs" element={<ProtectedRoute requiredRole="user"><UserAppliedJobs /> </ProtectedRoute>} />
-        <Route path="/company-listed-jobs" element={ <ProtectedRoute requiredRole="company">
-                    user && user.role === company && user._id ? (
-                        <CompanyListedJobs companyId={user._id} />
-                    ) : (
-                        <Navigate to="/" />
-                    )
-                    </ProtectedRoute> } />
-        <Route path="/create-job" element={
-           <ProtectedRoute requiredRole="company">
-          user?.role === company ? (
-            <CreateJob companyId={user._id} />
-          ) : (
-            <Navigate to="/" />
-          )
-          </ProtectedRoute>  }/>
-       <Route path="/update-job" element={  <ProtectedRoute requiredRole="company"> <CompanyUpdateJob/></ProtectedRoute>} />
-       <Route path="/users-page" element={ <ProtectedRoute requiredRole="admin"><UsersPage/> </ProtectedRoute>}/>
-       <Route path="/companies-page" element={ <ProtectedRoute requiredRole="admin"><CompaniesPage/> </ProtectedRoute>}/>
+        <Route
+          path="/all-jobs"
+          element={
+            <ProtectedRoute requiredRole="user">
+              {" "}
+              <UserAllJobs />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/job/:id"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <SingleJob />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/applied-jobs"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <UserAppliedJobs />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/company-listed-jobs"
+          element={
+            <ProtectedRoute requiredRole="company">
+              {user && user.role === "company" && user._id ? (
+                <CompanyListedJobs companyId={user._id} />
+              ) : (
+                <Navigate to="/" />
+              )}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-job"
+          element={
+            <ProtectedRoute requiredRole="company">
+              {user?.role === "company" ? (
+                <CreateJob companyId={user._id} />
+              ) : (
+                <Navigate to="/" />
+              )}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-job"
+          element={
+            <ProtectedRoute requiredRole="company">
+              {" "}
+              <CompanyUpdateJob />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users-page"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <UsersPage />{" "}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies-page"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <CompaniesPage />{" "}
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {user && <Footer />}
     </>
