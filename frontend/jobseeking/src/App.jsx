@@ -186,7 +186,7 @@ if (loading) {
         <Route path="/job/:id" element={<ProtectedRoute requiredRole="user"><SingleJob /> </ProtectedRoute>} />
         <Route path="/applied-jobs" element={<ProtectedRoute requiredRole="user"><UserAppliedJobs /> </ProtectedRoute>} />
         <Route path="/company-listed-jobs" element={ <ProtectedRoute requiredRole="company">
-                    user && user.role === &apos;company&apos; && user._id ? (
+                    user && user.role === company && user._id ? (
                         <CompanyListedJobs companyId={user._id} />
                     ) : (
                         <Navigate to="/" />
@@ -194,7 +194,7 @@ if (loading) {
                     </ProtectedRoute> } />
         <Route path="/create-job" element={
            <ProtectedRoute requiredRole="company">
-          user?.role === &apos;company&apos; ? (
+          user?.role === company ? (
             <CreateJob companyId={user._id} />
           ) : (
             <Navigate to="/" />
