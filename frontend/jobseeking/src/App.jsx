@@ -176,32 +176,33 @@ if (loading) {
         } />
         <Route path="/company-messages" element={
           <ProtectedRoute requiredRole="company">
-            <CompanyMessages/>
+          <CompanyMessages/>
           </ProtectedRoute>
         } />
-           <Route path="/company-applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
+       <Route path="/company-applications" element={<ProtectedRoute requiredRole="company"><CompanyJobApplications currentUser={user} /></ProtectedRoute>} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/all-jobs" element={<UserAllJobs />} />
-        <Route path="/job/:id" element={<SingleJob />} />
-        <Route path="/applied-jobs" element={<UserAppliedJobs />} />
-        <Route path="/company-listed-jobs" element={
-                    user && user.role === 'company' && user._id ? (
+        <Route path="/all-jobs" element={ <ProtectedRoute requiredRole="user"> <UserAllJobs /> </ProtectedRoute>} />
+        <Route path="/job/:id" element={<ProtectedRoute requiredRole="user"><SingleJob /> </ProtectedRoute>} />
+        <Route path="/applied-jobs" element={<ProtectedRoute requiredRole="user"><UserAppliedJobs /> </ProtectedRoute>} />
+        <Route path="/company-listed-jobs" element={ <ProtectedRoute requiredRole="company">
+                    user && user.role === &apos;company&apos; && user._id ? (
                         <CompanyListedJobs companyId={user._id} />
                     ) : (
                         <Navigate to="/" />
                     )
-                } />
+                    </ProtectedRoute> } />
         <Route path="/create-job" element={
-          user?.role === 'company' ? (
+           <ProtectedRoute requiredRole="company">
+          user?.role === &apos;company&apos; ? (
             <CreateJob companyId={user._id} />
           ) : (
             <Navigate to="/" />
           )
-        }/>
-       <Route path="/update-job" element={<CompanyUpdateJob/>} />
-       <Route path="/users-page" element={<UsersPage/>}/>
-       <Route path="/companies-page" element={<CompaniesPage/>}/>
+          </ProtectedRoute>  }/>
+       <Route path="/update-job" element={  <ProtectedRoute requiredRole="company"> <CompanyUpdateJob/></ProtectedRoute>} />
+       <Route path="/users-page" element={ <ProtectedRoute requiredRole="admin"><UsersPage/> </ProtectedRoute>}/>
+       <Route path="/companies-page" element={ <ProtectedRoute requiredRole="admin"><CompaniesPage/> </ProtectedRoute>}/>
       </Routes>
       {user && <Footer />}
     </>
