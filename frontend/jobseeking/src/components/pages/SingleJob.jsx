@@ -136,7 +136,7 @@ const SingleJob = () => {
   }
 
   return (
-    <section className="relative text-gray-600 body-font">
+    <section className="relative text-gray-600 body-font right-8">
       <div className="container px-5 py-20 mx-auto flex flex-col lg:flex-row">
         {/* Job Information */}
         <div
@@ -206,7 +206,7 @@ const SingleJob = () => {
 
         {/* Application Form */}
         {showForm && !hasApplied && (
-          <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg right-0 top-0 h-full ml-5 lg:block hidden">
+          <div className="relative transition-all duration-500 ease-in-out p-8 shadow-lg bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg right-10 top-0 h-full ml-5 lg:block hidden">
             <h2 className="text-2xl font-bold mb-4 text-gray-900">
               Application Form
             </h2>

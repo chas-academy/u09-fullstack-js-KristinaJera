@@ -97,7 +97,7 @@ export const RegisterPage = ({ onClose }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto relative">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto relative my-10">
       <button onClick={onClose} className="absolute top-2 right-8 text-gray-500 hover:text-gray-700">
         &times;
       </button>

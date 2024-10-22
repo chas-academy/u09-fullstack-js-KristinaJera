@@ -46,8 +46,8 @@ const Navbar = ({ user, onClick, onLogout }) => {
 
 
 useEffect(() => {
-  if (isAuthenticated && user) {
-      fetchProfileImage(user.role);
+  if (isAuthenticated && user && (user.role === 'user' || user.role === 'company')) {
+    fetchProfileImage(user.role);
   }
 }, [isAuthenticated, user, fetchProfileImage]);
 
@@ -140,12 +140,14 @@ useEffect(() => {
               <p className="hidden lg:flex items-center space-x-2 text-gray-700 pl-8">
                 Hello {user.companyName || user.firstName || user.username }
               </p>
+              {user.role !== 'admin' && (
               <img
                 src={profileImage || 'https://via.placeholder.com/150'}
                 alt="User profile"
                 className="w-10 h-10 rounded-full object-cover"
                 onClick={onClick}
               />
+            )}
               <button
                 onClick={handleLogOut}
                 className="text-gray-700 hover:text-blue-500"
@@ -173,13 +175,15 @@ useEffect(() => {
         {isAuthenticated && user && (
           <div className="flex flex-col items-start mt-4">
             <p className="flex items-center space-x-2 text-gray-700">
+            {user.role !== 'admin' && (
               <img
                 src={profileImage || 'https://via.placeholder.com/150'}
                 alt="User profile"
                 className="w-10 h-10 rounded-full object-cover"
                 onClick={onClick}
               />
-              <span>{user.companyName || user.firstName || user.username}</span>
+            )}
+              <span>  Hello {user.companyName || user.firstName || user.username}</span>
             </p>
             <button
               onClick={handleLogOut}

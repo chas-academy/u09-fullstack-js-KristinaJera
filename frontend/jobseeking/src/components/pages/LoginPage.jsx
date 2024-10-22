@@ -1,22 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoginPage = ({ onClose, onLoginSuccess }) => {
-  const [loginType, setLoginType] = useState('user'); // Default to 'user'
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Extract loginType from the URL and fall back to 'user'
+  const currentPath = location.pathname;
+  const initialLoginType = 
+    currentPath === '/login-company' ? 'company' :
+    currentPath === '/login-admin' ? 'admin' :
+    'user';
+
+  const [loginType, setLoginType] = useState(initialLoginType);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
+  // Update loginType based on URL path change
+  useEffect(() => {
+    setLoginType(initialLoginType); // Update the state when the URL changes
+  }, [initialLoginType]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
       let url = '';
-  
+
       // Determine the URL based on the login type
       switch (loginType) {
         case 'admin':
@@ -31,18 +45,18 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
         default:
           throw new Error('Invalid login type');
       }
-  
+
       console.log(`Sending request to ${url} with email ${email}`);
-  
+
       // Make the API request
       const response = await axios.post(url, { email, password });
       const data = response.data;
-  
+
       console.log("Login successful, response data:", data);
-  
+
       // Handle login success
       let userData;
-  
+
       switch (loginType) {
         case 'company':
           userData = data.company;
@@ -56,20 +70,20 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
         default:
           throw new Error('Invalid login type');
       }
-  
+
       if (!userData) {
         throw new Error("Unknown account type or missing user data.");
       }
-  
+
       // Log user data and role
       console.log(`Logged in as: ${loginType}`);
       console.log("User Data:", userData);
-  
+
       localStorage.setItem('authToken', data.token); // Store the token
       localStorage.setItem('userId', userData._id); // Store the user ID
-  
+
       onLoginSuccess(userData);
-  
+
       // Navigate based on account type
       switch (userData.role) {
         case 'company':
@@ -89,12 +103,28 @@ const LoginPage = ({ onClose, onLoginSuccess }) => {
       setError(err.response?.data?.message || 'An error occurred');
     }
   };
-  
 
-  const toggleLoginType = (type) => setLoginType(type);
+  // Update the loginType both in the state and in the URL when buttons are clicked
+  const toggleLoginType = (type) => {
+    setLoginType(type);
+
+    // Update the URL when the login type is changed by button click
+    switch (type) {
+      case 'company':
+        navigate('/login-company');
+        break;
+      case 'admin':
+        navigate('/login-admin');
+        break;
+      case 'user':
+      default:
+        navigate('/login');
+        break;
+    }
+  };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto relative">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-auto relative mt-16">
       <button onClick={onClose} className="absolute top-2 right-8 text-gray-500 hover:text-gray-700">
         &times;
       </button>

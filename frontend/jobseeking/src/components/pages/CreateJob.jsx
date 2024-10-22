@@ -96,11 +96,11 @@ const CreateJob = ({ companyId }) => {
   };
 
   return (
-    <section className="text-gray-700 body-font h-screen flex flex-col items-center justify-center">
+    <section className="text-gray-700 body-font h-screen flex flex-col items-center justify-center my-10">
       <h1 className="text-3xl font-bold text-indigo-600 text-center my-6">Post your jobs! And attract talents!</h1>
       <div className="container px-5 py-2 mx-auto">
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="bg-white p-5 bg-gradient-to-r from-indigo-300 to-indigo-500 shadow-md rounded-lg w-5/6 lg:w-2/3 mx-auto">
+        <form onSubmit={handleSubmit} className="bg-white p-5 bg-gradient-to-r from-indigo-300 to-indigo-500 shadow-md rounded-lg w-5/6 lg:w-3/5 mx-auto">
            {/* Responsive Grid Form Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div>
