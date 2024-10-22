@@ -1,0 +1,18 @@
+{
+    "name": "Jobseeking App",
+    "short_name": "Job App",
+    "description": "A Job application where you can find your dream job",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
